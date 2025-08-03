@@ -12,15 +12,21 @@ ENV HOME=/${WORKDIR} \
 
 WORKDIR ${HOME}
 
-# package.jsonをコンテナにコピー、インストール
-COPY package*.json ./
-RUN yarn install
+# pnpmをインストール
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# package.jsonとpnpm-lock.yamlをコンテナにコピー、インストール
+COPY package*.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# rollupのバイナリ問題を解決するため、必要なバイナリを明示的にインストール
+RUN pnpm add @rollup/rollup-linux-arm64-gnu @rollup/rollup-linux-x64-gnu @rollup/rollup-linux-arm64-musl @rollup/rollup-linux-x64-musl --save-optional || true
 
 # コンテナにNuxtプロジェクトをコピー
 COPY . ./
 
 # 本番環境用にアプリを構築
-RUN yarn run build
+RUN pnpm run build
 
 # 2021.12.13追記
 # FROM node:14.15.1-alpine
