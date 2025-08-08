@@ -30,7 +30,7 @@ RUN pnpm run build
 
 # 2021.12.13追記
 # FROM node:14.15.1-alpine
-# node v14.15.1は、$ yarn create nuxt-app appコマンド時に下記エラーが発生するので使用不可
+# node v14.15.1は、$ pnpm create nuxt-app appコマンド時に下記エラーが発生するので使用不可
 # eslint-plugin-vue@8.2.0: The engine "node" is incompatible with this module. Expected version "^12.22.0 || ^14.17.0 || >=16.0.0". Got "14.15.1"
 
 # create nuxt-appコマンド成功確認済みのnode version

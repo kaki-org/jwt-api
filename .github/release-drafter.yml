@@ -70,7 +70,7 @@ autolabeler:
       - 'public/**/*'
       - 'src/**/*'
       - 'package.json'
-      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
       - 'nuxt*'
       - 'tsconfig.json'
       - '.eslintrc.json'
