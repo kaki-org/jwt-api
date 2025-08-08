@@ -38,12 +38,14 @@
 
 - [ ] 6. デプロイメント設定ファイルの更新
 
-  - front/heroku.yml を yarn run start の代わりに pnpm run start を使用するよう更新
+  - front/heroku.yml を 削除
+  - README.md から heroku に関しての記述をコメントアウト
+  - steering files から heroku に関しての記述を削除
   - docker-compose.yml のコメント内の pnpm 参照を更新
   - デプロイメント設定の変更をテスト
   - _要件: 3.2, 4.2_
 
-- [ ] 7. 開発ツール設定の更新
+- [x] 7. 開発ツール設定の更新
 
   - dip.yml の yarn コマンドを pnpm コマンドに置き換え
   - dip pnpm コマンドが正しく動作することをテスト
