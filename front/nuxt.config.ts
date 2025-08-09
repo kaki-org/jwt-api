@@ -43,7 +43,7 @@ export default defineNuxtConfig({
   // Modules: buildModules統合 - Nuxt 4.x format
   modules: [
     // ESLint module for Nuxt 4.x
-    '@nuxt/eslint',
+    "@nuxt/eslint",
     // Note: Other modules will be configured in later tasks for Nuxt 4.x compatibility
     // '@nuxtjs/i18n',
     // '@nuxtjs/vuetify',
@@ -122,6 +122,16 @@ export default defineNuxtConfig({
   //     },
   //   },
   // },
+
+  // TypeScript configuration - Nuxt 4.x format
+  typescript: {
+    // 型チェックを有効にする
+    typeCheck: true,
+    // 厳格な型チェック
+    strict: true,
+    // 型定義の自動生成を有効にする
+    includeWorkspace: true,
+  },
 
   // Build Configuration: Nuxt 4.x uses Vite by default
   // No need for webpack extend configuration

@@ -31,7 +31,8 @@
     "@nuxtjs/vuetify": "^1.12.3",
     "eslint": "^9.33.0",
     "node-gyp": "^11.0.0",
-    "sass": "^1.70.0"
+    "sass": "^1.70.0",
+    "vue-tsc": "^3.0.5"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [
