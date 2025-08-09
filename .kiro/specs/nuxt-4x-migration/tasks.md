@@ -5,7 +5,7 @@
   - buildModulesをmodulesに統合し、head設定をapp.head形式に変更する
   - _要件: 1.1, 1.2, 1.3, 1.4, 1.5_
 
-- [ ] 2. ESLint設定をFlat Config形式に移行
+- [x] 2. ESLint設定をFlat Config形式に移行
   - .eslintrc.jsをeslint.config.jsに変換し、@nuxt/eslintモジュールを使用する
   - CommonJS形式からESM形式に変更し、新しいルール設定を適用する
   - _要件: 3.3_
