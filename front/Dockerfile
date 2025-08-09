@@ -19,14 +19,15 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY package*.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-# rollupのバイナリ問題を解決するため、必要なバイナリを明示的にインストール
+# rollupとesbuildのバイナリ問題を解決するため、必要なバイナリを明示的にインストール
 RUN pnpm add @rollup/rollup-linux-arm64-gnu @rollup/rollup-linux-x64-gnu @rollup/rollup-linux-arm64-musl @rollup/rollup-linux-x64-musl --save-optional || true
+RUN pnpm add @esbuild/linux-arm64 @esbuild/linux-x64 --save-optional || true
 
 # コンテナにNuxtプロジェクトをコピー
 COPY . ./
 
-# 本番環境用にアプリを構築
-RUN pnpm run build
+# 開発環境用の設定（本番環境では別途ビルドが必要）
+# RUN pnpm run build
 
 # 2021.12.13追記
 # FROM node:14.15.1-alpine
