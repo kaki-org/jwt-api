@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   // Compatibility date for Nuxt 4.x
-  compatibilityDate: '2025-08-09',
+  compatibilityDate: "2025-08-09",
 
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -8,17 +8,17 @@ export default defineNuxtConfig({
   // Global page headers: Nuxt 4.x app.head format
   app: {
     head: {
-      title: 'app',
+      title: "app",
       htmlAttrs: {
-        lang: 'en',
+        lang: "en",
       },
       meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { hid: 'description', name: 'description', content: '' },
-        { name: 'format-detection', content: 'telephone=no' },
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { hid: "description", name: "description", content: "" },
+        { name: "format-detection", content: "telephone=no" },
       ],
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     },
   },
 
@@ -27,7 +27,7 @@ export default defineNuxtConfig({
   // or configured in app.vue or layouts
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~/assets/sass/main.scss'],
+  css: ["~/assets/sass/main.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   // plugins: [
@@ -59,14 +59,14 @@ export default defineNuxtConfig({
     // Server handlers for SSL redirect
     handlers: [
       {
-        route: '/**',
-        handler: '~/server/redirect-ssl.js',
+        route: "/**",
+        handler: "~/server/redirect-ssl.js",
       },
     ],
     // Development proxy - Nuxt 4.x format
     devProxy: {
-      '/api': {
-        target: process.env.API_URL || 'http://localhost:33000',
+      "/api": {
+        target: process.env.API_URL || "http://localhost:33000",
         changeOrigin: true,
       },
     },
