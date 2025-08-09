@@ -40,8 +40,8 @@
    - Nuxtフロントエンドを起動します（別のターミナルで）:
      ```
      cd front
-     yarn install
-     yarn dev
+     pnpm install
+     pnpm dev
      ```
    - http://localhost:3000 でアプリケーションにアクセスします
 
@@ -52,7 +52,7 @@
      ```
      bundle install
      cd front
-     yarn install
+     pnpm install
      ```
    - データベースをセットアップします:
      ```
@@ -67,7 +67,7 @@
 
      # ターミナル2
      cd front
-     yarn dev
+     pnpm dev
      ```
 
 ### テスト情報

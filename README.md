@@ -63,7 +63,7 @@ dip provision
 
 ```sh
 cd front
-yarn install
+pnpm install
 ```
 
 ### 起動してみる
@@ -78,7 +78,7 @@ terminal2
 
 ```sh
 cd front
-yarn dev
+pnpm dev
 ```
 
 上記をもって http://localhost:3000 にアクセスすれば、トップページに遷移する。
