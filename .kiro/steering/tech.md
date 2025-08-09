@@ -41,7 +41,7 @@ dip provision
 dip rails s
 
 # Nuxt.jsフロントエンド起動
-cd front && yarn dev
+cd front && pnpm dev
 
 # テスト実行
 dip rspec

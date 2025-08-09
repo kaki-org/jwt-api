@@ -52,4 +52,5 @@ vendor/*
 !coverage/.keep
 coverage/*
 .config/gh
-.vscode
+.kiro
+.vscode/*

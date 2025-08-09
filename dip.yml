@@ -29,10 +29,10 @@ interaction:
       RAILS_ENV: test
     command: bundle exec rspec
 
-  yarn:
-    description: Run yarn
+  pnpm:
+    description: Run pnpm
     service: api
-    command: yarn
+    command: pnpm
 
   rubocop:
     description: Run rubocop

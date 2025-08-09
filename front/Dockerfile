@@ -1,5 +1,5 @@
 # FROM node:14.4.0-alpine 使用不可
-FROM node:22.17.0-alpine
+FROM node:22.18.0-alpine
 
 ARG WORKDIR
 ARG API_URL
@@ -12,19 +12,26 @@ ENV HOME=/${WORKDIR} \
 
 WORKDIR ${HOME}
 
-# package.jsonをコンテナにコピー、インストール
-COPY package*.json ./
-RUN yarn install
+# pnpmをインストール
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# package.jsonとpnpm-lock.yamlをコンテナにコピー、インストール
+COPY package*.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# rollupとesbuildのバイナリ問題を解決するため、必要なバイナリを明示的にインストール
+RUN pnpm add @rollup/rollup-linux-arm64-gnu @rollup/rollup-linux-x64-gnu @rollup/rollup-linux-arm64-musl @rollup/rollup-linux-x64-musl --save-optional || true
+RUN pnpm add @esbuild/linux-arm64 @esbuild/linux-x64 --save-optional || true
 
 # コンテナにNuxtプロジェクトをコピー
 COPY . ./
 
-# 本番環境用にアプリを構築
-RUN yarn run build
+# 開発環境用の設定（本番環境では別途ビルドが必要）
+# RUN pnpm run build
 
 # 2021.12.13追記
 # FROM node:14.15.1-alpine
-# node v14.15.1は、$ yarn create nuxt-app appコマンド時に下記エラーが発生するので使用不可
+# node v14.15.1は、$ pnpm create nuxt-app appコマンド時に下記エラーが発生するので使用不可
 # eslint-plugin-vue@8.2.0: The engine "node" is incompatible with this module. Expected version "^12.22.0 || ^14.17.0 || >=16.0.0". Got "14.15.1"
 
 # create nuxt-appコマンド成功確認済みのnode version
