@@ -52,5 +52,8 @@ vendor/*
 !coverage/.keep
 coverage/*
 .config/gh
-.kiro
+# Kiro IDE files - exclude all except steering and specs
+.kiro/*
+!.kiro/steering/
+!.kiro/specs/
 .vscode/*
