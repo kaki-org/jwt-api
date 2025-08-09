@@ -36,5 +36,15 @@
     "node-gyp": "^11.0.0",
     "sass": "^1.70.0",
     "vue-eslint-parser": "^10.0.0"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher",
+      "core-js",
+      "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
