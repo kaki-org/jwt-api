@@ -6,11 +6,11 @@
     "node": ">=20.12.2"
   },
   "scripts": {
-    "dev": "nuxi dev",
+    "dev": "NODE_OPTIONS='--openssl-legacy-provider' nuxi dev",
     "dev:mock": "MOCK_SERVER=1 pnpm dev",
-    "build": "nuxi build",
-    "start": "nuxi start",
-    "generate": "nuxi generate",
+    "build": "NODE_OPTIONS='--openssl-legacy-provider' nuxi build",
+    "start": "NODE_OPTIONS='--openssl-legacy-provider' nuxi start",
+    "generate": "NODE_OPTIONS='--openssl-legacy-provider' nuxi generate",
     "lint:js": "eslint --ext \".js,.vue\" .",
     "lint": "pnpm lint:js",
     "lintfix": "pnpm lint:js --fix"

@@ -1,51 +1,59 @@
 # 実装計画
 
-- [x] 1. 現在のVuetify設定の検証とテスト
-  - Vuetifyコンポーネントが正しくインポートおよびレンダリングできることをテスト
+- [x] 1. 現在の Vuetify 設定の検証とテスト
+
+  - Vuetify コンポーネントが正しくインポートおよびレンダリングできることをテスト
   - `vuetify`と`@nuxtjs/vuetify`の両方のパッケージが連携して動作することを確認
-  - 開発サーバーを実行してVuetify関連のエラーがないことを確認
+  - 開発サーバーを実行して Vuetify 関連のエラーがないことを確認
   - _要件: 1.1, 1.2, 1.3_
 
-- [ ] 2. npmスクリプトからレガシーNode.jsオプションを削除
-- [ ] 2.1 現在のpackage.jsonのバックアップを作成
-  - ロールバックの安全性のため、現在のpackage.jsonをpackage.json.backupにコピー
+- [x] 2. npm スクリプトからレガシー Node.js オプションを削除
+- [x] 2.1 現在の package.json のバックアップを作成
+
+  - ロールバックの安全性のため、現在の package.json を package.json.backup にコピー
   - _要件: 2.4_
 
-- [ ] 2.2 開発スクリプトから--openssl-legacy-providerを削除
-  - dev、build、start、generateスクリプトからNODE_OPTIONS='--openssl-legacy-provider'を削除
-  - レガシーフラグなしでクリーンなnuxiコマンドを使用するようにスクリプトを更新
+- [x] 2.2 開発スクリプトから--openssl-legacy-provider を削除
+
+  - dev、build、start、generate スクリプトから NODE_OPTIONS='--openssl-legacy-provider'を削除
+  - レガシーフラグなしでクリーンな nuxi コマンドを使用するようにスクリプトを更新
   - _要件: 2.1, 2.3_
 
-- [ ] 2.3 Node.js 20.12.2+でのスクリプト互換性をテスト
+- [x] 2.3 Node.js 20.12.2+でのスクリプト互換性をテスト
+
   - 変更された各スクリプトを個別にテスト（dev、build、start、generate）
-  - OpenSSLまたは暗号化エラーが発生しないことを確認
+  - OpenSSL または暗号化エラーが発生しないことを確認
   - 問題が発生した場合は残りの互換性問題を文書化
   - _要件: 2.2, 2.4_
 
-- [ ] 3. pnpmビルド依存関係の競合を解決
-- [ ] 3.1 現在のpnpm設定の競合を分析
-  - esbuildがignoredBuiltDependenciesとonlyBuiltDependenciesの両方にある理由を特定
+- [ ] 3. pnpm ビルド依存関係の競合を解決
+- [ ] 3.1 現在の pnpm 設定の競合を分析
+
+  - esbuild が ignoredBuiltDependencies と onlyBuiltDependencies の両方にある理由を特定
   - プロジェクトのニーズにより適切な設定を調査
   - _要件: 3.1, 3.4_
 
-- [ ] 3.2 最適化されたpnpm設定を実装
-  - esbuildをignoredBuiltDependenciesから削除し、onlyBuiltDependenciesにのみ保持
-  - ignoredBuiltDependenciesの他のパッケージの必要性を確認
-  - 競合しないルールでpnpm設定を更新
+- [ ] 3.2 最適化された pnpm 設定を実装
+
+  - esbuild を ignoredBuiltDependencies から削除し、onlyBuiltDependencies にのみ保持
+  - ignoredBuiltDependencies の他のパッケージの必要性を確認
+  - 競合しないルールで pnpm 設定を更新
   - _要件: 3.1, 3.2, 3.3_
 
 - [ ] 3.3 パッケージインストールとビルドプロセスをテスト
-  - pnpm installを実行して依存関係の解決が正しく動作することを確認
+
+  - pnpm install を実行して依存関係の解決が正しく動作することを確認
   - ネイティブ依存関係が新しい設定に従って処理されることをテスト
   - 依存関係関連のエラーなしでビルドプロセスが完了することを確認
   - _要件: 3.2, 3.4_
 
 - [ ] 4. 完全な開発ワークフローを検証
 - [ ] 4.1 最適化された設定で完全な開発サイクルをテスト
-  - クリーンな状態からpnpm installを実行
-  - pnpm devで開発サーバーを起動
-  - pnpm buildでビルドプロセスをテスト
-  - すべてのVuetifyコンポーネントがまだ正しく動作することを確認
+
+  - クリーンな状態から pnpm install を実行
+  - pnpm dev で開発サーバーを起動
+  - pnpm build でビルドプロセスをテスト
+  - すべての Vuetify コンポーネントがまだ正しく動作することを確認
   - _要件: 1.1, 1.2, 1.3, 2.1, 2.2, 3.2_
 
 - [ ] 4.2 実施した変更の文書化を作成
