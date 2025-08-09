@@ -53,4 +53,5 @@ vendor/*
 coverage/*
 .config/gh
 .kiro
+!.kiro/steering/
 .vscode/*
