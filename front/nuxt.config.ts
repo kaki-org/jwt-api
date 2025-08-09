@@ -42,8 +42,9 @@ export default defineNuxtConfig({
 
   // Modules: buildModules統合 - Nuxt 4.x format
   modules: [
-    // Note: All modules will be configured in later tasks for Nuxt 4.x compatibility
-    // '@nuxtjs/eslint-module',
+    // ESLint module for Nuxt 4.x
+    '@nuxt/eslint',
+    // Note: Other modules will be configured in later tasks for Nuxt 4.x compatibility
     // '@nuxtjs/i18n',
     // '@nuxtjs/vuetify',
   ],
