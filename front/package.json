@@ -42,8 +42,7 @@
   "pnpm": {
     "ignoredBuiltDependencies": [
       "@parcel/watcher",
-      "core-js",
-      "esbuild"
+      "core-js"
     ],
     "onlyBuiltDependencies": [
       "esbuild"

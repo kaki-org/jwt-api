@@ -26,21 +26,21 @@
   - 問題が発生した場合は残りの互換性問題を文書化
   - _要件: 2.2, 2.4_
 
-- [ ] 3. pnpm ビルド依存関係の競合を解決
-- [ ] 3.1 現在の pnpm 設定の競合を分析
+- [x] 3. pnpm ビルド依存関係の競合を解決
+- [x] 3.1 現在の pnpm 設定の競合を分析
 
   - esbuild が ignoredBuiltDependencies と onlyBuiltDependencies の両方にある理由を特定
   - プロジェクトのニーズにより適切な設定を調査
   - _要件: 3.1, 3.4_
 
-- [ ] 3.2 最適化された pnpm 設定を実装
+- [x] 3.2 最適化された pnpm 設定を実装
 
   - esbuild を ignoredBuiltDependencies から削除し、onlyBuiltDependencies にのみ保持
   - ignoredBuiltDependencies の他のパッケージの必要性を確認
   - 競合しないルールで pnpm 設定を更新
   - _要件: 3.1, 3.2, 3.3_
 
-- [ ] 3.3 パッケージインストールとビルドプロセスをテスト
+- [x] 3.3 パッケージインストールとビルドプロセスをテスト
 
   - pnpm install を実行して依存関係の解決が正しく動作することを確認
   - ネイティブ依存関係が新しい設定に従って処理されることをテスト
