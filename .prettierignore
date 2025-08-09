@@ -1,0 +1,7 @@
+# Kiro steering files - 日本語テキストの自動フォーマットを無効化
+.kiro/steering/*.md
+
+# その他のドキュメントファイル
+*.md
+!README.md
+!front/README.md
