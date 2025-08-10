@@ -125,7 +125,7 @@ export const useAuthStore = defineStore('auth', {
         // サーバーサイドでのログアウト処理（401エラーを許容）
         await $fetch('/api/v1/auth_token', {
           method: 'DELETE',
-          onResponseError({ response }: { response: unknown }) {
+          onResponseError({ response }: { response: any }) {
             // 401エラーは正常なレスポンスとして扱う
             if (response.status === 401) {
               return

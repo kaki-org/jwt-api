@@ -30,36 +30,41 @@
   </v-snackbar>
 </template>
 
-<script>
-export default {
-  computed: {
-    // Vuexのtoastオブジェクトを呼び出し & 監視
-    toast() {
-      return this.$store.state.toast;
-    },
-    setSnackbar: {
-      // Vuexのtoastオブジェクトのmsgがあった場合にtrueを返す
-      get() {
-        return !!this.toast.msg;
-      },
-      // (val)にはfalseが返ってくる（Vuetifyのv-snackbarの仕様）
-      // set()内で return false を行うと、トースターが閉じる
-      // return falseの前に、Vuexのtoast.msgをnullにリセットしている
-      // set () => timeout: -1の場合は通過しない
-      set(val) {
-        return this.resetToast() && val;
-      },
-    },
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useToastStore } from '~/stores/toast'
+
+const toastStore = useToastStore()
+
+// Piniaのtoastオブジェクトを呼び出し & 監視
+const toast = computed(() => ({
+  msg: toastStore.msg,
+  color: toastStore.color,
+  timeout: toastStore.timeout,
+}))
+
+const setSnackbar = computed({
+  // Piniaのtoastオブジェクトのmsgがあった場合にtrueを返す
+  get() {
+    return toastStore.isVisible
   },
-  beforeDestroy() {
-    // Vueインスタンスが破棄される直前にVuexのtoast.msgを削除する(無期限toastに対応)
-    this.resetToast();
+  // (val)にはfalseが返ってくる（Vuetifyのv-snackbarの仕様）
+  // set()内で return false を行うと、トースターが閉じる
+  // return falseの前に、Piniaのtoast.msgをnullにリセットしている
+  // set () => timeout: -1の場合は通過しない
+  set(val: boolean) {
+    return resetToast() && val
   },
-  methods: {
-    // Vuexのtoast.msgの値を変更する
-    resetToast() {
-      return this.$store.dispatch("getToast", { msg: null });
-    },
-  },
-};
+})
+
+// Piniaのtoast.msgの値を変更する
+const resetToast = () => {
+  toastStore.clearToast()
+  return false
+}
+
+// Vueインスタンスが破棄される直前にPiniaのtoast.msgを削除する(無期限toastに対応)
+onBeforeUnmount(() => {
+  resetToast()
+})
 </script>
