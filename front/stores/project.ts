@@ -86,9 +86,8 @@ export const useProjectStore = defineStore('project', {
       this.error = null
       
       try {
-        const { data } = await $fetch<{ data: Project[] }>('/api/v1/projects', {
-          method: 'GET',
-        })
+        const { get } = useApi()
+        const { data } = await get<{ data: Project[] }>('/api/v1/projects')
         
         this.setProjectList(data || [])
         return data

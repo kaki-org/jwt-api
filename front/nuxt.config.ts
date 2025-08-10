@@ -54,6 +54,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       appName: process.env.APP_NAME,
+      apiUrl: process.env.API_URL || '/api',
     },
   },
 
