@@ -4,7 +4,7 @@ export default defineNuxtPlugin(async () => {
 
   // 認証ストアを使用してトークンリフレッシュを実行
   const authStore = useAuthStore();
-  
+
   try {
     // 既存のユーザー情報があり、トークンが期限切れの場合のみリフレッシュを試行
     if (authStore.isExistUserAndExpired) {
