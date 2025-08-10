@@ -39,47 +39,55 @@
   </user-form-card>
 </template>
 
-<script>
-export default {
-  layout: 'before-login',
-  data ({ $store }) {
-    return {
-      isValid: false,
-      loading: false,
-      params: { auth: { email: '', password: '' } },
-      redirectPath: $store.state.loggedIn.rememberPath,
-      loggedInHomePath: $store.state.loggedIn.homePath
-    }
-  },
-  methods: {
-    async login () {
-      this.loading = true
-      if (this.isValid) {
-        await this.$axios.$post('/api/v1/auth_token', this.params)
-          .then(response => this.authSuccessful(response))
-          .catch(error => this.authFailure(error))
-      }
-      this.loading = false
-      // this.$router.push(this.redirectPath)
-      // setTimeout(() => (this.loading = false), 1500)
-    },
-    authSuccessful (response) {
-      this.$auth.login(response)
-      this.$router.push(this.redirectPath)
-      // 記憶ルートを初期値に戻す
-      this.$store.dispatch('getRememberPath', this.loggedInHomePath)
-    },
-    authFailure ({ response }) {
-      if (response && response.status === 404) {
-        const msg = 'ユーザーが見つかりません😢'
-        const color = 'error'
-        // test
-        console.log(msg, color)
-        return this.$store.dispatch('getToast', { msg, color: 'error', timeout: 8000 })
-      }
-      // TODO エラー処理
-      return this.$my.apiErrorHandler(response)
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useAuthStore } from '~/stores/auth'
+import { useAppStore } from '~/stores/app'
+import { useToastStore } from '~/stores/toast'
+
+definePageMeta({
+  layout: 'before-login'
+})
+
+const authStore = useAuthStore()
+const appStore = useAppStore()
+const toastStore = useToastStore()
+const router = useRouter()
+
+const isValid = ref(false)
+const loading = ref(false)
+const params = ref({ auth: { email: '', password: '' } })
+
+const redirectPath = computed(() => appStore.rememberPath)
+const loggedInHomePath = computed(() => appStore.homePathName)
+
+const login = async () => {
+  loading.value = true
+  if (isValid.value) {
+    try {
+      await authStore.login(params.value.auth)
+      authSuccessful()
+    } catch (error) {
+      authFailure(error)
     }
   }
+  loading.value = false
+}
+
+const authSuccessful = () => {
+  router.push(redirectPath.value)
+  // 記憶ルートを初期値に戻す
+  appStore.setRememberPath({ name: loggedInHomePath.value })
+}
+
+const authFailure = (error: any) => {
+  if (error?.response?.status === 404) {
+    const msg = 'ユーザーが見つかりません😢'
+    console.log(msg, 'error')
+    return toastStore.showError(msg, 8000)
+  }
+  // TODO エラー処理
+  console.error('Login error:', error)
+  toastStore.showError('ログインに失敗しました', 8000)
 }
 </script>
