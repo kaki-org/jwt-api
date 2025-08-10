@@ -2,6 +2,7 @@
   "name": "app",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=20.12.2"
   },
@@ -11,33 +12,29 @@
     "build": "nuxi build",
     "start": "nuxi start",
     "generate": "nuxi generate",
-    "lint:js": "eslint --ext \".js,.vue\" .",
+    "lint:js": "eslint .",
     "lint": "pnpm lint:js",
     "lintfix": "pnpm lint:js --fix"
   },
   "dependencies": {
     "@nuxtjs/i18n": "^10.0.0",
+    "@pinia/nuxt": "^0.11.2",
     "core-js": "^3.33.3",
     "jwt-decode": "^4.0.0",
     "nuxt": "^4.0.0",
+    "pinia": "^3.0.3",
     "pkg-types": "^2.2.0",
     "vue": "3.5.13",
     "vuetify": "^3.4.0",
     "webpack": "^5.89.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.23.3",
-    "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.33.0",
-    "@nuxtjs/eslint-config": "^12.0.0",
-    "@nuxtjs/eslint-module": "^4.1.0",
+    "@nuxt/eslint": "^1.8.0",
     "@nuxtjs/vuetify": "^1.12.3",
-    "eslint": "^8.57.1",
-    "eslint-plugin-nuxt": "^4.0.0",
-    "eslint-plugin-vue": "^10.0.0",
+    "eslint": "^9.33.0",
     "node-gyp": "^11.0.0",
     "sass": "^1.70.0",
-    "vue-eslint-parser": "^10.0.0"
+    "vue-tsc": "^3.0.5"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [
@@ -45,7 +42,8 @@
       "core-js"
     ],
     "onlyBuiltDependencies": [
-      "esbuild"
+      "esbuild",
+      "unrs-resolver"
     ]
   }
 }

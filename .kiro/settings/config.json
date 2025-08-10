@@ -1,0 +1,7 @@
+{
+  "terminal": {
+    "environment": {
+      "PAGER": "cat"
+    }
+  }
+}

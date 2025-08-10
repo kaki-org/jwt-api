@@ -1,3 +1,10 @@
 {
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    // 型チェックの厳格化（Nuxt 4.x対応）
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+    // exactOptionalPropertyTypesはNuxt設定との互換性のため無効化
+  }
 }
