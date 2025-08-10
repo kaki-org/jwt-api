@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { hid: "description", name: "description", content: "" },
+        { name: "description", content: "" },
         { name: "format-detection", content: "telephone=no" },
       ],
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
@@ -44,6 +44,8 @@ export default defineNuxtConfig({
   modules: [
     // ESLint module for Nuxt 4.x
     "@nuxt/eslint",
+    // Pinia for state management - Nuxt 4.x format
+    "@pinia/nuxt",
     // Note: Other modules will be configured in later tasks for Nuxt 4.x compatibility
     // '@nuxtjs/i18n',
     // '@nuxtjs/vuetify',
