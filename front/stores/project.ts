@@ -54,11 +54,11 @@ export const useProjectStore = defineStore('project', {
     updateProject(id: number, updates: Partial<Omit<Project, 'id'>>) {
       const index = this.list.findIndex(project => project.id === id)
       if (index !== -1) {
-        this.list[index] = { ...this.list[index], ...updates }
+        this.list[index] = { ...this.list[index], ...updates, id }
         
         // Update current project if it's the one being updated
         if (this.current?.id === id) {
-          this.current = { ...this.current, ...updates }
+          this.current = { ...this.current, ...updates, id }
         }
       }
     },
