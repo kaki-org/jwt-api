@@ -79,7 +79,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     // JWTペイロードを設定
-    setPayload(payload: JWTPayload | Record<string, any>) {
+    setPayload(payload: JWTPayload | Record<string, unknown>) {
       this.payload = payload || {}
     },
 
@@ -106,26 +106,19 @@ export const useAuthStore = defineStore('auth', {
 
     // ログイン処理
     async login(credentials: { email: string; password: string }) {
-      try {
-        const response = await $fetch<LoginResponse>('/api/v1/auth_token', {
-          method: 'POST',
-          body: credentials,
-        })
-
-        this.setAuth(response)
-        return response
-      } catch (error) {
-        throw error
-      }
+      const { post } = useApi()
+      const response = await post<LoginResponse>('/api/v1/auth_token', credentials)
+      this.setAuth(response)
+      return response
     },
 
     // ログアウト処理
     async logout() {
       try {
+        const { delete: del } = useApi()
         // サーバーサイドでのログアウト処理（401エラーを許容）
-        await $fetch('/api/v1/auth_token', {
-          method: 'DELETE',
-          onResponseError({ response }: { response: any }) {
+        await del('/api/v1/auth_token', {
+          onResponseError({ response }) {
             // 401エラーは正常なレスポンスとして扱う
             if (response.status === 401) {
               return
@@ -158,10 +151,8 @@ export const useAuthStore = defineStore('auth', {
     // トークンリフレッシュ処理
     async refreshToken() {
       try {
-        const response = await $fetch<LoginResponse>('/api/v1/auth_token/refresh', {
-          method: 'POST',
-        })
-
+        const { post } = useApi()
+        const response = await post<LoginResponse>('/api/v1/auth_token/refresh')
         this.setAuth(response)
         return response
       } catch (error) {
