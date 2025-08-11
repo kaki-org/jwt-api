@@ -1,10 +1,15 @@
+/**
+ * 認証ミドルウェア
+ * ログインが必要なページへのアクセス時に認証状態をチェックし、
+ * 未認証の場合はログインページにリダイレクトする
+ */
 export default defineNuxtRouteMiddleware(async (to) => {
   const authStore = useAuthStore();
   const appStore = useAppStore();
   const toastStore = useToastStore();
 
   // リダイレクトを必要としないパス
-  const notRedirectPaths = ["account", "project"];
+  const notRedirectPaths: string[] = ["account", "project"];
   if (notRedirectPaths.includes(to.name as string)) {
     return;
   }

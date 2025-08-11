@@ -1,3 +1,7 @@
+/**
+ * プロジェクト一覧取得ミドルウェア
+ * プロジェクト一覧が存在しない場合にAPIから取得してストアに設定する
+ */
 export default defineNuxtRouteMiddleware(async () => {
   const projectStore = useProjectStore();
   const { get } = useApi();
@@ -5,7 +9,7 @@ export default defineNuxtRouteMiddleware(async () => {
   // プロジェクト一覧が存在しない場合のみ取得
   if (!projectStore.list.length) {
     try {
-      const projects = await get('/api/v1/projects');
+      const projects = await get<any[]>('/api/v1/projects');
       projectStore.setProjectList(projects);
     } catch (error) {
       console.error('Failed to fetch project list:', error);
