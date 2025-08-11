@@ -30,9 +30,9 @@ export default defineNuxtConfig({
   css: ["~/assets/sass/main.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
+  // Note: Plugins are now auto-imported from plugins/ directory in Nuxt 4.x
   // plugins: [
   //   'plugins/auth',
-  //   'plugins/axios',
   //   'plugins/my-inject',
   //   'plugins/nuxt-client-init',
   // ],

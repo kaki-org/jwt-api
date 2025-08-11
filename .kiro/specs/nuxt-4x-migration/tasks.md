@@ -50,17 +50,17 @@
   - 認証ヘッダーの自動付与、エラーハンドリングを含む
   - _要件: 3.4, 6.5_
 
-- [ ] 11. 認証プラグインの更新
+- [x] 11. 認証プラグインの更新
   - plugins/auth.jsを新しいComposables + Piniaベースに書き換える
   - 既存の認証ロジックを新しい形式に移行する
   - _要件: 3.1, 6.1_
 
-- [ ] 12. Axiosプラグインの$fetchへの移行
+- [x] 12. Axiosプラグインの$fetchへの移行
   - plugins/axios.jsを削除し、$fetchベースの実装に置き換える
   - インターセプター機能を$fetchの形式で再実装する
   - _要件: 3.4, 6.5_
 
-- [ ] 13. 認証ミドルウェアの更新
+- [x] 13. 認証ミドルウェアの更新
   - middleware/authentication.jsをdefineNuxtRouteMiddleware形式に変更する
   - 新しいComposablesとの連携を実装する
   - _要件: 2.2, 6.1_

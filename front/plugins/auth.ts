@@ -118,7 +118,7 @@ class Authentication {
     return await this._auth.checkAndRefreshToken();
   }
 
-  // 後方互換性のためのメソッド（axiosのvalidateStatusの代替）
+  // HTTPステータスコードの検証メソッド
   resolveUnauthorized(status: number): boolean {
     return (status >= 200 && status < 300) || status === 401;
   }
