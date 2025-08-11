@@ -41,9 +41,9 @@ export default {
   data() {
     return {
       menus: [
-        { name: "account-settings", icon: "mdi-account-cog" },
-        { name: "account-password", icon: "mdi-lock-outline" },
-        { name: "logout", icon: "mdi-logout-variant", divider: true },
+        { name: 'account-settings', icon: 'mdi-account-cog' },
+        { name: 'account-password', icon: 'mdi-lock-outline' },
+        { name: 'logout', icon: 'mdi-logout-variant', divider: true },
       ],
     };
   },

@@ -15,7 +15,7 @@
 
     <!-- navigation drawer-->
     <project-navigation-drawer
-      :drawer.sync="drawer"
+      v-model:drawer="drawer"
     />
 
     <!-- main content -->

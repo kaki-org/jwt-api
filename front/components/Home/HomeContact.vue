@@ -68,15 +68,15 @@ export default {
   data() {
     return {
       isValid: false,
-      name: "",
-      nameRules: [(v) => !!v || "名前を入力してください"],
-      email: "",
+      name: '',
+      nameRules: [(v) => !!v || '名前を入力してください'],
+      email: '',
       emailRules: [
-        (v) => !!v || "メールアドレスを入力してください",
-        (v) => /.+@.+\..+/.test(v) || "メールアドレスが正しくありません",
+        (v) => !!v || 'メールアドレスを入力してください',
+        (v) => /.+@.+\..+/.test(v) || 'メールアドレスが正しくありません',
       ],
-      contents: "",
-      contentRules: [(v) => !!v || "お問合せ内容を入力してください"],
+      contents: '',
+      contentRules: [(v) => !!v || 'お問合せ内容を入力してください'],
       loading: false,
       sentIt: false,
     };

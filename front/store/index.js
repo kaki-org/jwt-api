@@ -1,4 +1,4 @@
-const homePath = "projects";
+const homePath = 'projects';
 
 // 変数
 export const state = () => ({
@@ -14,7 +14,7 @@ export const state = () => ({
       params: {},
     },
     // ログイン後アクセス不可ルート一覧
-    redirectPaths: ["index", "signup", "login"],
+    redirectPaths: ['index', 'signup', 'login'],
   },
   project: {
     current: null,
@@ -30,7 +30,7 @@ export const state = () => ({
   },
   toast: {
     msg: null,
-    color: "error",
+    color: 'error',
     timeout: 4000,
   },
 });
@@ -72,7 +72,7 @@ export const actions = {
   // rootState => ルート( store/index.js )のstateを取得(rootState = state)
   getProjectList({ commit }, projects) {
     projects = projects || [];
-    commit("setProjectList", projects);
+    commit('setProjectList', projects);
   },
   getCurrentProject({ state, commit }, params) {
     let currentProject = null;
@@ -81,26 +81,26 @@ export const actions = {
       currentProject =
         state.project.list.find((project) => project.id === id) || null;
     }
-    commit("setCurrentProject", currentProject);
+    commit('setCurrentProject', currentProject);
   },
   getCurrentUser({ commit }, user) {
-    commit("setCurrentUser", user);
+    commit('setCurrentUser', user);
   },
   getAuthToken({ commit }, token) {
-    commit("setAuthToken", token);
+    commit('setAuthToken', token);
   },
   getAuthExpires({ commit }, expires) {
     expires = expires || 0;
-    commit("setAuthExpires", expires);
+    commit('setAuthExpires', expires);
   },
   getAuthPayload({ commit }, jwtPayload) {
     jwtPayload = jwtPayload || {};
-    commit("setAuthPayload", jwtPayload);
+    commit('setAuthPayload', jwtPayload);
   },
   getToast({ commit }, { msg, color, timeout }) {
-    color = color || "error";
+    color = color || 'error';
     timeout = timeout || 4000;
-    commit("setToast", { msg, color, timeout });
+    commit('setToast', { msg, color, timeout });
   },
   // ログイン前ユーザーがアクセスしたルートを記憶する
   getRememberPath({ state, commit }, { name, params }) {
@@ -109,6 +109,6 @@ export const actions = {
       name = state.loggedIn.homePath.name;
     }
     params = params || {};
-    commit("setRememberPath", { name, params });
+    commit('setRememberPath', { name, params });
   },
 };

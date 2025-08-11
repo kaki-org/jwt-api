@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import AppTitle from "../App/AppTitle.vue";
+import AppTitle from '../App/AppTitle.vue';
 export default {
   components: { AppTitle },
   props: {
@@ -74,7 +74,7 @@ export default {
       return this.scrollY > this.imgHeight - this.homeAppBarHeight;
     },
     toolbarStyle() {
-      const color = this.isScrollPoint ? "white" : "transparent";
+      const color = this.isScrollPoint ? 'white' : 'transparent';
       const elevation = this.isScrollPoint ? 4 : 0;
       return { color, elevation };
     },
@@ -82,11 +82,11 @@ export default {
   // Vue.new() => Vueインスタンス
   // マウント => Vueの実行準備が完全に整った後
   mounted() {
-    window.addEventListener("scroll", this.onScroll);
+    window.addEventListener('scroll', this.onScroll);
   },
   // Vueインスタンスが破壊される前に実行される
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.onScroll);
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
   },
   methods: {
     onScroll() {

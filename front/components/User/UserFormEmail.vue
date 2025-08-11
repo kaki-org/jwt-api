@@ -13,7 +13,7 @@ export default {
   props: {
     email: {
       type: String,
-      default: "",
+      default: '',
     },
     placeholder: {
       type: Boolean,
@@ -24,9 +24,9 @@ export default {
     return {
       rules: [
         // 入力必須
-        (v) => !!v || "",
+        (v) => !!v || '',
         // 書式チェック
-        (v) => /.+@.+\..+/.test(v) || "",
+        (v) => /.+@.+\..+/.test(v) || '',
       ],
     };
   },
@@ -36,7 +36,7 @@ export default {
         return this.email;
       },
       set(newValue) {
-        return this.$emit("update:email", newValue);
+        return this.$emit('update:email', newValue);
       },
     },
   },

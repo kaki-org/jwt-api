@@ -20,7 +20,7 @@ export default {
   props: {
     password: {
       type: String,
-      default: "",
+      default: '',
     },
     setValidation: {
       type: Boolean,
@@ -38,15 +38,15 @@ export default {
         return this.password;
       },
       set(newValue) {
-        return this.$emit("update:password", newValue);
+        return this.$emit('update:password', newValue);
       },
     },
     form() {
-      const min = "8文字以上";
+      const min = '8文字以上';
       const msg = `${min}。半角英数字・ハイフン・アンダーバーが使えます`;
       // ログインページ=入力必須
       // 会員登録ページ=入力必須、8文字以上、72文字以下、書式チェック
-      const required = (v) => !!v || "";
+      const required = (v) => !!v || '';
       const format = (v) => /^[\w-]{8,72}$/.test(v) || msg;
 
       const rules = this.setValidation ? [format] : [required];
@@ -55,8 +55,8 @@ export default {
       return { rules, hint, placeholder };
     },
     toggle() {
-      const icon = this.show ? "mdi-eye" : "mdi-eye-off";
-      const type = this.show ? "text" : "password";
+      const icon = this.show ? 'mdi-eye' : 'mdi-eye-off';
+      const type = this.show ? 'text' : 'password';
       return { icon, type };
     },
   },

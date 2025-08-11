@@ -12,7 +12,7 @@
               :alt="member.nickname"
               width="50"
               height="50"
-            />
+            >
           </v-list-item-icon>
           <v-list-item-content>
             <div>
@@ -81,29 +81,29 @@
 </template>
 
 <script>
-import member1 from "~/assets/images/member1.png";
-import member2 from "~/assets/images/member2.png";
-import member3 from "~/assets/images/member3.png";
+import member1 from '~/assets/images/member1.png';
+import member2 from '~/assets/images/member2.png';
+import member3 from '~/assets/images/member3.png';
 
 export default {
   data() {
-    const twitter = "https://twitter.com/esegrammer";
+    const twitter = 'https://twitter.com/esegrammer';
     const slack =
-      "https://join.slack.com/t/dokugaku-kai/shared_invite/zt-a5j1suoh-Y0fspHbo1fb0Wj6YTpDdXA";
-    const companyUrl = "http://blog.cloud-acct.com";
+      'https://join.slack.com/t/dokugaku-kai/shared_invite/zt-a5j1suoh-Y0fspHbo1fb0Wj6YTpDdXA';
+    const companyUrl = 'http://blog.cloud-acct.com';
     return {
       members: [
-        { name: "あんどう", position: "代表", img: member1, twitter, slack },
-        { name: "アローン", position: "エンジニア", img: member2 },
-        { name: "カール", position: "エンジニア", img: member3 },
+        { name: 'あんどう', position: '代表', img: member1, twitter, slack },
+        { name: 'アローン', position: 'エンジニア', img: member2 },
+        { name: 'カール', position: 'エンジニア', img: member3 },
       ],
       infomations: [
-        { icon: "mdi-domain", text: "BizPlanner株式会社" },
-        { icon: "mdi-link-variant", link: companyUrl },
-        { icon: "mdi-flag", text: "2020年7月に設立" },
-        { icon: "mdi-account-multiple", text: "3人のメンバー" },
-        { icon: "mdi-map-marker", text: "東京都港区虎ノ門一丁目17番1号" },
-        { icon: "mdi-handshake", text: "Webアプリ開発・経営コンサルティング" },
+        { icon: 'mdi-domain', text: 'BizPlanner株式会社' },
+        { icon: 'mdi-link-variant', link: companyUrl },
+        { icon: 'mdi-flag', text: '2020年7月に設立' },
+        { icon: 'mdi-account-multiple', text: '3人のメンバー' },
+        { icon: 'mdi-map-marker', text: '東京都港区虎ノ門一丁目17番1号' },
+        { icon: 'mdi-handshake', text: 'Webアプリ開発・経営コンサルティング' },
       ],
     };
   },
