@@ -51,12 +51,12 @@ export default {
     return {
       mobileBreakpoint: 960,
       navMenus: [
-        { name: "project-id-dashboard", icon: "mdi-view-dashboard" },
-        { name: "project-id-layouts", icon: "mdi-view-compact" },
-        { name: "project-id-pages", icon: "mdi-image" },
-        { name: "project-id-components", icon: "mdi-view-comfy" },
-        { name: "project-id-settings", icon: "mdi-cog" },
-        { name: "project-id-help", icon: "mdi-help-circle" },
+        { name: 'project-id-dashboard', icon: 'mdi-view-dashboard' },
+        { name: 'project-id-layouts', icon: 'mdi-view-compact' },
+        { name: 'project-id-pages', icon: 'mdi-image' },
+        { name: 'project-id-components', icon: 'mdi-view-comfy' },
+        { name: 'project-id-settings', icon: 'mdi-cog' },
+        { name: 'project-id-help', icon: 'mdi-help-circle' },
       ],
     };
   },
@@ -66,7 +66,7 @@ export default {
         return this.drawer;
       },
       set(newVal) {
-        return this.$emit("update:drawer", newVal);
+        return this.$emit('update:drawer', newVal);
       },
     },
     isMobileBreakPointLessThan() {

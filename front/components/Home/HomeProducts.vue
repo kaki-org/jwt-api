@@ -34,41 +34,41 @@
 export default {
   data() {
     const gradients = [
-      ["#222"],
-      ["#42b3f4"],
-      ["red", "orange", "yellow"],
-      ["purple", "violet"],
-      ["#00c6ff", "#F0F", "#FF0"],
+      ['#222'],
+      ['#42b3f4'],
+      ['red', 'orange', 'yellow'],
+      ['purple', 'violet'],
+      ['#00c6ff', '#F0F', '#FF0'],
     ];
     return {
       points: [
         {
-          icon: "mdi-file-table-box-multiple-outline",
-          color: "blue",
-          text: "直感的な操作で快適に事業計画書を作成",
+          icon: 'mdi-file-table-box-multiple-outline',
+          color: 'blue',
+          text: '直感的な操作で快適に事業計画書を作成',
         },
         {
-          icon: "mdi-chart-bar",
-          color: "green accent-4",
-          text: "KPIから考えた夢物語ではない経営計画値を算出",
+          icon: 'mdi-chart-bar',
+          color: 'green accent-4',
+          text: 'KPIから考えた夢物語ではない経営計画値を算出',
         },
         {
-          icon: "mdi-chart-arc",
-          color: "deep-orange",
-          text: "ビジュアライズに優れたグラフツールで経営を可視化",
+          icon: 'mdi-chart-arc',
+          color: 'deep-orange',
+          text: 'ビジュアライズに優れたグラフツールで経営を可視化',
         },
       ],
       sparkline: {
         width: 4,
         radius: 10,
         padding: 4,
-        lineCap: "round",
+        lineCap: 'round',
         gradient: gradients[4],
         value: [0, 2, 5, 9, 5, 10, 8, 2, 9, 20],
-        gradientDirection: "right",
+        gradientDirection: 'right',
         gradients,
         fill: false,
-        type: "trend",
+        type: 'trend',
         autoLineWidth: true,
       },
     };

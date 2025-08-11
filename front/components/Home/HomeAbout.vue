@@ -47,28 +47,28 @@
 export default {
   data() {
     return {
-      blogUrl: "https://blog.cloud-acct.com/categories/udemy",
+      blogUrl: 'https://blog.cloud-acct.com/categories/udemy',
       technologies: [
-        { name: "Docker", v: "v19.03+", use: "開発環境", color: "#2496ED" },
+        { name: 'Docker', v: 'v19.03+', use: '開発環境', color: '#2496ED' },
         {
-          name: "Rails api",
-          v: "v6.0+",
-          use: "サーバーサイド",
-          color: "#CC0000",
+          name: 'Rails api',
+          v: 'v6.0+',
+          use: 'サーバーサイド',
+          color: '#CC0000',
         },
-        { name: "Postgre SQL", v: "", use: "データベース", color: "#336791" },
+        { name: 'Postgre SQL', v: '', use: 'データベース', color: '#336791' },
         {
-          name: "Nuxt.js spa",
-          v: "v2.13+",
-          use: "フロントエンド",
-          color: "#00C48D",
+          name: 'Nuxt.js spa',
+          v: 'v2.13+',
+          use: 'フロントエンド',
+          color: '#00C48D',
         },
-        { name: "Heroku", v: "", use: "ホスティング", color: "#6762A6" },
+        { name: 'Heroku', v: '', use: 'ホスティング', color: '#6762A6' },
         {
-          name: "Vuetify",
-          v: "v2.3+",
-          use: "CSSフレームワーク",
-          color: "#1867C0",
+          name: 'Vuetify',
+          v: 'v2.3+',
+          use: 'CSSフレームワーク',
+          color: '#1867C0',
         },
       ],
     };

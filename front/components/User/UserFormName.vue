@@ -18,7 +18,7 @@ export default {
   props: {
     name: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
@@ -27,7 +27,7 @@ export default {
       max,
       rules: [
         // 入力必須
-        (v) => !!v || "",
+        (v) => !!v || '',
         // 30文字まで
         (v) => (!!v && max >= v.length) || `${max}文字以内で入力してください`,
       ],
@@ -39,7 +39,7 @@ export default {
         return this.name;
       },
       set(newValue) {
-        return this.$emit("update:name", newValue);
+        return this.$emit('update:name', newValue);
       },
     },
   },

@@ -42,7 +42,7 @@
   </v-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 interface ErrorProps {
   error: {
     statusCode: number;
