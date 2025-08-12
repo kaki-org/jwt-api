@@ -1,0 +1,150 @@
+/**
+ * Vuetify 3.x カスタムスタイル
+ * Nuxt 4.x対応のVuetifyスタイル設定
+ */
+
+// Vuetify SASS変数のカスタマイズ
+// Doc: https://vuetifyjs.com/en/features/sass-variables/
+
+// カスタムブレークポイント
+$grid-breakpoints: (
+  'xs': 0,
+  'sm': 600px,
+  'md': 960px,
+  'lg': 1280px,
+  'xl': 1920px,
+  // カスタムブレークポイント
+  'mobile': 426px,
+  'ipad': 768px
+) !default;
+
+// カスタムディスプレイブレークポイント
+$display-breakpoints: (
+  'xs-only': 'only screen and (max-width: #{map-get($grid-breakpoints, 'sm') - 1})',
+  'sm-only': 'only screen and (min-width: #{map-get($grid-breakpoints, 'sm')}) and (max-width: #{map-get($grid-breakpoints, 'md') - 1})',
+  'sm-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'md') - 1})',
+  'sm-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'sm')})',
+  'md-only': 'only screen and (min-width: #{map-get($grid-breakpoints, 'md')}) and (max-width: #{map-get($grid-breakpoints, 'lg') - 1})',
+  'md-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'lg') - 1})',
+  'md-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'md')})',
+  'lg-only': 'only screen and (min-width: #{map-get($grid-breakpoints, 'lg')}) and (max-width: #{map-get($grid-breakpoints, 'xl') - 1})',
+  'lg-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'xl') - 1})',
+  'lg-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'lg')})',
+  'xl-only': 'only screen and (min-width: #{map-get($grid-breakpoints, 'xl')})',
+  // カスタムブレークポイント
+  'mobile-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'mobile') - 1})',
+  'mobile-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'mobile')})',
+  'ipad-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'ipad') - 1})',
+  'ipad-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'ipad')})'
+) !default;
+
+// カスタムテーマカラー
+$material-light: (
+  'background': #f6f6f4,
+  'surface': #ffffff,
+  'primary': #4080be,
+  'secondary': #424242,
+  'accent': #82b1ff,
+  'error': #fb8678,
+  'info': #4fc1e9,
+  'success': #44d69e,
+  'warning': #feb65e,
+  'appblue': #1867c0
+) !default;
+
+$material-dark: (
+  'background': #121212,
+  'surface': #1e1e1e,
+  'primary': #4080be,
+  'secondary': #424242,
+  'accent': #82b1ff,
+  'error': #fb8678,
+  'info': #4fc1e9,
+  'success': #44d69e,
+  'warning': #feb65e,
+  'appblue': #1867c0
+) !default;
+
+// カスタムスタイル
+.v-application {
+  // 日本語フォントの最適化
+  font-family: 'Roboto', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', sans-serif;
+
+  // スクロールバーのスタイリング
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+// カスタムユーティリティクラス
+.text-appblue {
+  color: #1867c0 !important;
+}
+
+.bg-appblue {
+  background-color: #1867c0 !important;
+}
+
+// レスポンシブヘルパークラス
+@each $breakpoint, $query in $display-breakpoints {
+  @media #{$query} {
+    .d-#{$breakpoint}-none {
+      display: none !important;
+    }
+
+    .d-#{$breakpoint}-inline {
+      display: inline !important;
+    }
+
+    .d-#{$breakpoint}-inline-block {
+      display: inline-block !important;
+    }
+
+    .d-#{$breakpoint}-block {
+      display: block !important;
+    }
+
+    .d-#{$breakpoint}-flex {
+      display: flex !important;
+    }
+
+    .d-#{$breakpoint}-inline-flex {
+      display: inline-flex !important;
+    }
+  }
+}
+
+// アニメーション最適化
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+// フォーカス状態の改善
+.v-btn:focus-visible,
+.v-text-field input:focus-visible,
+.v-select input:focus-visible {
+  outline: 2px solid #4080be;
+  outline-offset: 2px;
+}

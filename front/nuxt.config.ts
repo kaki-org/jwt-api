@@ -27,7 +27,11 @@ export default defineNuxtConfig({
   // or configured in app.vue or layouts
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ["~/assets/sass/main.scss"],
+  css: [
+    "~/assets/sass/main.scss",
+    "~/assets/sass/vuetify.scss",
+    "vuetify/lib/styles/main.sass"
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   // Note: Plugins are now auto-imported from plugins/ directory in Nuxt 4.x
@@ -46,8 +50,8 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     // Pinia for state management - Nuxt 4.x format
     "@pinia/nuxt",
-    // i18n module for Nuxt 4.x
-    "@nuxtjs/i18n",
+    // i18n module for Nuxt 4.x (temporarily disabled for Vuetify testing)
+    // "@nuxtjs/i18n",
     // Note: Other modules will be configured in later tasks for Nuxt 4.x compatibility
     // '@nuxtjs/vuetify',
   ],
@@ -78,55 +82,55 @@ export default defineNuxtConfig({
   },
 
   // Vuetify configuration - Nuxt 4.x format
-  // Note: Vuetify configuration will be handled in a separate plugin for Nuxt 4.x compatibility
-  // vuetify: {
-  //   // 開発環境でcustomVariablesを有効にするフラグ
-  //   // Doc: https://vuetifyjs.com/ja/customization/a-la-carte/
-  //   // Doc: https://vuetifyjs.com/ja/features/sass-variables/#nuxt-3067306e30a430f330b930c830fc30eb
-  //   treeShake: true,
-  //   customVariables: ['~/assets/sass/variables.scss'],
-  //   theme: {
-  //     themes: {
-  //       light: {
-  //         primary: '4080BE',
-  //         info: '4FC1E9',
-  //         success: '44D69E',
-  //         warning: 'FEB65E',
-  //         error: 'FB8678',
-  //         background: 'f6f6f4',
-  //         appblue: '#1867C0',
-  //       },
-  //     },
-  //   },
-  // },
+  // Note: Vuetify 3.x is configured via plugin for better Nuxt 4.x compatibility
+  // The configuration is handled in plugins/vuetify.client.ts
 
-  // i18n configuration - Nuxt 4.x format
-  // Doc: https://i18n.nuxtjs.org/docs/getting-started
-  i18n: {
-    // 対応言語の設定
-    locales: [
-      {
-        code: 'ja',
-        name: '日本語',
-        file: 'ja.json'
+  // Vite configuration for Vuetify
+  vite: {
+    define: {
+      'process.env.DEBUG': false,
+    },
+    css: {
+      preprocessorOptions: {
+        sass: {
+          additionalData: `
+            @import "~/assets/sass/variables.scss"
+          `,
+        },
       },
-      {
-        code: 'en',
-        name: 'English',
-        file: 'en.json'
-      }
-    ],
-    // デフォルト言語
-    defaultLocale: 'ja',
-    // ルーティング戦略（ルート名に言語コードを追加しない）
-    strategy: 'no_prefix',
-    // 翻訳ファイルの配置ディレクトリ
-    langDir: 'locales/',
-    // 遅延読み込みを有効にする（パフォーマンス向上）
-    lazy: true,
-    // Vue I18n設定
-    vueI18n: './i18n.config.ts'
+    },
+    ssr: {
+      noExternal: ['vuetify'],
+    },
   },
+
+  // i18n configuration - Nuxt 4.x format (temporarily disabled for Vuetify testing)
+  // Doc: https://i18n.nuxtjs.org/docs/getting-started
+  // i18n: {
+  //   // 対応言語の設定
+  //   locales: [
+  //     {
+  //       code: 'ja',
+  //       name: '日本語',
+  //       file: 'ja.json'
+  //     },
+  //     {
+  //       code: 'en',
+  //       name: 'English',
+  //       file: 'en.json'
+  //     }
+  //   ],
+  //   // デフォルト言語
+  //   defaultLocale: 'ja',
+  //   // ルーティング戦略（ルート名に言語コードを追加しない）
+  //   strategy: 'no_prefix',
+  //   // 翻訳ファイルの配置ディレクトリ
+  //   langDir: 'locales/',
+  //   // 遅延読み込みを有効にする（パフォーマンス向上）
+  //   lazy: true,
+  //   // Vue I18n設定
+  //   vueI18n: './i18n.config.ts'
+  // },
 
   // TypeScript configuration - Nuxt 4.x format
   typescript: {
