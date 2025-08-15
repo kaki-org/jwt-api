@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import LoggedInAppBarBreadcrumbs from "./LoggedInAppBarBreadcrumbs.vue";
+import LoggedInAppBarBreadcrumbs from './LoggedInAppBarBreadcrumbs.vue';
 export default {
   components: { LoggedInAppBarBreadcrumbs },
   props: {

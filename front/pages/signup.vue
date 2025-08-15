@@ -7,14 +7,14 @@
         @submit.prevent="signup"
       >
         <user-form-name
-          :name.sync="params.user.name"
+          v-model:name="params.user.name"
         />
         <user-form-email
-          :email.sync="params.user.email"
+          v-model:email="params.user.email"
           placeholder
         />
         <user-form-password
-          :password.sync="params.user.password"
+          v-model:password="params.user.password"
           set-validation
         />
         <v-btn
