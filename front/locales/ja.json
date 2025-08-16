@@ -10,6 +10,12 @@
       "year": "年払い"
     }
   },
+  "error": {
+    "Unauthorized": "認証に失敗しました",
+    "Forbidden": "アクセスが拒否されました",
+    "This page could not be found": "ページが見つかりません",
+    "Network Error": "ネットワークエラーが発生しました"
+  },
   "pages": {
     "signup": "会員登録",
     "login": "ログイン",
@@ -28,11 +34,5 @@
         "help": "ヘルプ"
       }
     }
-  },
-  "error": {
-    "Unauthorized": "認証に失敗しました",
-    "Forbidden": "アクセスが拒否されました",
-    "This page could not be found": "ページが見つかりません",
-    "Network Error": "ネットワークエラーが発生しました"
   }
 }

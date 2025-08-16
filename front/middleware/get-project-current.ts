@@ -1,19 +1,27 @@
+import { handleMiddlewareError } from '~/utils/middleware'
+
 /**
  * 現在のプロジェクト取得ミドルウェア
  * ルートパラメータからプロジェクトIDを取得し、現在のプロジェクト情報を設定する
  */
 export default defineNuxtRouteMiddleware(async (to) => {
   const projectStore = useProjectStore()
+  const toastStore = useToastStore()
 
-  // パラメータからプロジェクトIDを取得
-  const projectId: string = to.params.id as string
+  // パラメータからプロジェクトIDを取得（型安全性を向上）
+  const projectId = to.params.id as string | undefined
 
-  if (projectId) {
+  if (projectId && typeof projectId === 'string') {
     try {
-      await projectStore.getCurrentProject(projectId)
+      await projectStore.getCurrentProject({ id: projectId })
     } catch (error) {
-      console.error('Failed to get current project:', error)
-      // エラーハンドリングはuseApiで行われるため、ここでは追加処理のみ
+      handleMiddlewareError(error, 'get-project-current')
+
+      // ユーザーフレンドリーなエラーメッセージを表示
+      toastStore.showError('プロジェクト情報の取得に失敗しました')
+
+      // プロジェクト一覧ページにリダイレクト
+      return navigateTo('/projects')
     }
   }
 })

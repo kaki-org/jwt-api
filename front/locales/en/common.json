@@ -1,0 +1,13 @@
+{
+  "menus": {
+    "about": "About",
+    "products": "Products",
+    "price": "Pricing",
+    "contact": "Contact",
+    "company": "Company",
+    "payments": {
+      "month": "Monthly",
+      "year": "Yearly"
+    }
+  }
+}

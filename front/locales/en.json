@@ -1,6 +1,38 @@
 {
-  "title": {
-    "signup": "signup",
-    "login": "login"
+  "menus": {
+    "about": "About",
+    "products": "Products",
+    "price": "Pricing",
+    "contact": "Contact",
+    "company": "Company",
+    "payments": {
+      "month": "Monthly",
+      "year": "Yearly"
+    }
+  },
+  "error": {
+    "Unauthorized": "Authentication failed",
+    "Forbidden": "Access denied",
+    "This page could not be found": "Page not found",
+    "Network Error": "Network error occurred"
+  },
+  "pages": {
+    "signup": "Sign Up",
+    "login": "Login",
+    "logout": "Logout",
+    "account": {
+      "settings": "Account Settings",
+      "password": "Change Password"
+    },
+    "project": {
+      "id": {
+        "dashboard": "Dashboard",
+        "layouts": "Layouts",
+        "pages": "Pages",
+        "components": "Components",
+        "settings": "Settings",
+        "help": "Help"
+      }
+    }
   }
 }

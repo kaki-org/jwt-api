@@ -1,0 +1,21 @@
+{
+  "pages": {
+    "signup": "Sign Up",
+    "login": "Login",
+    "logout": "Logout",
+    "account": {
+      "settings": "Account Settings",
+      "password": "Change Password"
+    },
+    "project": {
+      "id": {
+        "dashboard": "Dashboard",
+        "layouts": "Layouts",
+        "pages": "Pages",
+        "components": "Components",
+        "settings": "Settings",
+        "help": "Help"
+      }
+    }
+  }
+}
