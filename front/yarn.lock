@@ -7553,9 +7553,9 @@ pkg-types@^2.0.0, pkg-types@^2.0.1, pkg-types@^2.1.0:
     pathe "^2.0.3"
 
 pkg-types@^2.1.1, pkg-types@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/pkg-types/-/pkg-types-2.2.0.tgz#049bf404f82a66c465200149457acf0c5fb0fb2d"
-  integrity sha512-2SM/GZGAEkPp3KWORxQZns4M+WSeXbC2HEvmOIJe3Cmiv6ieAJvdVhDldtHqM5J1Y7MrR1XhkBT/rMlhh9FdqQ==
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/pkg-types/-/pkg-types-2.3.0.tgz#037f2c19bd5402966ff6810e32706558cb5b5726"
+  integrity sha512-SIqCzDRg0s9npO5XQ3tNZioRY1uK06lA41ynBC1YmFTmnY6FjUjVt6s4LoADmwoig1qqD0oK8h1p/8mlMx8Oig==
   dependencies:
     confbox "^0.2.2"
     exsolve "^1.0.7"
