@@ -27,7 +27,7 @@
     "pkg-types": "^2.2.0",
     "vue": "3.5.18",
     "vuetify": "^3.4.0",
-    "webpack": "^5.89.0"
+    "webpack": "^5.101.2"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.8.0",
