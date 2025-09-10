@@ -58,3 +58,4 @@ coverage/*
 !.kiro/specs/
 !.kiro/settings/
 .vscode/*
+.zed/*
