@@ -46,8 +46,9 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     // Pinia for state management - Nuxt 4.x format
     "@pinia/nuxt",
+    // i18n module for Nuxt 4.x
+    "@nuxtjs/i18n",
     // Note: Other modules will be configured in later tasks for Nuxt 4.x compatibility
-    // '@nuxtjs/i18n',
     // '@nuxtjs/vuetify',
   ],
 
@@ -100,31 +101,32 @@ export default defineNuxtConfig({
   // },
 
   // i18n configuration - Nuxt 4.x format
-  // Note: i18n configuration will be handled in a later task
-  // Doc: https://nuxt-community.github.io/nuxt-i18n/basic-usage.html#nuxt-link
-  // i18n: {
-  //   locales: ['ja', 'en'],
-  //   defaultLocale: 'ja',
-  //   // ルート名に__jaを追加しない
-  //   strategy: 'no_prefix',
-  //   // Doc: https://kazupon.github.io/vue-i18n/api/#properties
-  //   vueI18n: {
-  //     // 翻訳対象のキーがない場合に参照される言語
-  //     // 'login': 'ログイン'(ja)
-  //     // 'login': 'login'(en)
-  //     fallbackLocale: 'en',
-  //     // true => i18nの警告を完全に表示しない(default: false)
-  //     // silentTranslationWarn: true,
-  //     // フォールバック時に警告を発生させる(default: false)
-  //     // true => 警告を発生させない(翻訳のキーが存在しない場合のみ警告)
-  //     silentFallbackWarn: true,
-  //     // 翻訳データ
-  //     messages: {
-  //       ja: require('./locales/ja.json'),
-  //       en: require('./locales/en.json'),
-  //     },
-  //   },
-  // },
+  // Doc: https://i18n.nuxtjs.org/docs/getting-started
+  i18n: {
+    // 対応言語の設定
+    locales: [
+      {
+        code: 'ja',
+        name: '日本語',
+        file: 'ja.json'
+      },
+      {
+        code: 'en',
+        name: 'English',
+        file: 'en.json'
+      }
+    ],
+    // デフォルト言語
+    defaultLocale: 'ja',
+    // ルーティング戦略（ルート名に言語コードを追加しない）
+    strategy: 'no_prefix',
+    // 翻訳ファイルの配置ディレクトリ
+    langDir: 'locales/',
+    // 遅延読み込みを有効にする（パフォーマンス向上）
+    lazy: true,
+    // Vue I18n設定
+    vueI18n: './i18n.config.ts'
+  },
 
   // TypeScript configuration - Nuxt 4.x format
   typescript: {

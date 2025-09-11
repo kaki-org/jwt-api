@@ -1,0 +1,8 @@
+{
+  "error": {
+    "Unauthorized": "Authentication failed",
+    "Forbidden": "Access denied",
+    "This page could not be found": "Page not found",
+    "Network Error": "Network error occurred"
+  }
+}
