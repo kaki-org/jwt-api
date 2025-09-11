@@ -4,7 +4,7 @@ inherit_mode:
     - Include
     - Exclude
     - AllowedPatterns
-require:
+plugins:
   - rubocop-rspec
     #- rubocop-rails
 AllCops:
