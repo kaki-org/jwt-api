@@ -10,6 +10,8 @@ plugins:
 AllCops:
   TargetRubyVersion: 3.2
   NewCops: enable
+  Exclude:
+    - 'front/node_modules/**/*'
 
 Naming/VariableNumber:
   Enabled: false

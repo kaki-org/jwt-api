@@ -6,11 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-# Configuration parameters: AllowComments, AllowEmptyLambdas.
-Lint/EmptyBlock:
-  Exclude:
-    - 'spec/requests/api/v1/auth_token_spec.rb'
 
 # Offense count: 25
 # Configuration parameters: Prefixes, AllowedPatterns.

@@ -15,8 +15,6 @@ RSpec.describe 'Api::V1::AuthTokens' do
   let!(:access_token_key) { 'token' }
 
   # rubocop:disable Metrics/AbcSize
-  shared_context 'response check of invalid request' do |status, error_msg = nil|
-  end
 
   # 無効なリクエストで返ってくるレスポンスチェック
   def response_check_of_invalid_request(status, error_msg = nil)
