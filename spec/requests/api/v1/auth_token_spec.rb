@@ -238,7 +238,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
 
   describe 'ログアウト' do
     describe 'destroy_action' do
-      context '有効なログインの場合' do
+      context '有効なログインの場合（ログイン後の状態確認）' do
         before { login params }
 
         it '正常なレスポンスが返される' do
@@ -276,7 +276,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
         end
       end
 
-      context '有効なログインの場合' do
+      context '有効なログインの場合（セッション期限テスト）' do
         before { login params }
 
         it '正常なレスポンスが返される' do
