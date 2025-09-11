@@ -135,7 +135,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
         expect(response.status).to eq(403)
         user.reload
         expect(user.refresh_jti).to be_nil
-        expect('Forbidden').to eq(res_body['error'])
+        expect(res_body['error']).to eq('Forbidden')
       end
     end
   end
