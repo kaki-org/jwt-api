@@ -1,4 +1,3 @@
-inherit_from: .rubocop_todo.yml
 inherit_mode:
   merge:
     - Include
@@ -16,4 +15,35 @@ AllCops:
 Naming/VariableNumber:
   Enabled: false
 Metrics/BlockLength:
+  Enabled: false
+
+# RSpec configuration
+RSpec/ContextWording:
+  AllowedPatterns: ['の場合', 'する場合', 'しない場合', 'がない場合', 'がある場合', 'になった場合', 'でない場合', 'を.*する場合', 'を.*しない場合', 'がいない場合', 'がいる場合', '.*を行う場合']
+
+RSpec/ExampleLength:
+  Max: 26
+
+RSpec/MultipleExpectations:
+  Max: 8
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 13
+
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/InstanceVariable:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/NoExpectationExample:
+  Enabled: false
+
+RSpec/RepeatedExampleGroupDescription:
+  Enabled: false
+
+RSpec/IndexedLet:
   Enabled: false

@@ -27,7 +27,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
   # rubocop:enable Metrics/AbcSize
 
   describe '有効なログイン' do
-    context 'valid_login_from_create_action' do
+    context 'valid_login_from_create_actionの場合' do
       let(:access_token) { User.decode_access_token(res_body[access_token_key]) }
       let(:access_lifetime_to_i) { access_lifetime.from_now.to_i }
       let(:refresh_lifetime_to_i) { refresh_lifetime.from_now.to_i }
@@ -80,7 +80,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
         expect(cookie[:http_only]).to be_truthy
       end
 
-      context 'リロード' do
+      context 'リロードする場合' do
         before { user.reload }
 
         it 'ログイン本人と一致しているか' do
@@ -135,7 +135,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
   end
 
   describe '有効なリフレッシュ' do
-    context '有効なログイン' do
+    context '有効なログインの場合' do
       before do
         login params
         user.reload
@@ -154,7 +154,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
         expect(@old_user_jti).not_to be_nil
       end
 
-      context 'refreshアクションにアクセス' do
+      context 'refreshアクションにアクセスする場合' do
         let(:payload) { User.decode_refresh_token(@new_refresh_token).payload }
 
         before do
@@ -197,7 +197,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
       response_check_of_invalid_request 401
     end
 
-    context 'ユーザが2回のログインを行った場合' do
+    context 'ユーザが2回のログインを行う場合' do
       before do
         login params
         @old_refresh_token = cookies[session_key]
@@ -210,7 +210,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
         expect(cookies[session_key]).not_to be_blank
       end
 
-      context '1つ目のブラウザ(古いrefresh_token)でアクセスする' do
+      context '1つ目のブラウザ(古いrefresh_token)でアクセスする場合' do
         before { refresh_api }
 
         it '1つ目のブラウザ(古いrefresh_token)でアクセスするとエラーを吐いているか' do
@@ -238,7 +238,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
 
   describe 'ログアウト' do
     describe 'destroy_action' do
-      context '有効なログイン' do
+      context '有効なログインの場合' do
         before { login params }
 
         it '正常なレスポンスが返される' do
@@ -249,7 +249,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
           expect(cookies[session_key]).not_to be_blank
         end
 
-        context '有効なログアウト' do
+        context '有効なログアウトの場合' do
           before { logout }
 
           it 'cookieは削除されているか' do
@@ -263,7 +263,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
           end
         end
 
-        context 'sessionがない状態でログアウト' do
+        context 'sessionがない状態でログアウトする場合' do
           before do
             cookies[session_key] = nil
             logout
@@ -276,7 +276,7 @@ RSpec.describe 'Api::V1::AuthTokens' do
         end
       end
 
-      context '有効なログイン' do
+      context '有効なログインの場合' do
         before { login params }
 
         it '正常なレスポンスが返される' do

@@ -160,7 +160,7 @@ RSpec.describe User do
         end
       end
 
-      context 'パスワードバリデーション' do
+      context 'パスワードのバリデーションを行う場合' do
         it '入力必須' do
           user = described_class.new(name: 'test', email: 'test@example.com')
           user.save
