@@ -45,5 +45,3 @@ RSpec/NoExpectationExample:
 RSpec/RepeatedExampleGroupDescription:
   Enabled: false
 
-RSpec/IndexedLet:
-  Enabled: false

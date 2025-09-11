@@ -136,9 +136,9 @@ RSpec.describe User do
 
       context 'アクティブユーザがいない場合' do
         let(:active_user) { described_class.create(name: 'test', email:, password: 'password') }
-        let(:user1) { described_class.create(name: 'test', email:, password: 'password') }
-        let(:user2) { described_class.create(name: 'test', email:, password: 'password') }
-        let(:user3) { described_class.create(name: 'test', email:, password: 'password') }
+        let(:inactive_user_first) { described_class.create(name: 'test', email:, password: 'password') }
+        let(:inactive_user_second) { described_class.create(name: 'test', email:, password: 'password') }
+        let(:inactive_user_third) { described_class.create(name: 'test', email:, password: 'password') }
 
         before do
           active_user.destroy
@@ -152,10 +152,10 @@ RSpec.describe User do
         end
 
         it 'アクティブユーザの一意性は保たれている' do
-          expect(user1.email).to eq(user2.email)
-          expect(user2.email).to eq(user3.email)
-          user3.activated = true
-          user3.save
+          expect(inactive_user_first.email).to eq(inactive_user_second.email)
+          expect(inactive_user_second.email).to eq(inactive_user_third.email)
+          inactive_user_third.activated = true
+          inactive_user_third.save
           expect(described_class.where(email:, activated: true).count).to eq(1)
         end
       end
