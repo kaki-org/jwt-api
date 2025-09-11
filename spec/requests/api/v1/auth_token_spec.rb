@@ -107,7 +107,10 @@ RSpec.describe 'Api::V1::AuthTokens' do
       before { login invalid_params }
 
       it '404が返される' do
-        response_check_of_invalid_request 404
+        expect(response.status).to eq(404)
+        user.reload
+        expect(user.refresh_jti).to be_nil
+        expect(response.body).not_to be_present
       end
     end
 
@@ -129,7 +132,10 @@ RSpec.describe 'Api::V1::AuthTokens' do
       end
 
       it '通信が拒否される' do
-        response_check_of_invalid_request 403, 'Forbidden'
+        expect(response.status).to eq(403)
+        user.reload
+        expect(user.refresh_jti).to be_nil
+        expect('Forbidden').to eq(res_body['error'])
       end
     end
   end
@@ -194,7 +200,10 @@ RSpec.describe 'Api::V1::AuthTokens' do
     end
 
     it 'refresh_tokenが存在しない場合はアクセスできないか' do
-      response_check_of_invalid_request 401
+      expect(response.status).to eq(401)
+      user.reload
+      expect(user.refresh_jti).to be_nil
+      expect(response.body).not_to be_present
     end
 
     context 'ユーザが2回のログインを行う場合' do
