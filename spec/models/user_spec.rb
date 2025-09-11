@@ -134,7 +134,7 @@ RSpec.describe User do
         end
       end
 
-      context 'アクティブユーザがいなくなった場合' do
+      context 'アクティブユーザがいない場合' do
         let(:active_user) { described_class.create(name: 'test', email:, password: 'password') }
         let(:user1) { described_class.create(name: 'test', email:, password: 'password') }
         let(:user2) { described_class.create(name: 'test', email:, password: 'password') }
