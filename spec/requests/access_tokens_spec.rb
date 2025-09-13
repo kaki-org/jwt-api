@@ -9,7 +9,7 @@ RSpec.describe 'AccessTokens' do
   let!(:expect_lifetime) { lifetime.from_now.to_i }
 
   describe '共通メソッド' do
-    context 'auth_token_methods' do
+    context 'auth_token_methodsを使用する場合' do
       it '初期設定値は想定どおりか' do
         expect(encode.send(:algorithm)).to eq('HS256')
         expect(encode.send(:secret_key)).to eq(encode.send(:decode_key))
@@ -35,7 +35,7 @@ RSpec.describe 'AccessTokens' do
   end
 
   describe 'エンコード検証' do
-    context 'encode_token' do
+    context 'encode_tokenを使用する場合' do
       let!(:payload) { encode.payload }
       let!(:user_claim) { encode.send(:user_claim) }
 
@@ -57,7 +57,7 @@ RSpec.describe 'AccessTokens' do
   end
 
   describe 'デコード検証' do
-    context 'decode_token' do
+    context 'decode_tokenを使用する場合' do
       let!(:decode) { UserAuth::AccessToken.new(token: encode.token) }
       let!(:payload) { decode.payload }
       let!(:verify_claims) { decode.send(:verify_claims) }
@@ -106,7 +106,7 @@ RSpec.describe 'AccessTokens' do
   end
 
   describe 'デコードオプション' do
-    context 'verify_claims' do
+    context 'verify_claimsを使用する場合' do
       let!(:sub) { encode.user_id }
       let!(:decode) { UserAuth::AccessToken.new(token: encode.token, options: { sub: }) }
 
@@ -129,7 +129,7 @@ RSpec.describe 'AccessTokens' do
   end
 
   describe 'not activeユーザーの挙動' do
-    context 'not_active_user' do
+    context 'not_active_userの場合' do
       let!(:not_active) do
         User.create(name: 'a', email: 'a@a.a', password: 'password')
       end

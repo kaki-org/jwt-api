@@ -12,7 +12,7 @@ RSpec.describe 'Authentications' do
     let(:access_token) { res_body[access_token_key] }
     let(:invalid_token) { "a.#{access_token}" }
 
-    context '認証メソッドテスト' do
+    context '認証メソッドをテストする場合' do
       before do
         login params
       end
@@ -23,7 +23,7 @@ RSpec.describe 'Authentications' do
         expect(response.body).to be_present
       end
 
-      context 'tokenが有効期限切れのとき' do
+      context 'tokenが有効期限切れの場合' do
         before do
           travel_to(access_lifetime.from_now)
         end

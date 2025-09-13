@@ -19,8 +19,9 @@
     "merge-locales": "node scripts/merge-locales.js"
   },
   "dependencies": {
-    "@intlify/core-base": "^10.0.0",
+    "@intlify/core-base": "^11.0.0",
     "@intlify/shared": "^11.0.0",
+    "@mdi/font": "^7.4.47",
     "@nuxtjs/i18n": "^10.0.3",
     "@pinia/nuxt": "^0.11.2",
     "core-js": "^3.33.3",
@@ -35,7 +36,6 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.8.0",
-    "@nuxtjs/vuetify": "^1.12.3",
     "eslint": "^9.33.0",
     "node-gyp": "^11.0.0",
     "sass": "^1.70.0",

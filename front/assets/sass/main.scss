@@ -1,6 +1,77 @@
-// commons
+// カスタムスタイル
 body {
   word-wrap: break-word;
   overflow-wrap: break-word;
+  font-family: 'Roboto', sans-serif;
 }
-// commons end
+
+// カスタムユーティリティクラス
+.text-appblue {
+  color: #1867C0 !important;
+}
+
+.bg-appblue {
+  background-color: #1867C0 !important;
+}
+
+// レスポンシブヘルパークラス
+@media (max-width: 425px) {
+  .mobile-and-down {
+    display: block !important;
+  }
+  .mobile-and-up {
+    display: none !important;
+  }
+}
+
+@media (min-width: 426px) {
+  .mobile-and-down {
+    display: none !important;
+  }
+  .mobile-and-up {
+    display: block !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .ipad-and-down {
+    display: block !important;
+  }
+  .ipad-and-up {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .ipad-and-down {
+    display: none !important;
+  }
+  .ipad-and-up {
+    display: block !important;
+  }
+}
+
+// カスタムコンポーネントスタイル
+.v-btn {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+.v-card {
+  border-radius: 12px !important;
+}
+
+.v-sheet {
+  border-radius: 8px !important;
+}
+
+// アニメーション最適化
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
