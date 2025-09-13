@@ -6,7 +6,7 @@
   "engines": {
     "node": ">=20.12.2"
   },
-  "packageManager": "pnpm@10.15.1",
+  "packageManager": "pnpm@10.16.0",
   "scripts": {
     "dev": "nuxi dev",
     "dev:mock": "MOCK_SERVER=1 pnpm dev",
