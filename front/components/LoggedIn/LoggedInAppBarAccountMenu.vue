@@ -24,7 +24,7 @@
         <v-divider v-if="menu.divider" />
         <v-list-item :to="{ name: menu.name }">
           <v-list-item-icon class="mr-2">
-            <v-icon size="22" v-text="menu.icon" />
+            <v-icon size="22">{{ menu.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-title>
             <!-- pages.account.settings -->

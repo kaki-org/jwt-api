@@ -57,7 +57,7 @@
           <template v-for="(info, i) in infomations" :key="`info-${i}`">
             <v-list-item>
               <v-list-item-icon>
-                <v-icon v-text="info.icon" />
+                <v-icon>{{ info.icon }}</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
                 <a
