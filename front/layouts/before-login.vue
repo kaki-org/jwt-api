@@ -1,18 +1,20 @@
 <template>
   <v-app>
-    <before-login-app-bar />
+    <BeforeLoginAppBar />
     <v-main>
-      <app-toaster />
-      <nuxt />
+      <AppToaster />
+      <NuxtPage />
     </v-main>
-    <app-footer />
+    <AppFooter />
   </v-app>
 </template>
 
-<script>
+<script setup lang="ts">
+// Nuxt 4.x対応のログイン前レイアウト
+// Composition API + definePageMeta形式に最適化
 
-export default {
-  name: 'LayoutsBeforeLogin',
+// ミドルウェアの設定
+definePageMeta({
   middleware: ['logged-in-redirect']
-}
+})
 </script>
