@@ -43,6 +43,9 @@
 </template>
 
 <script setup lang="ts">
+// Nuxt 4.x対応のエラーレイアウト
+// 型安全性とパフォーマンスを向上させた実装
+
 interface ErrorProps {
   error: {
     statusCode: number;
