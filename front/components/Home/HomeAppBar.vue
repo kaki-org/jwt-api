@@ -6,7 +6,7 @@
     :color="toolbarStyle.color"
     :elevation="toolbarStyle.elevation"
   >
-    <app-logo @click.native="$vuetify.goTo('#scroll-top')" />
+    <app-logo @click="$vuetify.goTo('#scroll-top')" />
     <app-title class="hidden-mobile-and-down" />
 
     <v-spacer />
