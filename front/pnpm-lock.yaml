@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@intlify/core-base':
         specifier: ^11.0.0
-        version: 11.1.12
+        version: 11.2.1
       '@intlify/shared':
         specifier: ^11.0.0
         version: 11.1.12
