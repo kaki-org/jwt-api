@@ -42,8 +42,6 @@ export default defineNuxtConfig({
 
   // Modules: buildModules統合 - Nuxt 4.x format
   modules: [
-    // ESLint module for Nuxt 4.x
-    '@nuxt/eslint',
     // Pinia for state management - Nuxt 4.x format
     '@pinia/nuxt',
     // i18n module for Nuxt 4.x
