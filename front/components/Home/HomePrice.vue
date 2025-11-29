@@ -1,10 +1,16 @@
 <template>
   <v-row>
-    <v-col cols="12" class="py-0">
+    <v-col
+      cols="12"
+      class="py-0"
+    >
       <v-card-actions class="py-0">
         <v-spacer />
 
-        <v-radio-group v-model="payment" row>
+        <v-radio-group
+          v-model="payment"
+          row
+        >
           <v-radio
             v-for="(pay, i) in payments"
             :key="`pay-${i}`"
@@ -21,7 +27,10 @@
       cols="12"
       :sm="12 / plans.length"
     >
-      <v-card max-width="402" class="mx-auto">
+      <v-card
+        max-width="402"
+        class="mx-auto"
+      >
         <v-card-title :class="['white--text', plan.color]">
           {{ plan.name }}
         </v-card-title>
@@ -60,7 +69,7 @@ export default {
     const payments = [
       { label: 'month', color: 'indigo' },
       { label: 'year', color: 'myblue' },
-    ];
+    ]
     return {
       payments,
       payment: payments[1].label,
@@ -96,14 +105,14 @@ export default {
           },
         },
       ],
-    };
+    }
   },
   computed: {
     yen() {
       return (val) => {
-        return String(val).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
-      };
+        return String(val).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
+      }
     },
   },
-};
+}
 </script>

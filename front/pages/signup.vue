@@ -6,9 +6,7 @@
         v-model="isValid"
         @submit.prevent="signup"
       >
-        <user-form-name
-          v-model:name="params.user.name"
-        />
+        <user-form-name v-model:name="params.user.name" />
         <user-form-email
           v-model:email="params.user.email"
           placeholder
@@ -35,27 +33,27 @@
 <script>
 export default {
   layout: 'before-login',
-  data () {
+  data() {
     return {
       isValid: false,
       loading: false,
-      params: { user: { name: '', email: '', password: '' } }
+      params: { user: { name: '', email: '', password: '' } },
     }
   },
   methods: {
-    signup () {
+    signup() {
       this.loading = true
       setTimeout(() => {
         this.formReset()
         this.loading = false
       }, 1500)
     },
-    formReset () {
+    formReset() {
       this.$refs.form.reset()
       for (const key in this.params.user) {
         this.params.user[key] = ''
       }
-    }
-  }
+    },
+  },
 }
 </script>

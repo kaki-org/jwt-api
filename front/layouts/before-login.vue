@@ -15,6 +15,6 @@
 
 // ミドルウェアの設定
 definePageMeta({
-  middleware: ['logged-in-redirect']
+  middleware: ['logged-in-redirect'],
 })
 </script>

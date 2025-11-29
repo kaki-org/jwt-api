@@ -26,7 +26,9 @@ export const useApi = () => {
    * @param options カスタムオプション
    * @returns マージされたfetchオプション
    */
-  const createFetchOptions = (options: ApiRequestOptions = {}): ApiRequestOptions => {
+  const createFetchOptions = (
+    options: ApiRequestOptions = {}
+  ): ApiRequestOptions => {
     const defaultOptions: ApiRequestOptions = {
       baseURL,
       headers: {
@@ -116,11 +118,13 @@ export const useApi = () => {
   const handleUnauthorizedError = async () => {
     // トークンリフレッシュを試行
     const refreshed = await authStore.checkAndRefreshToken()
-    
+
     if (!refreshed) {
       // リフレッシュに失敗した場合は認証状態をクリアしてログインページにリダイレクト
       authStore.resetAuth()
-      toastStore.showError('認証の有効期限が切れました。再度ログインしてください。')
+      toastStore.showError(
+        '認証の有効期限が切れました。再度ログインしてください。'
+      )
       await navigateTo('/login')
     }
   }
@@ -157,7 +161,9 @@ export const useApi = () => {
    * 500エラー（サーバーエラー）の処理
    */
   const handleServerError = () => {
-    toastStore.showError('サーバーでエラーが発生しました。しばらく時間をおいて再度お試しください。')
+    toastStore.showError(
+      'サーバーでエラーが発生しました。しばらく時間をおいて再度お試しください。'
+    )
   }
 
   /**
@@ -165,7 +171,9 @@ export const useApi = () => {
    * @param error エラー情報
    */
   const handleGenericError = (error: ApiError) => {
-    toastStore.showError(`エラーが発生しました (${error.statusCode}): ${error.statusMessage}`)
+    toastStore.showError(
+      `エラーが発生しました (${error.statusCode}): ${error.statusMessage}`
+    )
   }
 
   /**
@@ -174,7 +182,10 @@ export const useApi = () => {
    * @param options fetchオプション
    * @returns レスポンスデータ
    */
-  const get = async <T = unknown>(url: string, options: ApiRequestOptions = {}): Promise<T> => {
+  const get = async <T = unknown>(
+    url: string,
+    options: ApiRequestOptions = {}
+  ): Promise<T> => {
     const fetchOptions = createFetchOptions({
       ...options,
       method: 'GET' as const,
@@ -248,7 +259,10 @@ export const useApi = () => {
    * @param options fetchオプション
    * @returns レスポンスデータ
    */
-  const del = async <T = unknown>(url: string, options: ApiRequestOptions = {}): Promise<T> => {
+  const del = async <T = unknown>(
+    url: string,
+    options: ApiRequestOptions = {}
+  ): Promise<T> => {
     const fetchOptions = createFetchOptions({
       ...options,
       method: 'DELETE' as const,
@@ -262,7 +276,10 @@ export const useApi = () => {
    * @param options fetchオプション
    * @returns レスポンスデータ
    */
-  const fetch = async <T = unknown>(url: string, options: ApiRequestOptions = {}): Promise<T> => {
+  const fetch = async <T = unknown>(
+    url: string,
+    options: ApiRequestOptions = {}
+  ): Promise<T> => {
     const fetchOptions = createFetchOptions(options)
     return await $fetch<T>(url, fetchOptions)
   }
@@ -275,7 +292,7 @@ export const useApi = () => {
     patch,
     delete: del,
     fetch,
-    
+
     // ユーティリティ
     createFetchOptions,
   }

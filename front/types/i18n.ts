@@ -56,7 +56,11 @@ export interface TranslationMessages {
 export interface I18nConfig {
   locales: LocaleInfo[]
   defaultLocale: LocaleCode
-  strategy: 'no_prefix' | 'prefix' | 'prefix_except_default' | 'prefix_and_default'
+  strategy:
+    | 'no_prefix'
+    | 'prefix'
+    | 'prefix_except_default'
+    | 'prefix_and_default'
   langDir: string
   lazy: boolean
   vueI18n: string

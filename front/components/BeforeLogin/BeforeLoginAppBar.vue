@@ -1,6 +1,13 @@
 <template>
-  <v-app-bar app :height="homeAppBarHeight" color="white">
-    <nuxt-link to="/" class="text-decoration-none">
+  <v-app-bar
+    app
+    :height="homeAppBarHeight"
+    color="white"
+  >
+    <nuxt-link
+      to="/"
+      class="text-decoration-none"
+    >
       <app-logo />
     </nuxt-link>
 
@@ -18,7 +25,7 @@ export default {
   data({ $store }) {
     return {
       homeAppBarHeight: $store.state.styles.homeAppBarHeight.appBarHeight,
-    };
+    }
   },
-};
+}
 </script>

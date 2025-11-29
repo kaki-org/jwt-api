@@ -37,25 +37,31 @@ export const useAuth = () => {
   const toastStore = useToastStore()
 
   // 認証状態の取得
-  const isAuthenticated: Ref<boolean> = computed(() => authStore.isAuthenticated)
+  const isAuthenticated: Ref<boolean> = computed(
+    () => authStore.isAuthenticated
+  )
   const isExpired: Ref<boolean> = computed(() => authStore.isExpired)
   const loggedIn: Ref<boolean> = computed(() => authStore.loggedIn)
   const currentUser: Ref<User | null> = computed(() => userStore.current)
   const token: Ref<string | null> = computed(() => authStore.token)
-  const payload: Ref<JWTPayload | Record<string, unknown>> = computed(() => authStore.payload)
+  const payload: Ref<JWTPayload | Record<string, unknown>> = computed(
+    () => authStore.payload
+  )
 
   /**
    * ログイン処理
    * @param credentials ログイン認証情報
    * @returns ログインレスポンス
    */
-  const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
+  const login = async (
+    credentials: LoginCredentials
+  ): Promise<LoginResponse> => {
     try {
       const response = await authStore.login(credentials)
-      
+
       // ログイン成功時のトースト表示
       toastStore.showSuccess('ログインしました')
-      
+
       return response
     } catch (error) {
       // ログインエラー時のトースト表示
@@ -70,16 +76,18 @@ export const useAuth = () => {
   const logout = async (): Promise<void> => {
     try {
       await authStore.logout()
-      
+
       // ログアウト成功時のトースト表示
       toastStore.showSuccess('ログアウトしました')
-      
+
       // ログインページにリダイレクト
       await navigateTo('/login')
     } catch {
       // ログアウトエラー時のトースト表示（ただし、認証状態はクリアされている）
-      toastStore.showError('ログアウト処理でエラーが発生しましたが、ログアウトは完了しました')
-      
+      toastStore.showError(
+        'ログアウト処理でエラーが発生しましたが、ログアウトは完了しました'
+      )
+
       // エラーが発生してもログインページにリダイレクト
       await navigateTo('/login')
     }
@@ -122,7 +130,7 @@ export const useAuth = () => {
     if (!loggedIn.value) {
       // 認証が必要なメッセージを表示
       toastStore.showInfo('まずはログインしてください')
-      
+
       // ログインページにリダイレクト
       await navigateTo(redirectTo)
     }
@@ -132,7 +140,9 @@ export const useAuth = () => {
    * 認証済みユーザーのログインページアクセス制御
    * @param redirectTo リダイレクト先（デフォルト: /projects）
    */
-  const redirectIfAuthenticated = async (redirectTo: string = '/projects'): Promise<void> => {
+  const redirectIfAuthenticated = async (
+    redirectTo: string = '/projects'
+  ): Promise<void> => {
     if (loggedIn.value) {
       // 既にログイン済みの場合はプロジェクトページにリダイレクト
       await navigateTo(redirectTo)
@@ -167,7 +177,7 @@ export const useAuth = () => {
     currentUser: readonly(currentUser),
     token: readonly(token),
     payload: readonly(payload),
-    
+
     // アクション
     login,
     logout,
@@ -176,7 +186,7 @@ export const useAuth = () => {
     resetAuth,
     requireAuth,
     redirectIfAuthenticated,
-    
+
     // ユーティリティ
     getTokenTimeRemaining,
     isTokenExpiringSoon,

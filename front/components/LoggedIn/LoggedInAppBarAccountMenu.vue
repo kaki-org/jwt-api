@@ -1,7 +1,15 @@
 <template>
-  <v-menu app offset-x offset-y max-width="200">
+  <v-menu
+    app
+    offset-x
+    offset-y
+    max-width="200"
+  >
     <template #activator="{ on }">
-      <v-btn icon v-on="on">
+      <v-btn
+        icon
+        v-on="on"
+      >
         <v-icon> mdi-account-circle </v-icon>
       </v-btn>
     </template>
@@ -20,7 +28,10 @@
 
       <v-subheader> アカウント </v-subheader>
 
-      <template v-for="(menu, i) in menus" :key="`menu-${i}`">
+      <template
+        v-for="(menu, i) in menus"
+        :key="`menu-${i}`"
+      >
         <v-divider v-if="menu.divider" />
         <v-list-item :to="{ name: menu.name }">
           <v-list-item-icon class="mr-2">
@@ -45,7 +56,7 @@ export default {
         { name: 'account-password', icon: 'mdi-lock-outline' },
         { name: 'logout', icon: 'mdi-logout-variant', divider: true },
       ],
-    };
+    }
   },
-};
+}
 </script>

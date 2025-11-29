@@ -25,11 +25,21 @@
 
     <before-login-app-bar-signup-button />
     <before-login-app-bar-login-button />
-    <v-menu bottom nudge-left="110" nudge-width="100">
+    <v-menu
+      bottom
+      nudge-left="110"
+      nudge-width="100"
+    >
       <template #activator="{ on }">
-        <v-app-bar-nav-icon class="hidden-ipad-and-up" v-on="on" />
+        <v-app-bar-nav-icon
+          class="hidden-ipad-and-up"
+          v-on="on"
+        />
       </template>
-      <v-list dense class="hidden-ipad-and-up">
+      <v-list
+        dense
+        class="hidden-ipad-and-up"
+      >
         <v-list-item
           v-for="(menu, i) in menus"
           :key="`menu-list-${i}`"
@@ -49,7 +59,7 @@
 </template>
 
 <script>
-import AppTitle from '../App/AppTitle.vue';
+import AppTitle from '../App/AppTitle.vue'
 export default {
   components: { AppTitle },
   props: {
@@ -66,32 +76,32 @@ export default {
     return {
       scrollY: 0,
       homeAppBarHeight: $store.state.styles.homeAppBarHeight,
-    };
+    }
   },
   computed: {
     // 500 - 56 = 444px超の場合trueを返す
     isScrollPoint() {
-      return this.scrollY > this.imgHeight - this.homeAppBarHeight;
+      return this.scrollY > this.imgHeight - this.homeAppBarHeight
     },
     toolbarStyle() {
-      const color = this.isScrollPoint ? 'white' : 'transparent';
-      const elevation = this.isScrollPoint ? 4 : 0;
-      return { color, elevation };
+      const color = this.isScrollPoint ? 'white' : 'transparent'
+      const elevation = this.isScrollPoint ? 4 : 0
+      return { color, elevation }
     },
   },
   // Vue.new() => Vueインスタンス
   // マウント => Vueの実行準備が完全に整った後
   mounted() {
-    window.addEventListener('scroll', this.onScroll);
+    window.addEventListener('scroll', this.onScroll)
   },
   // Vueインスタンスが破壊される前に実行される
   beforeUnmount() {
-    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('scroll', this.onScroll)
   },
   methods: {
     onScroll() {
-      this.scrollY = window.scrollY;
+      this.scrollY = window.scrollY
     },
   },
-};
+}
 </script>

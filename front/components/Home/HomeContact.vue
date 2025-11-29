@@ -1,10 +1,20 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" sm="10" md="8">
-      <v-form ref="contact" v-model="isValid">
+    <v-col
+      cols="12"
+      sm="10"
+      md="8"
+    >
+      <v-form
+        ref="contact"
+        v-model="isValid"
+      >
         <v-container>
           <v-row>
-            <v-col cols="12" sm="6">
+            <v-col
+              cols="12"
+              sm="6"
+            >
               <v-text-field
                 v-model="name"
                 :rules="nameRules"
@@ -13,7 +23,10 @@
                 outlined
               />
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col
+              cols="12"
+              sm="6"
+            >
               <v-text-field
                 v-model="email"
                 :rules="emailRules"
@@ -45,17 +58,31 @@
             送信する
           </v-btn>
 
-          <v-btn text @click="formReset"> キャンセル </v-btn>
+          <v-btn
+            text
+            @click="formReset"
+          >
+            キャンセル
+          </v-btn>
           <div class="grey--text">
             <small> 実際には送信されません </small>
           </div>
         </v-container>
       </v-form>
     </v-col>
-    <v-snackbar v-model="sentIt" timeout="-1" color="primary">
+    <v-snackbar
+      v-model="sentIt"
+      timeout="-1"
+      color="primary"
+    >
       お問合せ内容が送信されました。メールアドレスへ担当者よりご連絡いたします。
       <template #action="{ attrs }">
-        <v-btn color="white" text v-bind="attrs" @click="formReset">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="formReset"
+        >
           Close
         </v-btn>
       </template>
@@ -79,20 +106,20 @@ export default {
       contentRules: [(v) => !!v || 'お問合せ内容を入力してください'],
       loading: false,
       sentIt: false,
-    };
+    }
   },
   methods: {
     onSend() {
-      this.loading = true;
+      this.loading = true
       setTimeout(() => {
-        this.loading = false;
-        this.sentIt = true;
-      }, 1500);
+        this.loading = false
+        this.sentIt = true
+      }, 1500)
     },
     formReset() {
-      this.sentIt = false;
-      this.$refs.contact.reset();
+      this.sentIt = false
+      this.$refs.contact.reset()
     },
   },
-};
+}
 </script>

@@ -19,14 +19,20 @@
     <v-card-title class="text-subtitle-2 justify-center">
       採用している技術
     </v-card-title>
-    <v-container fluid :style="{ maxWidth: '960px' }">
+    <v-container
+      fluid
+      :style="{ maxWidth: '960px' }"
+    >
       <v-row justify="space-around">
         <div
           v-for="(tec, i) in technologies"
           :key="`tec-${i}`"
           class="text-center pa-2"
         >
-          <v-avatar :color="tec.color" size="80">
+          <v-avatar
+            :color="tec.color"
+            size="80"
+          >
             <span class="white--text">
               {{ tec.name }}
             </span>
@@ -71,7 +77,7 @@ export default {
           color: '#1867C0',
         },
       ],
-    };
+    }
   },
-};
+}
 </script>

@@ -22,7 +22,7 @@ export default {
     },
   },
   data() {
-    const max = 30;
+    const max = 30
     return {
       max,
       rules: [
@@ -31,17 +31,17 @@ export default {
         // 30文字まで
         (v) => (!!v && max >= v.length) || `${max}文字以内で入力してください`,
       ],
-    };
+    }
   },
   computed: {
     setName: {
       get() {
-        return this.name;
+        return this.name
       },
       set(newValue) {
-        return this.$emit('update:name', newValue);
+        return this.$emit('update:name', newValue)
       },
     },
   },
-};
+}
 </script>

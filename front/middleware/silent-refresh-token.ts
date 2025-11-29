@@ -1,4 +1,8 @@
-import { getRouteName, getRouteParams, handleMiddlewareError } from '~/utils/middleware'
+import {
+  getRouteName,
+  getRouteParams,
+  handleMiddlewareError,
+} from '~/utils/middleware'
 
 /**
  * サイレントトークンリフレッシュミドルウェア
@@ -30,7 +34,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
       if (routeName === 'logout') {
         return navigateTo('/')
       } else {
-        const msg = 'セッションの有効期限が切れました。もう一度ログインしてください'
+        const msg =
+          'セッションの有効期限が切れました。もう一度ログインしてください'
 
         // トースター出力
         toastStore.showError(msg)
@@ -39,7 +44,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
         if (routeName) {
           appStore.setRememberPath({
             name: routeName,
-            params: getRouteParams(to)
+            params: getRouteParams(to),
           })
         }
 

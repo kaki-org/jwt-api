@@ -1,4 +1,8 @@
-import { getRouteName, getRouteParams, isExcludedRoute } from '~/utils/middleware'
+import {
+  getRouteName,
+  getRouteParams,
+  isExcludedRoute,
+} from '~/utils/middleware'
 
 /**
  * 認証ミドルウェア
@@ -35,7 +39,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     // アクセスルート記憶（型安全性を向上）
     appStore.setRememberPath({
       name: routeName,
-      params: getRouteParams(to)
+      params: getRouteParams(to),
     })
 
     return navigateTo('/login')

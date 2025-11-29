@@ -9,8 +9,8 @@
 export default {
   layout: 'project',
   // falseを返すページのアクセスを制限する
-  validate ({ store, route }) {
+  validate({ store, route }) {
     return !!store.state.project.current && route.name !== 'project'
-  }
+  },
 }
 </script>

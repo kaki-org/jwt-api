@@ -32,7 +32,8 @@ export const useProjectStore = defineStore('project', {
     },
 
     projectById: (state) => {
-      return (id: number) => state.list.find(project => project.id === id) || null
+      return (id: number) =>
+        state.list.find((project) => project.id === id) || null
     },
 
     isLoading: (state) => {
@@ -59,7 +60,7 @@ export const useProjectStore = defineStore('project', {
 
     // IDから現在のプロジェクトを取得・設定
     getCurrentProjectById(id: number) {
-      const project = this.list.find(project => project.id === id) || null
+      const project = this.list.find((project) => project.id === id) || null
       this.setCurrentProject(project)
       return project
     },
@@ -84,15 +85,18 @@ export const useProjectStore = defineStore('project', {
     async fetchProjectList() {
       this.loading = true
       this.error = null
-      
+
       try {
         const { get } = useApi()
         const { data } = await get<{ data: Project[] }>('/api/v1/projects')
-        
+
         this.setProjectList(data || [])
         return data
       } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'プロジェクト一覧の取得に失敗しました'
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : 'プロジェクト一覧の取得に失敗しました'
         this.error = errorMessage
         console.error('Failed to fetch project list:', error)
         throw error
@@ -109,10 +113,10 @@ export const useProjectStore = defineStore('project', {
 
     // プロジェクトを更新
     updateProject(id: number, updates: Partial<Omit<Project, 'id'>>) {
-      const index = this.list.findIndex(project => project.id === id)
+      const index = this.list.findIndex((project) => project.id === id)
       if (index !== -1) {
         this.list[index] = { ...this.list[index], ...updates, id }
-        
+
         // 現在のプロジェクトが更新対象の場合は同期
         if (this.current?.id === id) {
           this.current = { ...this.current, ...updates, id }
@@ -123,8 +127,8 @@ export const useProjectStore = defineStore('project', {
 
     // プロジェクトを削除
     removeProject(id: number) {
-      this.list = this.list.filter(project => project.id !== id)
-      
+      this.list = this.list.filter((project) => project.id !== id)
+
       // 現在のプロジェクトが削除対象の場合はクリア
       if (this.current?.id === id) {
         this.current = null
