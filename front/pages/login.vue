@@ -34,9 +34,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useAuthStore } from '~/stores/auth'
+import { computed, ref } from 'vue'
 import { useAppStore } from '~/stores/app'
+import { useAuthStore } from '~/stores/auth'
 import { useToastStore } from '~/stores/toast'
 
 definePageMeta({
