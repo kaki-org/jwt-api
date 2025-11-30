@@ -6,12 +6,8 @@
         v-model="isValid"
         @submit.prevent="login"
       >
-        <user-form-email
-          :email.sync="params.auth.email"
-        />
-        <user-form-password
-          :password.sync="params.auth.password"
-        />
+        <user-form-email v-model:email="params.auth.email" />
+        <user-form-password v-model:password="params.auth.password" />
         <v-card-actions>
           <nuxt-link
             to="#"
@@ -20,9 +16,7 @@
             パスワードを忘れた？
           </nuxt-link>
         </v-card-actions>
-        <v-card-text
-          class="px-0"
-        >
+        <v-card-text class="px-0">
           <v-btn
             type="submit"
             :disabled="!isValid || loading"
@@ -46,7 +40,7 @@ import { useAppStore } from '~/stores/app'
 import { useToastStore } from '~/stores/toast'
 
 definePageMeta({
-  layout: 'before-login'
+  layout: 'before-login',
 })
 
 const authStore = useAuthStore()

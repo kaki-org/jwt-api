@@ -23,7 +23,7 @@
 
 // ミドルウェアの設定
 definePageMeta({
-  middleware: ['authentication', 'get-project-list', 'get-project-current']
+  middleware: ['authentication', 'get-project-list', 'get-project-current'],
 })
 
 // リアクティブな状態管理
@@ -39,27 +39,27 @@ const isLargeScreen = ref(false)
 
 // メディアクエリを使用した画面サイズ判定
 const updateScreenSize = () => {
-  if (process.client) {
+  if (import.meta.client) {
     isLargeScreen.value = window.matchMedia('(min-width: 1280px)').matches
   }
 }
 
 onMounted(() => {
   updateScreenSize()
-  
+
   // 大画面では初期状態でドロワーを開く
   drawer.value = isLargeScreen.value
-  
+
   // 画面サイズ変更の監視
-  if (process.client) {
+  if (import.meta.client) {
     const mediaQuery = window.matchMedia('(min-width: 1280px)')
     const handleChange = (e: MediaQueryListEvent) => {
       isLargeScreen.value = e.matches
       drawer.value = e.matches
     }
-    
+
     mediaQuery.addEventListener('change', handleChange)
-    
+
     // クリーンアップ
     onUnmounted(() => {
       mediaQuery.removeEventListener('change', handleChange)

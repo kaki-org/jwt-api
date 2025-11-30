@@ -1,10 +1,20 @@
 <template>
   <v-row>
-    <v-col cols="12" sm="6">
+    <v-col
+      cols="12"
+      sm="6"
+    >
       <v-list flat>
-        <v-list-item v-for="(point, i) in points" :key="`point-${i}`">
+        <v-list-item
+          v-for="(point, i) in points"
+          :key="`point-${i}`"
+        >
           <v-list-item-icon>
-            <v-icon size="30" :color="point.color">{{ point.icon }}</v-icon>
+            <v-icon
+              size="30"
+              :color="point.color"
+              >{{ point.icon }}</v-icon
+            >
           </v-list-item-icon>
           <v-list-item-content>
             <div class="text-subtitle-1">{{ point.text }}</div>
@@ -12,7 +22,10 @@
         </v-list-item>
       </v-list>
     </v-col>
-    <v-col cols="12" sm="6">
+    <v-col
+      cols="12"
+      sm="6"
+    >
       <v-sparkline
         :value="sparkline.value"
         :gradient="sparkline.gradient"
@@ -39,7 +52,7 @@ export default {
       ['red', 'orange', 'yellow'],
       ['purple', 'violet'],
       ['#00c6ff', '#F0F', '#FF0'],
-    ];
+    ]
     return {
       points: [
         {
@@ -71,7 +84,7 @@ export default {
         type: 'trend',
         autoLineWidth: true,
       },
-    };
+    }
   },
-};
+}
 </script>

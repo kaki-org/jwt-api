@@ -58,21 +58,21 @@ export default {
         { name: 'project-id-settings', icon: 'mdi-cog' },
         { name: 'project-id-help', icon: 'mdi-help-circle' },
       ],
-    };
+    }
   },
   computed: {
     setDrawer: {
       get() {
-        return this.drawer;
+        return this.drawer
       },
       set(newVal) {
-        return this.$emit('update:drawer', newVal);
+        return this.$emit('update:drawer', newVal)
       },
     },
     isMobileBreakPointLessThan() {
-      const windowWidth = this.$vuetify.breakpoint.width;
-      return this.mobileBreakpoint > windowWidth;
+      const windowWidth = this.$vuetify.breakpoint.width
+      return this.mobileBreakpoint > windowWidth
     },
   },
-};
+}
 </script>

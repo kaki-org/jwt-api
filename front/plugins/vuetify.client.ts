@@ -14,7 +14,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     // コンポーネントの登録
     components,
     directives,
-    
+
     // テーマ設定
     theme: {
       defaultTheme: 'light',
@@ -37,7 +37,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             'on-background': '#000000',
             // カスタムカラー
             appblue: '#1867C0',
-          }
+          },
         },
         dark: {
           dark: true,
@@ -57,11 +57,11 @@ export default defineNuxtPlugin((nuxtApp) => {
             'on-background': '#FFFFFF',
             // カスタムカラー
             appblue: '#1867C0',
-          }
-        }
-      }
+          },
+        },
+      },
     },
-    
+
     // アイコン設定
     icons: {
       defaultSet: 'mdi',
@@ -70,7 +70,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         mdi,
       },
     },
-    
+
     // デフォルトプロパティ設定
     defaults: {
       VBtn: {
@@ -114,7 +114,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         color: 'primary',
       },
     },
-    
+
     // 表示設定
     display: {
       mobileBreakpoint: 'sm',

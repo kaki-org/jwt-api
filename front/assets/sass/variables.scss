@@ -12,39 +12,51 @@ $grid-breakpoints: (
   'xxl': 2560px,
   // カスタムブレークポイント
   'mobile': 426px,
-  'ipad': 768px
+  'ipad': 768px,
 );
 
 // カスタム表示ブレークポイント
 $display-breakpoints: (
   // モバイル用
-  'mobile-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'mobile') - 1})',
-  'mobile-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'mobile')})',
+  'mobile-and-down':
+    'only screen and (max-width: #{map-get($grid-breakpoints, 'mobile') - 1})',
+  'mobile-and-up':
+    'only screen and (min-width: #{map-get($grid-breakpoints, 'mobile')})',
   // iPad用
-  'ipad-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'ipad') - 1})',
-  'ipad-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'ipad')})',
+  'ipad-and-down':
+    'only screen and (max-width: #{map-get($grid-breakpoints, 'ipad') - 1})',
+  'ipad-and-up':
+    'only screen and (min-width: #{map-get($grid-breakpoints, 'ipad')})',
   // 標準ブレークポイント
-  'xs-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'sm') - 1})',
-  'sm-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'md') - 1})',
-  'md-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'lg') - 1})',
-  'lg-and-down': 'only screen and (max-width: #{map-get($grid-breakpoints, 'xl') - 1})',
-  'sm-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'sm')})',
-  'md-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'md')})',
-  'lg-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'lg')})',
-  'xl-and-up': 'only screen and (min-width: #{map-get($grid-breakpoints, 'xl')})'
+  'xs-and-down':
+    'only screen and (max-width: #{map-get($grid-breakpoints, 'sm') - 1})',
+  'sm-and-down':
+    'only screen and (max-width: #{map-get($grid-breakpoints, 'md') - 1})',
+  'md-and-down':
+    'only screen and (max-width: #{map-get($grid-breakpoints, 'lg') - 1})',
+  'lg-and-down':
+    'only screen and (max-width: #{map-get($grid-breakpoints, 'xl') - 1})',
+  'sm-and-up':
+    'only screen and (min-width: #{map-get($grid-breakpoints, 'sm')})',
+  'md-and-up':
+    'only screen and (min-width: #{map-get($grid-breakpoints, 'md')})',
+  'lg-and-up':
+    'only screen and (min-width: #{map-get($grid-breakpoints, 'lg')})',
+  'xl-and-up':
+    'only screen and (min-width: #{map-get($grid-breakpoints, 'xl')})'
 );
 
 // カスタムテーマ変数（Vuetify 3.x形式）
 $theme-light: (
   'background': #f6f6f4,
   'surface': #ffffff,
-  'primary': #4080BE,
+  'primary': #4080be,
   'secondary': #424242,
-  'accent': #82B1FF,
-  'error': #FB8678,
-  'info': #4FC1E9,
-  'success': #44D69E,
-  'warning': #FEB65E,
+  'accent': #82b1ff,
+  'error': #fb8678,
+  'info': #4fc1e9,
+  'success': #44d69e,
+  'warning': #feb65e,
   'on-background': #000000,
   'on-surface': #000000,
   'on-primary': #ffffff,
@@ -52,19 +64,19 @@ $theme-light: (
   'on-error': #ffffff,
   'on-info': #ffffff,
   'on-success': #ffffff,
-  'on-warning': #000000
+  'on-warning': #000000,
 );
 
 $theme-dark: (
   'background': #121212,
-  'surface': #1E1E1E,
-  'primary': #4080BE,
+  'surface': #1e1e1e,
+  'primary': #4080be,
   'secondary': #424242,
-  'accent': #FF4081,
-  'error': #FB8678,
-  'info': #4FC1E9,
-  'success': #44D69E,
-  'warning': #FEB65E,
+  'accent': #ff4081,
+  'error': #fb8678,
+  'info': #4fc1e9,
+  'success': #44d69e,
+  'warning': #feb65e,
   'on-background': #ffffff,
   'on-surface': #ffffff,
   'on-primary': #ffffff,
@@ -72,7 +84,7 @@ $theme-dark: (
   'on-error': #ffffff,
   'on-info': #ffffff,
   'on-success': #ffffff,
-  'on-warning': #000000
+  'on-warning': #000000,
 );
 
 // カスタムコンポーネント変数
@@ -87,36 +99,36 @@ $headings: (
     'size': 2.5rem,
     'weight': 300,
     'line-height': 3rem,
-    'letter-spacing': -0.0156rem
+    'letter-spacing': -0.0156rem,
   ),
   'h2': (
     'size': 2rem,
     'weight': 300,
     'line-height': 2.5rem,
-    'letter-spacing': -0.0083rem
+    'letter-spacing': -0.0083rem,
   ),
   'h3': (
     'size': 1.75rem,
     'weight': 400,
     'line-height': 2.25rem,
-    'letter-spacing': normal
+    'letter-spacing': normal,
   ),
   'h4': (
     'size': 1.5rem,
     'weight': 400,
     'line-height': 2rem,
-    'letter-spacing': 0.0073rem
+    'letter-spacing': 0.0073rem,
   ),
   'h5': (
     'size': 1.25rem,
     'weight': 400,
     'line-height': 1.75rem,
-    'letter-spacing': normal
+    'letter-spacing': normal,
   ),
   'h6': (
     'size': 1.125rem,
     'weight': 500,
     'line-height': 1.5rem,
-    'letter-spacing': 0.0125rem
-  )
+    'letter-spacing': 0.0125rem,
+  ),
 );

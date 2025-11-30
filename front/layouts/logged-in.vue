@@ -14,6 +14,6 @@
 
 // ミドルウェアの設定
 definePageMeta({
-  middleware: ['authentication']
+  middleware: ['authentication'],
 })
 </script>

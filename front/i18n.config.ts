@@ -21,34 +21,34 @@ export default defineI18nConfig(() => ({
       currency: {
         style: 'currency',
         currency: 'JPY',
-        notation: 'standard'
+        notation: 'standard',
       },
       decimal: {
         style: 'decimal',
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        maximumFractionDigits: 2,
       },
       percent: {
         style: 'percent',
-        useGrouping: false
-      }
+        useGrouping: false,
+      },
     },
     en: {
       currency: {
         style: 'currency',
         currency: 'USD',
-        notation: 'standard'
+        notation: 'standard',
       },
       decimal: {
         style: 'decimal',
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        maximumFractionDigits: 2,
       },
       percent: {
         style: 'percent',
-        useGrouping: false
-      }
-    }
+        useGrouping: false,
+      },
+    },
   },
 
   // 日時フォーマット設定
@@ -57,7 +57,7 @@ export default defineI18nConfig(() => ({
       short: {
         year: 'numeric',
         month: 'short',
-        day: 'numeric'
+        day: 'numeric',
       },
       long: {
         year: 'numeric',
@@ -65,14 +65,14 @@ export default defineI18nConfig(() => ({
         day: 'numeric',
         weekday: 'short',
         hour: 'numeric',
-        minute: 'numeric'
-      }
+        minute: 'numeric',
+      },
     },
     en: {
       short: {
         year: 'numeric',
         month: 'short',
-        day: 'numeric'
+        day: 'numeric',
       },
       long: {
         year: 'numeric',
@@ -80,9 +80,9 @@ export default defineI18nConfig(() => ({
         day: 'numeric',
         weekday: 'short',
         hour: 'numeric',
-        minute: 'numeric'
-      }
-    }
+        minute: 'numeric',
+      },
+    },
   },
 
   // 複数形ルール設定
@@ -94,7 +94,7 @@ export default defineI18nConfig(() => ({
     en: (choice: number) => {
       // 英語の複数形ルール
       return choice === 0 ? 0 : choice === 1 ? 1 : 2
-    }
+    },
   },
 
   // メッセージの欠落時の処理
@@ -104,5 +104,5 @@ export default defineI18nConfig(() => ({
       console.warn(`Missing translation for key "${key}" in locale "${locale}"`)
     }
     return key
-  }
+  },
 }))

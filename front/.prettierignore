@@ -1,0 +1,21 @@
+# 依存関係
+node_modules
+.nuxt
+.output
+dist
+
+# ビルド成果物
+coverage
+*.log
+
+# 環境ファイル
+.env
+.env.*
+
+# ロックファイル
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# その他
+.DS_Store
