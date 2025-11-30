@@ -3,8 +3,8 @@
  * 分割された翻訳ファイルを統合してメインの翻訳ファイルを生成
  */
 
-import { readFileSync, writeFileSync, readdirSync } from 'fs'
-import { join, dirname } from 'path'
+import { readdirSync, readFileSync, writeFileSync } from 'fs'
+import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)

@@ -67,10 +67,10 @@
 
 <script>
 import HomeAbout from '~/components/Home/HomeAbout'
-import HomeProducts from '~/components/Home/HomeProducts'
-import HomePrice from '~/components/Home/HomePrice'
-import HomeContact from '~/components/Home/HomeContact'
 import HomeCompany from '~/components/Home/HomeCompany'
+import HomeContact from '~/components/Home/HomeContact'
+import HomePrice from '~/components/Home/HomePrice'
+import HomeProducts from '~/components/Home/HomeProducts'
 
 export default {
   components: {

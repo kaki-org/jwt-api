@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
-import { useUserStore } from './user'
+import { defineStore } from 'pinia'
 import { useProjectStore } from './project'
+import { useUserStore } from './user'
 
 interface JWTPayload {
   sub: string
