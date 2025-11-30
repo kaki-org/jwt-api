@@ -3,8 +3,8 @@
  * 分割された翻訳ファイルを統合してメインの翻訳ファイルを生成
  */
 
-import { readFileSync, writeFileSync, readdirSync } from 'fs'
-import { join, dirname } from 'path'
+import { readdirSync, readFileSync, writeFileSync } from 'fs'
+import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -23,7 +23,9 @@ function mergeLocaleFiles(locale) {
 
   try {
     // 言語ディレクトリ内のJSONファイルを取得
-    const files = readdirSync(localeDir).filter(file => file.endsWith('.json'))
+    const files = readdirSync(localeDir).filter((file) =>
+      file.endsWith('.json')
+    )
 
     // 各ファイルの内容を統合
     for (const file of files) {
@@ -34,9 +36,15 @@ function mergeLocaleFiles(locale) {
 
     // 統合されたファイルを出力
     const outputPath = join(localesDir, `${locale}.json`)
-    writeFileSync(outputPath, JSON.stringify(mergedTranslations, null, 2), 'utf-8')
+    writeFileSync(
+      outputPath,
+      JSON.stringify(mergedTranslations, null, 2),
+      'utf-8'
+    )
 
-    console.log(`✅ Merged ${locale} translations: ${files.join(', ')} -> ${locale}.json`)
+    console.log(
+      `✅ Merged ${locale} translations: ${files.join(', ')} -> ${locale}.json`
+    )
   } catch (error) {
     console.error(`❌ Failed to merge ${locale} translations:`, error.message)
   }

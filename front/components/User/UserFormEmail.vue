@@ -28,17 +28,17 @@ export default {
         // 書式チェック
         (v) => /.+@.+\..+/.test(v) || '',
       ],
-    };
+    }
   },
   computed: {
     setEmail: {
       get() {
-        return this.email;
+        return this.email
       },
       set(newValue) {
-        return this.$emit('update:email', newValue);
+        return this.$emit('update:email', newValue)
       },
     },
   },
-};
+}
 </script>

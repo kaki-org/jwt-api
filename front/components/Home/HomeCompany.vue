@@ -4,7 +4,10 @@
       メンバー
     </v-card-title>
     <v-row justify="space-around">
-      <v-col v-for="(member, i) in members" :key="`member-${i}`">
+      <v-col
+        v-for="(member, i) in members"
+        :key="`member-${i}`"
+      >
         <v-list-item>
           <v-list-item-icon>
             <img
@@ -12,7 +15,7 @@
               :alt="member.nickname"
               width="50"
               height="50"
-            >
+            />
           </v-list-item-icon>
           <v-list-item-content>
             <div>
@@ -51,10 +54,20 @@
       会社情報
     </v-card-title>
     <v-row justify="center">
-      <v-col cols="12" sm="10" md="8">
-        <v-list flat dense>
+      <v-col
+        cols="12"
+        sm="10"
+        md="8"
+      >
+        <v-list
+          flat
+          dense
+        >
           <v-divider />
-          <template v-for="(info, i) in infomations" :key="`info-${i}`">
+          <template
+            v-for="(info, i) in infomations"
+            :key="`info-${i}`"
+          >
             <v-list-item>
               <v-list-item-icon>
                 <v-icon>{{ info.icon }}</v-icon>
@@ -69,7 +82,11 @@
                 >
                   {{ info.link }}
                 </a>
-                <div v-else class="text-subtitle-1" v-text="info.text" />
+                <div
+                  v-else
+                  class="text-subtitle-1"
+                  v-text="info.text"
+                />
               </v-list-item-content>
             </v-list-item>
             <v-divider />
@@ -81,16 +98,16 @@
 </template>
 
 <script>
-import member1 from '~/assets/images/member1.png';
-import member2 from '~/assets/images/member2.png';
-import member3 from '~/assets/images/member3.png';
+import member1 from '~/assets/images/member1.png'
+import member2 from '~/assets/images/member2.png'
+import member3 from '~/assets/images/member3.png'
 
 export default {
   data() {
-    const twitter = 'https://twitter.com/esegrammer';
+    const twitter = 'https://twitter.com/esegrammer'
     const slack =
-      'https://join.slack.com/t/dokugaku-kai/shared_invite/zt-a5j1suoh-Y0fspHbo1fb0Wj6YTpDdXA';
-    const companyUrl = 'http://blog.cloud-acct.com';
+      'https://join.slack.com/t/dokugaku-kai/shared_invite/zt-a5j1suoh-Y0fspHbo1fb0Wj6YTpDdXA'
+    const companyUrl = 'http://blog.cloud-acct.com'
     return {
       members: [
         { name: 'あんどう', position: '代表', img: member1, twitter, slack },
@@ -105,7 +122,7 @@ export default {
         { icon: 'mdi-map-marker', text: '東京都港区虎ノ門一丁目17番1号' },
         { icon: 'mdi-handshake', text: 'Webアプリ開発・経営コンサルティング' },
       ],
-    };
+    }
   },
-};
+}
 </script>

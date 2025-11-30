@@ -6,7 +6,7 @@
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css"
       rel="stylesheet"
-    >
+    />
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
       <a
         class="flex justify-center pt-8 sm:pt-0"
@@ -62,7 +62,7 @@
             class="button--doc text-green-500 hover:underline"
             >Nuxt documentation</a
           >, whether you are new or have previous experience with the
-          framework.<br >
+          framework.<br />
         </p>
         <p class="mt-4 pt-4 text-gray-800 border-t border-dashed">
           To get started, remove
@@ -76,7 +76,9 @@
         </p>
       </div>
       <div class="flex justify-center pt-4 space-x-2">
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank"
+        <a
+          href="https://github.com/nuxt/nuxt.js"
+          target="_blank"
           ><svg
             class="w-6 h-6 text-gray-600 hover:text-gray-800 button--github"
             xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +95,9 @@
               fill="currentColor"
             /></svg
         ></a>
-        <a href="https://twitter.com/nuxt_js" target="_blank"
+        <a
+          href="https://twitter.com/nuxt_js"
+          target="_blank"
           ><svg
             class="w-6 h-6 text-gray-600 hover:text-gray-800"
             xmlns="http://www.w3.org/2000/svg"
@@ -118,5 +122,5 @@
 <script>
 export default {
   name: 'NuxtTutorial',
-};
+}
 </script>
