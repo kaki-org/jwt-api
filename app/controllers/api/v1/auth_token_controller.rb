@@ -21,15 +21,21 @@ module Api
       # ログイン
       def create
         @user = login_user
-        set_refresh_token_to_cookie
-        render json: login_response
+        token_service = AuthTokenService.new(@user)
+        response_builder = AuthResponseBuilder.new(@user, token_service)
+
+        refresh_token_to_cookie(token_service)
+        render json: response_builder.build_login_response
       end
 
       # リフレッシュ
       def refresh
         @user = session_user
-        set_refresh_token_to_cookie
-        render json: login_response
+        token_service = AuthTokenService.new(@user)
+        response_builder = AuthResponseBuilder.new(@user, token_service)
+
+        refresh_token_to_cookie(token_service)
+        render json: response_builder.build_login_response
       end
 
       # ログアウト
@@ -58,57 +64,8 @@ module Api
       end
 
       # refresh_tokenをcookieにセットする
-      def set_refresh_token_to_cookie
-        cookies[session_key] = {
-          value: refresh_token,
-          expires: refresh_token_expiration,
-          secure: Rails.env.production?,
-          http_only: true
-        }
-      end
-
-      # ログイン時のデフォルトレスポンス
-      def login_response
-        {
-          token: access_token,
-          expires: access_token_expiration,
-          user: @user.response_json(sub: access_token_subject)
-        }
-      end
-
-      # リフレッシュトークンのインスタンス生成
-      def encode_refresh_token
-        @_encode_refresh_token ||= @user.encode_refresh_token # rubocop:disable Naming/MemoizedInstanceVariableName
-      end
-
-      # リフレッシュトークン
-      def refresh_token
-        encode_refresh_token.token
-      end
-
-      # リフレッシュトークンの有効期限
-      def refresh_token_expiration
-        Time.at(encode_refresh_token.payload[:exp])
-      end
-
-      # アクセストークンのインスタンス生成
-      def encode_access_token
-        @_encode_access_token ||= @user.encode_access_token # rubocop:disable Naming/MemoizedInstanceVariableName
-      end
-
-      # アクセストークン
-      def access_token
-        encode_access_token.token
-      end
-
-      # アクセストークンの有効期限
-      def access_token_expiration
-        encode_access_token.payload[:exp]
-      end
-
-      # アクセストークンのsubjectクレーム
-      def access_token_subject
-        encode_access_token.payload[:sub]
+      def refresh_token_to_cookie(token_service)
+        cookies[session_key] = token_service.refresh_token_cookie_options
       end
 
       # 404ヘッダーのみの返却を行う
@@ -119,8 +76,8 @@ module Api
 
       # decode jti != user.refresh_jti のエラー処理
       def invalid_jti
-        msg = 'Invalid jti for refresh token'
-        render status: 401, json: { status: 401, error: msg }
+        response_builder = AuthResponseBuilder.new(nil)
+        render status: 401, json: response_builder.build_invalid_jti_response
       end
 
       def auth_params
