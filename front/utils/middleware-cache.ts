@@ -18,7 +18,7 @@ class ProjectListCache {
   set(key: string, data: any): void {
     this.cache.set(key, {
       data,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     })
   }
 
@@ -77,7 +77,7 @@ class ProjectDetailCache {
   set(projectId: string, data: any): void {
     this.cache.set(projectId, {
       data,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     })
   }
 

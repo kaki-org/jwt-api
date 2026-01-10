@@ -36,23 +36,30 @@ export const useAppStore = defineStore('app', {
 
   getters: {
     homeAppBarHeight: (state) => state.styles.homeAppBarHeight,
-    
+
     homePathName: (state) => state.loggedIn.homePath.name,
-    
+
     rememberPath: (state) => state.loggedIn.rememberPath,
-    
+
     shouldRedirectAfterLogin: (state) => {
-      return (routeName: string) => state.loggedIn.redirectPaths.includes(routeName)
+      return (routeName: string) =>
+        state.loggedIn.redirectPaths.includes(routeName)
     },
   },
 
   actions: {
-    setRememberPath({ name, params }: { name: string; params?: Record<string, any> }) {
+    setRememberPath({
+      name,
+      params,
+    }: {
+      name: string
+      params?: Record<string, any>
+    }) {
       // ログイン前パスが渡された場合は loggedIn.homePath に書き換える
       if (this.loggedIn.redirectPaths.includes(name)) {
         name = this.loggedIn.homePath.name
       }
-      
+
       this.loggedIn.rememberPath = {
         name,
         params: params || {},
@@ -70,7 +77,9 @@ export const useAppStore = defineStore('app', {
     },
 
     removeRedirectPath(path: string) {
-      this.loggedIn.redirectPaths = this.loggedIn.redirectPaths.filter(p => p !== path)
+      this.loggedIn.redirectPaths = this.loggedIn.redirectPaths.filter(
+        (p) => p !== path
+      )
     },
   },
 })

@@ -42,7 +42,10 @@ export const useI18nUtils = () => {
    * @param params 翻訳パラメータ
    * @returns 翻訳されたテキスト
    */
-  const translate = (key: TranslationKey, params?: Record<string, any>): string => {
+  const translate = (
+    key: TranslationKey,
+    params?: Record<string, any>
+  ): string => {
     return t(key, params)
   }
 
@@ -73,7 +76,7 @@ export const useI18nUtils = () => {
    * @returns 言語一覧
    */
   const availableLocales = computed(() => {
-    return locales.value.filter(locale => locale.code !== locale.value)
+    return locales.value.filter((locale) => locale.code !== locale.value)
   })
 
   /**
@@ -94,7 +97,10 @@ export const useI18nUtils = () => {
    * @param format フォーマット形式
    * @returns フォーマット済み日付
    */
-  const formatDate = (date: Date | string, format: 'short' | 'long' = 'short'): string => {
+  const formatDate = (
+    date: Date | string,
+    format: 'short' | 'long' = 'short'
+  ): string => {
     const { d } = useI18n()
     return d(new Date(date), format)
   }
@@ -105,7 +111,10 @@ export const useI18nUtils = () => {
    * @param format フォーマット形式
    * @returns フォーマット済み数値
    */
-  const formatNumber = (number: number, format: 'currency' | 'decimal' | 'percent' = 'decimal'): string => {
+  const formatNumber = (
+    number: number,
+    format: 'currency' | 'decimal' | 'percent' = 'decimal'
+  ): string => {
     const { n } = useI18n()
     return n(number, format)
   }
@@ -129,6 +138,6 @@ export const useI18nUtils = () => {
 
     // フォーマット機能
     formatDate,
-    formatNumber
+    formatNumber,
   }
 }

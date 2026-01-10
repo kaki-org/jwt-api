@@ -50,7 +50,11 @@ export const useUserStore = defineStore('user', {
 
     // ユーザー情報が完全かどうかを確認
     hasCompleteProfile: (state): boolean => {
-      return !!(state.current?.sub && state.current?.email && state.current?.name)
+      return !!(
+        state.current?.sub &&
+        state.current?.email &&
+        state.current?.name
+      )
     },
   },
 
@@ -111,7 +115,10 @@ export const useUserStore = defineStore('user', {
     },
 
     // パスワード変更
-    async changePassword(passwordData: { currentPassword: string; newPassword: string }) {
+    async changePassword(passwordData: {
+      currentPassword: string
+      newPassword: string
+    }) {
       try {
         await $fetch('/api/v1/user/password', {
           method: 'PATCH',

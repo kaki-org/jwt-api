@@ -23,7 +23,12 @@
   >
     {{ toast.msg }}
     <template #action="{ attrs }">
-      <v-btn v-bind="attrs" text :color="toast.color" @click="resetToast">
+      <v-btn
+        v-bind="attrs"
+        text
+        :color="toast.color"
+        @click="resetToast"
+      >
         Close
       </v-btn>
     </template>

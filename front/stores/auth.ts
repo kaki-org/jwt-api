@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
-import { useUserStore } from './user'
+import { defineStore } from 'pinia'
 import { useProjectStore } from './project'
+import { useUserStore } from './user'
 
 interface JWTPayload {
   sub: string
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: (state): boolean => {
       return state.token !== null && new Date().getTime() < state.expires
     },
-    
+
     // トークンの有効期限切れ確認
     isExpired: (state): boolean => {
       return state.expires > 0 && new Date().getTime() >= state.expires
@@ -107,7 +107,10 @@ export const useAuthStore = defineStore('auth', {
     // ログイン処理
     async login(credentials: { email: string; password: string }) {
       const { post } = useApi()
-      const response = await post<LoginResponse>('/api/v1/auth_token', credentials)
+      const response = await post<LoginResponse>(
+        '/api/v1/auth_token',
+        credentials
+      )
       this.setAuth(response)
       return response
     },
@@ -124,7 +127,7 @@ export const useAuthStore = defineStore('auth', {
               return
             }
             throw new Error(`Logout failed: ${response.status}`)
-          }
+          },
         })
       } catch (error) {
         // ログアウトエラーはログに記録するが、クライアント側の状態はクリアする
@@ -138,11 +141,11 @@ export const useAuthStore = defineStore('auth', {
     // 認証状態を完全にリセット
     resetAuth() {
       this.clearAuth()
-      
+
       // 関連するストアもクリア
       const userStore = useUserStore()
       userStore.clearCurrentUser()
-      
+
       // プロジェクトストアもクリア
       const projectStore = useProjectStore()
       projectStore.clearProjects()

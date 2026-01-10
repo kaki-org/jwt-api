@@ -3,10 +3,10 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.4.4'
+ruby '4.0.0'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 8.0.2', '>= 8.0.2.1'
+gem 'rails', '~> 8.1.0'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.5'
@@ -38,7 +38,7 @@ gem 'bootsnap', require: false
 # gem "image_processing", "~> 1.2"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors'
+gem 'rack-cors', '>= 2.0.2'
 # コンソールの出力結果を見やすく表示する
 # FIXME: `NameError: uninitialized constant RuboCop::Cop::Rails::RedundantActiveRecordAllMethod::AllowedReceivers`
 # というバグが発生する為、rubocopのバージョンを1.57以上にする必要があるが、hirbが対応していない。
