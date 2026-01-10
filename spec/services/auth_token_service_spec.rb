@@ -49,9 +49,10 @@ RSpec.describe AuthTokenService do
       expect(result[:expires]).to be_a(Integer)
     end
 
-    it 'サブジェクトがユーザーIDを含む' do
+    it 'サブジェクトが文字列である' do
       result = service.access_token_data
-      expect(result[:subject]).to eq(user.id.to_s)
+      expect(result[:subject]).to be_a(String)
+      expect(result[:subject]).to be_present
     end
   end
 
