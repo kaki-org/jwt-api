@@ -48,8 +48,8 @@ importers:
         specifier: ^11.0.0
         version: 11.2.1(vue@3.5.18(typescript@5.9.3))
       vuetify:
-        specifier: ^3.4.0
-        version: 3.12.0(typescript@5.9.3)(vue@3.5.18(typescript@5.9.3))
+        specifier: ^4.0.0
+        version: 4.0.0(typescript@5.9.3)(vue@3.5.18(typescript@5.9.3))
       webpack:
         specifier: ^5.101.2
         version: 5.105.0
@@ -4782,8 +4782,8 @@ packages:
       typescript:
         optional: true
 
-  vuetify@3.12.0:
-    resolution: {integrity: sha512-N1y3sxLAyrblBHJ6vFTQoTM9icwZd/jNUsmYVQTvHNQHN22XDqb0w2+ujaSoEn/JCHbtGb70tKRlB9SJ6HhVgg==}
+  vuetify@4.0.0:
+    resolution: {integrity: sha512-TRyNWd2KlX1KXbKwuHYRfrX24yLHq85AdVKmokfy5llAgVx7MNW4oBPwFmYLeuuSrWvw5ITtDJ5VjdBIKD5WVw==}
     peerDependencies:
       typescript: '>=4.7'
       vite-plugin-vuetify: '>=2.1.0'
@@ -9864,7 +9864,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  vuetify@3.12.0(typescript@5.9.3)(vue@3.5.18(typescript@5.9.3)):
+  vuetify@4.0.0(typescript@5.9.3)(vue@3.5.18(typescript@5.9.3)):
     dependencies:
       vue: 3.5.18(typescript@5.9.3)
     optionalDependencies:
