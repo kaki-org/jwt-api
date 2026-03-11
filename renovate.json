@@ -65,7 +65,8 @@
         "/^actions/checkout$/",
         "/^release-drafter/release-drafter$/",
         "/^ruby/setup-ruby$/",
-        "/^toshimaru/backlog-pr-link-action$/"
+        "/^toshimaru/backlog-pr-link-action$/",
+        "/^postgres$/"
       ]
     }
   ]
