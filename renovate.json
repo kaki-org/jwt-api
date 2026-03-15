@@ -67,6 +67,21 @@
         "/^ruby/setup-ruby$/",
         "/^toshimaru/backlog-pr-link-action$/"
       ]
+    },
+    {
+      "matchManagers": [
+        "docker-compose",
+        "dockerfile"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "platformAutomerge": true,
+      "matchDepNames": [
+        "postgres"
+      ]
     }
   ]
 }
