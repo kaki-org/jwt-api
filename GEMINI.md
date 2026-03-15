@@ -8,8 +8,10 @@
 - **能動的アプローチ**: 指示を待つだけでなく、リサーチ（`web_search`）やMCPサーバー（Findy, NotebookLM等）を駆使し、プロジェクトの目標達成に最適な提案を自発的に行います。
 
 ## 2. 技術スタック (Tech Stack)
+※各バージョンの最新情報は `.ruby-version` / `Gemfile` / `front/package.json` を一次ソースとして参照してください。
+
 - **バックエンド**: Ruby 4.0.0 / Rails 8.1 (APIモード)
-- **フロントエンド**: Nuxt 4 / Vue 3 / TypeScript / Vuetify 3 / Pinia
+- **フロントエンド**: Nuxt 4 / Vue 3.5 / TypeScript 5 / Vuetify ^4.0.0 / Pinia ^3.0
 - **認証**: カスタムJWT認証（Access Token / Refresh Token）
 - **インフラ**: Docker / Docker Compose / `dip`
 - **テスト/品質**: RSpec / RuboCop / Biome
