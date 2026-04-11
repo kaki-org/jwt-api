@@ -23,7 +23,7 @@
     "@intlify/core-base": "^11.0.0",
     "@intlify/shared": "^11.0.0",
     "@mdi/font": "^7.4.47",
-    "@nuxtjs/i18n": "^10.0.3",
+    "@nuxtjs/i18n": "^10.2.4",
     "@pinia/nuxt": "^0.11.2",
     "core-js": "^3.33.3",
     "jwt-decode": "^4.0.0",
