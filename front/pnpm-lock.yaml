@@ -16,7 +16,7 @@ importers:
         version: 11.4.0
       '@intlify/shared':
         specifier: ^11.0.0
-        version: 11.3.0
+        version: 11.4.0
       '@mdi/font':
         specifier: ^7.4.47
         version: 7.4.47
@@ -5373,7 +5373,7 @@ snapshots:
   '@intlify/bundle-utils@11.1.2(vue-i18n@11.4.0(vue@3.5.18(typescript@5.9.3)))':
     dependencies:
       '@intlify/message-compiler': 11.4.0
-      '@intlify/shared': 11.3.0
+      '@intlify/shared': 11.4.0
       acorn: 8.16.0
       esbuild: 0.25.12
       escodegen: 2.1.0
@@ -5418,8 +5418,8 @@ snapshots:
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.1(jiti@2.6.1))
       '@intlify/bundle-utils': 11.1.2(vue-i18n@11.4.0(vue@3.5.18(typescript@5.9.3)))
-      '@intlify/shared': 11.3.0
-      '@intlify/vue-i18n-extensions': 8.0.0(@intlify/shared@11.3.0)(@vue/compiler-dom@3.5.33)(vue-i18n@11.4.0(vue@3.5.18(typescript@5.9.3)))(vue@3.5.18(typescript@5.9.3))
+      '@intlify/shared': 11.4.0
+      '@intlify/vue-i18n-extensions': 8.0.0(@intlify/shared@11.4.0)(@vue/compiler-dom@3.5.33)(vue-i18n@11.4.0(vue@3.5.18(typescript@5.9.3)))(vue@3.5.18(typescript@5.9.3))
       '@rollup/pluginutils': 5.3.0(rollup@4.60.0)
       '@typescript-eslint/scope-manager': 8.59.0
       '@typescript-eslint/typescript-estree': 8.59.0(typescript@5.9.3)
@@ -5443,11 +5443,11 @@ snapshots:
 
   '@intlify/utils@0.14.1': {}
 
-  '@intlify/vue-i18n-extensions@8.0.0(@intlify/shared@11.3.0)(@vue/compiler-dom@3.5.33)(vue-i18n@11.4.0(vue@3.5.18(typescript@5.9.3)))(vue@3.5.18(typescript@5.9.3))':
+  '@intlify/vue-i18n-extensions@8.0.0(@intlify/shared@11.4.0)(@vue/compiler-dom@3.5.33)(vue-i18n@11.4.0(vue@3.5.18(typescript@5.9.3)))(vue@3.5.18(typescript@5.9.3))':
     dependencies:
       '@babel/parser': 7.29.2
     optionalDependencies:
-      '@intlify/shared': 11.3.0
+      '@intlify/shared': 11.4.0
       '@vue/compiler-dom': 3.5.33
       vue: 3.5.18(typescript@5.9.3)
       vue-i18n: 11.4.0(vue@3.5.18(typescript@5.9.3))
@@ -5866,7 +5866,7 @@ snapshots:
     dependencies:
       '@intlify/core': 11.4.0
       '@intlify/h3': 0.7.4
-      '@intlify/shared': 11.3.0
+      '@intlify/shared': 11.4.0
       '@intlify/unplugin-vue-i18n': 11.1.2(@vue/compiler-dom@3.5.33)(eslint@9.39.1(jiti@2.6.1))(rollup@4.60.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.6.0)(jiti@2.6.1)(sass@1.99.0)(terser@5.46.1)(yaml@2.8.3))(vue-i18n@11.4.0(vue@3.5.18(typescript@5.9.3)))(vue@3.5.18(typescript@5.9.3))
       '@intlify/utils': 0.14.1
       '@miyaneee/rollup-plugin-json5': 1.2.0(rollup@4.60.0)
