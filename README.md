@@ -43,7 +43,7 @@ API_DOMAIN=localhost:3000
 # db
 POSTGRES_PASSWORD=password
 
-RAILS_MASTER_KEY=3997bc68fe5b50044517266c993b7876
+RAILS_MASTER_KEY=<your_rails_master_key>
 ```
 
 Nuxt 側は以下の通りアプリケーション名だけ指定する
@@ -440,7 +440,7 @@ curl -X POST https://jwt-v1-api.herokuapp.com/api/v1/auth_token \
 -H "X-Requested-With: XMLHttpRequest" \
 -H "Content-Type: application/json" \
 -d '{"auth": {"email": "user1@example.com", "password": "password"}}'
-{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQyMDgyODYsInN1YiI6ImpnY0xCcUlnT0NSRy9Bb3BWcUtiTzhITFRuc2V1R1A0QkZuWVM2VDZsbGFnZ1R3YWFRUTlGWjM5VEtaQ0NDanNjS1BtQ2ZHb1hVYnBpN2xzT2FBcjl0c2RLaGpKY2I3YmtXOD0tLTlzRUN2VE1jUzRKcVE1SE0tLVRITHd6RjVsRUZFZzR6aU1HWWFsZ0E9PSIsImlzcyI6Imh0dHBzOi8vand0LXYxLWFwaS5oZXJva3VhcHAuY29tIiwiYXVkIjoiaHR0cHM6Ly9qd3QtdjEtYXBpLmhlcm9rdWFwcC5jb20ifQ.hNN40CNVjrna5CITDZ7jToJNLHI3a33kwc9uV64I4mw","expires":1654208286,"user":{"id":2,"name":"user1","sub":"jgcLBqIgOCRG/AopVqKbO8HLTnseuGP4BFnYS6T6llaggTwaaQQ9FZ39TKZCCCjscKPmCfGoXUbpi7lsOaAr9tsdKhjJcb7bkW8=--9sECvTMcS4JqQ5HM--THLwzF5lEFEg4ziMGYalgA=="}}%
+{"token":"<JWT_ACCESS_TOKEN>","expires":1654208286,"user":{"id":2,"name":"user1","sub":"<ENCRYPTED_SUBJECT>"}}%
 ```
 
 再度ユーザ情報を見てみる。
@@ -467,12 +467,12 @@ teruo.kakikubo@QCPF6X4PQY ~/Documents/jwt-rails/api %
 
 ```sh
 teruo.kakikubo@QCPF6X4PQY ~/Documents/jwt-rails/api % heroku logs --tail
-2022-06-02T21:35:40.055012+00:00 app[web.1]: I, [2022-06-03T06:35:40.054921 #6]  INFO -- : [5f12ade5-86a9-4c41-b2a2-8956f24f59e8] Started POST "/api/v1/auth_token" for 150.249.253.216 at 2022-06-03 06:35:40 +0900
-2022-06-02T21:35:40.056407+00:00 app[web.1]: I, [2022-06-03T06:35:40.056335 #6]  INFO -- : [5f12ade5-86a9-4c41-b2a2-8956f24f59e8] Processing by Api::V1::AuthTokenController#create as */*
-2022-06-02T21:35:40.056534+00:00 app[web.1]: I, [2022-06-03T06:35:40.056453 #6]  INFO -- : [5f12ade5-86a9-4c41-b2a2-8956f24f59e8]   Parameters: {"auth"=>{"email"=>"user0@example.com", "password"=>"[FILTERED]"}, "auth_token"=>{"auth"=>{"email"=>"user0@example.com", "password"=>"[FILTERED]"}}}
-2022-06-02T21:35:40.393250+00:00 heroku[router]: at=info method=POST path="/api/v1/auth_token" host=jwt-v1-api.herokuapp.com request_id=5f12ade5-86a9-4c41-b2a2-8956f24f59e8 fwd="150.249.253.216" dyno=web.1 connect=0ms service=343ms status=200 bytes=1626 protocol=https
-2022-06-02T21:35:40.396164+00:00 app[web.1]: I, [2022-06-03T06:35:40.396081 #6]  INFO -- : [5f12ade5-86a9-4c41-b2a2-8956f24f59e8] Completed 200 OK in 339ms (Views: 0.3ms | ActiveRecord: 12.2ms | Allocations: 1377)
-2022-06-02T21:35:46.884513+00:00 app[web.1]: I, [2022-06-03T06:35:46.884435 #6]  INFO -- : [505f0ae4-71bb-46f2-ba78-9d941ed4bdeb] Started POST "/api/v1/auth_token" for 150.249.253.216 at 2022-06-03 06:35:46 +0900
+2022-06-02T21:35:40.055012+00:00 app[web.1]: I, [2022-06-03T06:35:40.054921 #6]  INFO -- : [<request_id>] Started POST "/api/v1/auth_token" for 150.249.253.216 at 2022-06-03 06:35:40 +0900
+2022-06-02T21:35:40.056407+00:00 app[web.1]: I, [2022-06-03T06:35:40.056335 #6]  INFO -- : [<request_id>] Processing by Api::V1::AuthTokenController#create as */*
+2022-06-02T21:35:40.056534+00:00 app[web.1]: I, [2022-06-03T06:35:40.056453 #6]  INFO -- : [<request_id>]   Parameters: {"auth"=>{"email"=>"user0@example.com", "password"=>"[FILTERED]"}, "auth_token"=>{"auth"=>{"email"=>"user0@example.com", "password"=>"[FILTERED]"}}}
+2022-06-02T21:35:40.393250+00:00 heroku[router]: at=info method=POST path="/api/v1/auth_token" host=jwt-v1-api.herokuapp.com request_id=<request_id> fwd="150.249.253.216" dyno=web.1 connect=0ms service=343ms status=200 bytes=1626 protocol=https
+2022-06-02T21:35:40.396164+00:00 app[web.1]: I, [2022-06-03T06:35:40.396081 #6]  INFO -- : [<request_id>] Completed 200 OK in 339ms (Views: 0.3ms | ActiveRecord: 12.2ms | Allocations: 1377)
+2022-06-02T21:35:46.884513+00:00 app[web.1]: I, [2022-06-03T06:35:46.884435 #6]  INFO -- : [<request_id>] Started POST "/api/v1/auth_token" for 150.249.253.216 at 2022-06-03 06:35:46 +0900
 ```
 
 ### リフレッシュとアクセスを使った Rails のログイン機能の構築
