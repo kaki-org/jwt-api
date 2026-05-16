@@ -87,7 +87,9 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+          # テスト環境の secret_key_base は使い捨てで秘匿不要のため固定値を直書き
+          # （本番/staging の SECRET_KEY_BASE は各環境の環境変数で別途設定する）
+          SECRET_KEY_BASE: ci_test_dummy_secret_key_base_not_used_in_production_0123456789abcdef
           BASE_URL: 'http://localhost:3000'
       - name: Upload coverage reports
         uses: codecov/codecov-action@v6
