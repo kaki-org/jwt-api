@@ -60,3 +60,7 @@ coverage/*
 .vscode/*
 .zed/*
 .serena/*
+
+# gitleaks スキャンレポート（秘密情報を含むためコミットしない）
+gitleaks-report*.json
+gitleaks-uncommitted*.json
