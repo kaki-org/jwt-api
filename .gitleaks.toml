@@ -1,0 +1,31 @@
+# gitleaks 設定
+# 既定ルールセットを使いつつ、ビルド成果物・依存・スキャンレポートを除外する。
+# 注意: 過去コミット(2022年)に露出した秘密情報は鍵ローテーション済みのため
+#       履歴は意図的に書き換えていない。CI は `gitleaks dir`(作業ツリー走査)
+#       で運用し、履歴の既知検出を再フラグしない。詳細は SECURITY.md を参照。
+
+title = "jwt-api gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "ビルド成果物・依存パッケージ・スキャンレポートを除外"
+paths = [
+  '''(^|/)node_modules/''',
+  '''(^|/)tmp/''',
+  '''(^|/)vendor/''',
+  '''(^|/)coverage/''',
+  '''(^|/)front/(dist|\.nuxt|\.output|node_modules)/''',
+  '''^gitleaks-report.*\.json$''',
+  # direnv/dotenv のローカル専用ファイル（.gitignore 済・コミット対象外）
+  '''^\.envrc$''',
+  '''^\.env$''',
+]
+regexes = [
+  # README のドキュメント用プレースホルダ
+  '''<your_rails_master_key>''',
+  '''<JWT_ACCESS_TOKEN>''',
+  '''<ENCRYPTED_SUBJECT>''',
+  '''<request_id>''',
+]
