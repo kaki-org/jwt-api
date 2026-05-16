@@ -4,7 +4,7 @@ services:
   # サービス（コンテナ）
   db:
     # ベースイメージを定義
-    image: postgres:18.3-alpine
+    image: postgres:18.4-alpine
     environment:
       # OSのタイムゾーン
       TZ: UTC
@@ -31,7 +31,7 @@ services:
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       API_DOMAIN: "localhost:$FRONT_PORT"
       BASE_URL: "http://localhost:$API_PORT"
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
     command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - "./:/$WORKDIR:delegated"
