@@ -87,7 +87,7 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
           BASE_URL: 'http://localhost:3000'
       - name: Upload coverage reports
         uses: codecov/codecov-action@v6
