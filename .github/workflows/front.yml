@@ -6,6 +6,7 @@ on:
     types: [opened, reopened, synchronize]
     paths:
       - front/**
+      - .github/workflows/front.yml
 
 concurrency:
   group: jwt-api-front-${{ github.event.pull_request.head.ref || github.ref_name }}
