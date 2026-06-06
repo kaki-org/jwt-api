@@ -53,6 +53,7 @@
       "platformAutomerge": true,
       "matchPackageNames": [
         "/^@types/",
+        "/^pnpm$/",
         "/^rubocop*/",
         "/^rspec*/",
         "/^minitest*/",
