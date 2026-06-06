@@ -1,0 +1,8 @@
+# pnpm 11 では package.json の "pnpm" フィールドが読まれないため、
+# ビルドスクリプト許可設定をここへ移行する。
+onlyBuiltDependencies:
+  - esbuild
+  - unrs-resolver
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - core-js
