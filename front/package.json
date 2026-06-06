@@ -43,18 +43,5 @@
     "sass": "^1.70.0",
     "vitest": "^3.2.4",
     "vue-tsc": "^3.0.5"
-  },
-  "pnpm": {
-    "overrides": {
-      "tar": ">=7.5.8"
-    },
-    "ignoredBuiltDependencies": [
-      "@parcel/watcher",
-      "core-js"
-    ],
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "unrs-resolver"
-    ]
   }
 }
