@@ -57,6 +57,7 @@
         "/^rspec*/",
         "/^minitest*/",
         "/^@nuxtjs/eslint/",
+        "/^@nuxtjs/i18n$/",
         "/^crawler$/",
         "/^eslint/",
         "/^jest/",
