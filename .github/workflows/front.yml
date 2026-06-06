@@ -23,9 +23,12 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      # packageManager フィールド(pnpm@11.1.2)に従ってインストールされる
+      # front/package.json の packageManager フィールド(pnpm@11.4.0)に従う。
+      # action-setup はリポジトリルートを見るため明示的にパスを指定する。
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        with:
+          package_json_file: front/package.json
 
       - name: Setup Node
         uses: actions/setup-node@v4
