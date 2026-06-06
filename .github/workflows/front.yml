@@ -44,6 +44,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      # tsconfig.json が extends する .nuxt/tsconfig.json を生成(gitignore対象のため)
+      # postinstall:nuxt prepare は --ignore-scripts でスキップされるため明示的に実行する。
+      - name: Prepare Nuxt
+        run: pnpm exec nuxi prepare
+
       # pnpm test ではなく exec で実行する。pnpm run は実行前に
       # 依存状態の検証(node_modules の再インストール)を行い CI で不安定なため。
       - name: Run Vitest
