@@ -1,9 +1,0 @@
-# pnpm 11 では package.json の "pnpm" フィールドが読まれないため、
-# overrides とビルドスクリプト許可をここで定義する。
-# allowBuilds は各依存のビルドスクリプト実行可否を明示する pnpm 11 形式。
-overrides:
-  tar: '>=7.5.8'
-allowBuilds:
-  esbuild: true
-  '@parcel/watcher': false
-  core-js: false

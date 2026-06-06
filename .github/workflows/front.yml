@@ -38,8 +38,13 @@ jobs:
           cache: pnpm
           cache-dependency-path: front/pnpm-lock.yaml
 
+      # --ignore-scripts: pnpm 11 はビルドスクリプト未承認時に
+      # ERR_PNPM_IGNORED_BUILDS で失敗するが、Vitest はビルド不要のため
+      # スクリプトを実行せずにインストールする。
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
+      # pnpm test ではなく exec で実行する。pnpm run は実行前に
+      # 依存状態の検証(node_modules の再インストール)を行い CI で不安定なため。
       - name: Run Vitest
-        run: pnpm test
+        run: pnpm exec vitest run
