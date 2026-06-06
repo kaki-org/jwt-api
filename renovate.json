@@ -61,6 +61,7 @@
         "/^crawler$/",
         "/^eslint/",
         "/^jest/",
+        "/^node-gyp$/",
         "/^ts-jest$/",
         "/^playwright/",
         "/^http-server$/",
