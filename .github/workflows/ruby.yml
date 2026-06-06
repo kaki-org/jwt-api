@@ -99,3 +99,4 @@ jobs:
           flags: unittests
           name: ruby-sample-for-codecov
           fail_ci_if_error: true
+          skip_validation: true
