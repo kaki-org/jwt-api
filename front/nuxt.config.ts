@@ -102,6 +102,8 @@ export default defineNuxtConfig({
     strategy: 'no_prefix',
     // 翻訳ファイルの配置ディレクトリ
     langDir: 'locales/',
+    // @nuxtjs/i18n v10 既定の i18n/ 配下探索を無効化し従来の locales/ 構造に合わせる
+    restructureDir: false,
     // Vue I18n設定
     vueI18n: './i18n.config.ts',
   },
