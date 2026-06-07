@@ -92,7 +92,7 @@ jobs:
           SECRET_KEY_BASE: ci_test_dummy_secret_key_base_not_used_in_production_0123456789abcdef
           BASE_URL: 'http://localhost:3000'
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # 対象リポジトリがpublicリポジトリならばトークン不要
           files: ./coverage/coverage.xml
