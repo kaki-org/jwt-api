@@ -26,7 +26,8 @@ npm run lint     # Spectral で openapi.yaml を oas lint
 `.github/workflows/apidoc.yml` が以下を行う:
 
 1. **lint**（PR・push 双方）: `npm run lint`（Spectral）。失敗すると後続を停止。
-2. **build / deploy**（`develop` への push、`apidoc/**` 変更時のみ）: `npm run build` →
+2. **build / deploy**（`develop` への push かつ `apidoc/**` または
+   `.github/workflows/apidoc.yml` の変更時のみ）: `npm run build` →
    GitHub Pages 公式アクションで公開。
 
 ## リポジトリ設定（初回のみ）

@@ -129,6 +129,12 @@ paths:
       responses:
         '200':
           description: ログアウト成功。ボディは空。
+          headers:
+            Set-Cookie:
+              description: 失効済みのリフレッシュトークン Cookie（クライアントはこれで完了を判定できる）
+              schema:
+                type: string
+              example: refresh_token=; path=/; HttpOnly; Max-Age=0
         '401':
           description: セッション無効（リフレッシュトークン Cookie なし／無効）。ボディは空。
         '403':
