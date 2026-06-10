@@ -1,0 +1,296 @@
+openapi: 3.1.0
+info:
+  title: jwt-api API
+  version: 1.0.0
+  description: |
+    JWT 認証システムを備えた Rails API の仕様書。
+
+    ## 認証方式（Dual-Token パターン）
+
+    - **アクセストークン**: 有効期限 30 分。`Authorization: Bearer <token>` ヘッダで送信。
+      Rails MessageEncryptor で暗号化された `user_id`（subject）を含む。
+    - **リフレッシュトークン**: 有効期限 24 時間。HttpOnly Cookie（`refresh_token`）に格納。
+      jti（JWT ID）をサーバー側（`users.refresh_jti`）で照合し、リプレイ攻撃を防止する。
+
+    ## 共通の必須ヘッダ（CSRF 対策）
+
+    すべてのリクエストに `X-Requested-With: XMLHttpRequest` ヘッダが必要。
+    欠如している場合は `403 Forbidden` を返す。
+  contact:
+    name: kaki-org/jwt-api
+    url: https://github.com/kaki-org/jwt-api
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:33000
+    description: ローカル開発環境（Docker）
+  - url: https://{host}
+    description: 本番環境
+    variables:
+      host:
+        default: example.herokuapp.com
+
+tags:
+  - name: Authentication
+    description: トークンの発行・更新・破棄
+  - name: Projects
+    description: プロジェクト一覧
+
+paths:
+  /api/v1/auth_token:
+    post:
+      tags:
+        - Authentication
+      summary: ログイン（トークン発行）
+      description: |
+        メールアドレスとパスワードで認証し、アクセストークンを発行する。
+        リフレッシュトークンは HttpOnly Cookie（`refresh_token`）として `Set-Cookie` で返却される。
+      operationId: createAuthToken
+      parameters:
+        - $ref: '#/components/parameters/XRequestedWith'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: ログイン成功。アクセストークンとユーザー情報を返す。
+          headers:
+            Set-Cookie:
+              description: リフレッシュトークン（HttpOnly Cookie）
+              schema:
+                type: string
+              example: refresh_token=eyJhbGciOi...; path=/; HttpOnly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: 認証失敗（資格情報不一致、または非アクティブユーザー）。ボディは空。
+
+  /api/v1/auth_token/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: トークンリフレッシュ
+      description: |
+        HttpOnly Cookie の `refresh_token` を検証し、新しいアクセストークンを発行する。
+        新しいリフレッシュトークンが `Set-Cookie` で再発行される。
+        jti がサーバー側の値と一致しない場合（リプレイ検知）は `401` を返す。
+      operationId: refreshAuthToken
+      security:
+        - refreshCookie: []
+      parameters:
+        - $ref: '#/components/parameters/XRequestedWith'
+      responses:
+        '200':
+          description: リフレッシュ成功。ログインと同一のスキーマを返す。
+          headers:
+            Set-Cookie:
+              description: 再発行されたリフレッシュトークン（HttpOnly Cookie）
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: |
+            セッション無効。次のいずれか:
+            - リフレッシュトークン Cookie が存在しない／復号できない（ボディは空）
+            - jti 不一致（リプレイ検知）。下記スキーマのエラーボディを返す。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                error: Invalid jti for refresh token
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/v1/auth_token/destroy:
+    delete:
+      tags:
+        - Authentication
+      summary: ログアウト（トークン破棄）
+      description: |
+        サーバー側の `refresh_jti` を破棄し、リフレッシュトークン Cookie を削除する。
+      operationId: destroyAuthToken
+      security:
+        - refreshCookie: []
+      parameters:
+        - $ref: '#/components/parameters/XRequestedWith'
+      responses:
+        '200':
+          description: ログアウト成功。ボディは空。
+        '401':
+          description: セッション無効（リフレッシュトークン Cookie なし／無効）。ボディは空。
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          description: セッション削除に失敗。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                error: Could not delete session
+
+  /api/v1/projects:
+    get:
+      tags:
+        - Projects
+      summary: プロジェクト一覧
+      description: |
+        認証済み（かつメール認証済み）ユーザーのプロジェクト一覧を返す。
+        `Authorization: Bearer <access_token>` が必要。
+      operationId: listProjects
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XRequestedWith'
+      responses:
+        '200':
+          description: プロジェクト一覧。
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '401':
+          description: 未認証、またはアクセストークンが無効／非アクティブユーザー。ボディは空。
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  parameters:
+    XRequestedWith:
+      name: X-Requested-With
+      in: header
+      required: true
+      description: CSRF 対策。`XMLHttpRequest` 固定。欠如時は 403 を返す。
+      schema:
+        type: string
+        enum:
+          - XMLHttpRequest
+        default: XMLHttpRequest
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        アクセストークン。`Authorization: Bearer <token>`。
+        Rails MessageEncryptor で暗号化された user_id（subject）を含む JWT。有効期限 30 分。
+    refreshCookie:
+      type: apiKey
+      in: cookie
+      name: refresh_token
+      description: |
+        リフレッシュトークン（HttpOnly Cookie）。有効期限 24 時間。
+        jti をサーバー側（`users.refresh_jti`）で照合する。
+
+  responses:
+    Forbidden:
+      description: |
+        `X-Requested-With: XMLHttpRequest` ヘッダが欠如している（CSRF 対策）。
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 403
+            error: Forbidden
+
+  schemas:
+    AuthRequest:
+      type: object
+      required:
+        - auth
+      properties:
+        auth:
+          type: object
+          required:
+            - email
+            - password
+          properties:
+            email:
+              type: string
+              format: email
+              example: user@example.com
+            password:
+              type: string
+              format: password
+              example: password
+
+    LoginResponse:
+      type: object
+      required:
+        - token
+        - expires
+        - user
+      properties:
+        token:
+          type: string
+          description: アクセストークン（JWT）。
+          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIuLi4ifQ.signature
+        expires:
+          type: integer
+          format: int64
+          description: アクセストークンの有効期限（UNIX エポック秒）。
+          example: 1718000000
+        user:
+          $ref: '#/components/schemas/User'
+
+    User:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: example
+
+    Project:
+      type: object
+      required:
+        - id
+        - name
+        - updatedAt
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: example project 01
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2021-04-01T06:00:00.000Z'
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - error
+      properties:
+        status:
+          type: integer
+          example: 401
+        error:
+          type: string
+          example: Unauthorized

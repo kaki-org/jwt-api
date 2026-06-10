@@ -1,0 +1,23 @@
+{
+  "name": "apidoc",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Stoplight Elements で jwt-api の OpenAPI 仕様書を描画する独立 Vite プロジェクト",
+  "engines": {
+    "node": ">=20.12.2"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "spectral lint openapi.yaml"
+  },
+  "dependencies": {
+    "@stoplight/elements": "^9.0.0"
+  },
+  "devDependencies": {
+    "@stoplight/spectral-cli": "^6.15.0",
+    "vite": "^7.0.0"
+  }
+}
