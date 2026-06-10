@@ -22,8 +22,11 @@ permissions:
 
 # 同一ブランチの実行をまとめる。Pages デプロイの取りこぼしを防ぐため
 # push 時は cancel-in-progress を無効化する。
+# event_name をグループに含め、PR run が push（deploy）run を
+# キャンセルしないようにする。git-pr-release の develop→master PR は
+# head.ref=develop となり push と同一グループに衝突するため、これで分離する。
 concurrency:
-  group: jwt-api-apidoc-${{ github.event.pull_request.head.ref || github.ref_name }}
+  group: jwt-api-apidoc-${{ github.event_name }}-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 defaults:
