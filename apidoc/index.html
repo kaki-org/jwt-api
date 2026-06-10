@@ -6,9 +6,10 @@
     <title>jwt-api API ドキュメント</title>
   </head>
   <body style="margin: 0; height: 100vh">
-    <!-- openapi.yaml の URL は src/main.ts が apiDescriptionUrl 属性へ注入する -->
-    <elements-api router="hash" layout="sidebar" tryItCredentialsPolicy="same-origin">
-    </elements-api>
+    <!-- <elements-api> は src/main.ts が apiDescriptionUrl を含めた属性ごと生成する。
+         属性を後付け（setAttribute）すると Stoplight Elements が loading のまま
+         固定されるため、ここには空のマウント先だけを置く。 -->
+    <div id="app" style="height: 100vh"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
