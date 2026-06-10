@@ -28,7 +28,7 @@
 
 ### ローカルで検証済み
 - `openapi.yaml`・`apidoc.yml`・`package.json` の構文 OK
-- OpenAPI 内 7 件の `$ref` がすべて解決 OK
+- OpenAPI 内の `$ref`（ユニーク 7 種 / 延べ 16 箇所）がすべて解決 OK
 - `actionlint .github/workflows/apidoc.yml` PASS
 
 ### CI で実行（ローカル未実行の理由）

@@ -15,11 +15,10 @@ on:
       - apidoc/**
       - .github/workflows/apidoc.yml
 
-# GitHub Pages デプロイに必要な権限
+# 既定は最小権限（読み取りのみ）。Pages デプロイに必要な write 権限は
+# build / deploy ジョブに限定して付与する。
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # 同一ブランチの実行をまとめる。Pages デプロイの取りこぼしを防ぐため
 # push 時は cancel-in-progress を無効化する。
@@ -58,6 +57,10 @@ jobs:
     needs: lint
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
@@ -87,6 +90,9 @@ jobs:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

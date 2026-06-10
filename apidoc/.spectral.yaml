@@ -1,2 +1,30 @@
 extends:
   - "spectral:oas"
+
+# プロジェクト固有ルール。
+# 注: require-operation-security は追加しない。ログイン（POST /api/v1/auth_token）は
+# 認証不要の公開エンドポイントであり、全 operation に security を必須化すると誤検知するため。
+rules:
+  # 全 operation に X-Requested-With ヘッダパラメータ（CSRF 対策）が必須。
+  # CLAUDE.md 記載の「全リクエストに X-Requested-With: XMLHttpRequest が必要」を CI で担保する。
+  operation-requires-x-requested-with:
+    description: 全 operation に X-Requested-With ヘッダパラメータ（CSRF 対策）が必須
+    message: "{{path}} に X-Requested-With ヘッダパラメータがありません"
+    severity: error
+    given: "$.paths[*][get,put,post,delete,patch]"
+    then:
+      field: parameters
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          contains:
+            type: object
+            required:
+              - name
+              - in
+            properties:
+              name:
+                const: X-Requested-With
+              in:
+                const: header
