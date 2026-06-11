@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+    id="password"
     v-model="setPassword"
     :rules="form.rules"
     :hint="form.hint"
@@ -7,12 +8,24 @@
     :placeholder="form.placeholder"
     :hide-details="!setValidation"
     :counter="setValidation"
-    :append-icon="toggle.icon"
     :type="toggle.type"
     outlined
     autocomplete="on"
-    @click:append="show = !show"
-  />
+  >
+    <template #append>
+      <v-icon
+        role="button"
+        tabindex="0"
+        :aria-label="toggle.ariaLabel"
+        :aria-pressed="show"
+        @click="show = !show"
+        @keydown.enter="show = !show"
+        @keydown.space.prevent="show = !show"
+      >
+        {{ toggle.icon }}
+      </v-icon>
+    </template>
+  </v-text-field>
 </template>
 
 <script>
@@ -57,7 +70,8 @@ export default {
     toggle() {
       const icon = this.show ? 'mdi-eye' : 'mdi-eye-off'
       const type = this.show ? 'text' : 'password'
-      return { icon, type }
+      const ariaLabel = this.show ? 'パスワードを隠す' : 'パスワードを表示'
+      return { icon, type, ariaLabel }
     },
   },
 }
