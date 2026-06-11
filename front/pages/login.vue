@@ -4,17 +4,20 @@
       <v-form
         ref="form"
         v-model="isValid"
+        aria-label="ログインフォーム"
         @submit.prevent="login"
       >
         <user-form-email v-model:email="params.auth.email" />
         <user-form-password v-model:password="params.auth.password" />
         <v-card-actions>
-          <nuxt-link
-            to="#"
-            class="body-2 text-decoration-none"
+          <!-- パスワードリセット機能は未実装。実装までは操作不可として明示する -->
+          <span
+            class="body-2 text-medium-emphasis"
+            aria-disabled="true"
+            title="準備中の機能です"
           >
             パスワードを忘れた？
-          </nuxt-link>
+          </span>
         </v-card-actions>
         <v-card-text class="px-0">
           <v-btn
