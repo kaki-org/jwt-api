@@ -7,12 +7,13 @@ import '@stoplight/elements/styles.min.css';
 // 正本は apidoc/openapi.yaml のまま保持できる。
 import apiDescriptionUrl from '../openapi.yaml?url';
 
-async function mount(): Promise<void> {
-  await customElements.whenDefined('elements-api');
-  const api = document.querySelector('elements-api');
-  if (api) {
-    api.setAttribute('apiDescriptionUrl', apiDescriptionUrl);
-  }
-}
+// <elements-api> は DOM へ追加する前に全属性（特に apiDescriptionUrl）を確定させる。
+// マウント後に setAttribute すると Stoplight Elements が loading のまま固定されて
+// 空白ページになるため、属性をそろえてから appendChild する。
+const api = document.createElement('elements-api');
+api.setAttribute('apiDescriptionUrl', apiDescriptionUrl);
+api.setAttribute('router', 'hash');
+api.setAttribute('layout', 'sidebar');
+api.setAttribute('tryItCredentialsPolicy', 'same-origin');
 
-void mount();
+document.getElementById('app')?.appendChild(api);
