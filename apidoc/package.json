@@ -18,6 +18,6 @@
   },
   "devDependencies": {
     "@stoplight/spectral-cli": "^6.15.0",
-    "vite": "^7.0.0"
+    "vite": "^8.0.0"
   }
 }
