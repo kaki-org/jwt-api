@@ -160,7 +160,7 @@ GEM
     psych (5.3.1)
       date
       stringio
-    puma (8.0.0)
+    puma (8.0.2)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.6)
@@ -245,7 +245,7 @@ GEM
     rubocop-ast (1.49.1)
       parser (>= 3.3.7.2)
       prism (~> 1.7)
-    rubocop-rails (2.35.3)
+    rubocop-rails (2.35.4)
       activesupport (>= 4.2.0)
       lint_roller (~> 1.1)
       rack (>= 1.1)
@@ -295,7 +295,7 @@ DEPENDENCIES
   jwt (~> 3.0)
   minitest-reporters (~> 1.6)
   pg (~> 1.5)
-  puma (~> 8.0)
+  puma (~> 8.0, >= 8.0.2)
   rack-cors (>= 2.0.2)
   rails (~> 8.1.2, >= 8.1.2.1)
   rspec-rails

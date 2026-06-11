@@ -1,0 +1,105 @@
+name: API Doc
+
+# apidoc/ の OpenAPI 仕様書を Spectral で lint し、
+# develop への push で Stoplight Elements を GitHub Pages へ公開する。
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - apidoc/**
+      - .github/workflows/apidoc.yml
+  pull_request:
+    types: [opened, reopened, synchronize]
+    paths:
+      - apidoc/**
+      - .github/workflows/apidoc.yml
+
+# 既定は最小権限（読み取りのみ）。Pages デプロイに必要な write 権限は
+# build / deploy ジョブに限定して付与する。
+permissions:
+  contents: read
+
+# 同一ブランチの実行をまとめる。Pages デプロイの取りこぼしを防ぐため
+# push 時は cancel-in-progress を無効化する。
+# event_name をグループに含め、PR run が push（deploy）run を
+# キャンセルしないようにする。git-pr-release の develop→master PR は
+# head.ref=develop となり push と同一グループに衝突するため、これで分離する。
+concurrency:
+  group: jwt-api-apidoc-${{ github.event_name }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+defaults:
+  run:
+    working-directory: apidoc
+
+jobs:
+  # Spectral による OpenAPI lint（PR・push 双方で実行）。失敗時は後続を停止する。
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Spectral lint
+        run: npm run lint
+
+  # develop への push のみ build → deploy を行う。
+  build:
+    needs: lint
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: apidoc/dist
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128
