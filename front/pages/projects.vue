@@ -3,7 +3,7 @@
     <v-parallax>
       <v-img
         :src="homeImg"
-        alt="homeImg"
+        alt="プロジェクト一覧のヘッダー画像"
         :aspect-ratio="16 / 9"
         gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
       >

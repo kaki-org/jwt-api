@@ -2,6 +2,7 @@
   <v-breadcrumbs
     :items="items"
     class="d-block text-truncate"
+    aria-label="パンくずリスト"
   >
     <template #item="{ item }">
       <v-breadcrumbs-item>
@@ -14,7 +15,7 @@
       </v-breadcrumbs-item>
     </template>
     <template #divider>
-      <v-icon> mdi-chevron-right </v-icon>
+      <v-icon aria-hidden="true"> mdi-chevron-right </v-icon>
     </template>
   </v-breadcrumbs>
 </template>
