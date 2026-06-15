@@ -1,8 +1,11 @@
 <template>
   <v-text-field
+    id="email"
     v-model="setEmail"
     :rules="rules"
     label="メールアドレスを入力"
+    type="email"
+    autocomplete="email"
     :placeholder="placeholder ? 'your@email.com' : undefined"
     outlined
   />

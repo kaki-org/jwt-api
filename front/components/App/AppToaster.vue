@@ -27,6 +27,7 @@
         v-bind="attrs"
         text
         :color="toast.color"
+        aria-label="通知を閉じる"
         @click="resetToast"
       >
         Close
