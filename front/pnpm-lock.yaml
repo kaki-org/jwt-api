@@ -16,7 +16,7 @@ importers:
         version: 11.4.6
       '@intlify/shared':
         specifier: ^11.0.0
-        version: 11.4.5
+        version: 11.4.6
       '@mdi/font':
         specifier: ^7.4.47
         version: 7.4.47
