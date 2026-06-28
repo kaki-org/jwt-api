@@ -24,7 +24,7 @@ jobs:
     # 10分間のタイムアウトを設定
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install gitleaks
         env:
