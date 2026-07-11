@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Slack Notify
-        uses: slackapi/slack-github-action@v3.0.4
+        uses: slackapi/slack-github-action@v3.0.5
         with:
           channel-id: "C04NTKALV63"
           payload: |
