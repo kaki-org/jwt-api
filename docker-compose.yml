@@ -14,7 +14,9 @@ services:
     # ホスト側のディレクトリをコンテナで使用する
     # volumes: ホストパス（絶対 or 相対):コンテナパス(絶対)
     volumes:
-      - ./pgsql-data:/var/lib/postgresql/data
+      # postgres:18以降はPGDATAがバージョン別サブディレクトリに移動したため
+      # /var/lib/postgresql (親ディレクトリ) をマウントする
+      - ./pgsql-data:/var/lib/postgresql
     # volumes:
     #   - "pgsql-volume:/var/lib/postgresql/data"
     ports:
