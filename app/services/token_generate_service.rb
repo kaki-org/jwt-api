@@ -34,8 +34,9 @@ module TokenGenerateService
   ## インスタンスメソッド
 
   # アクセストークンのインスタンス生成
+  # verクレームに現在のtoken_versionを付与し、ログアウトで一括失効できるようにする
   def encode_access_token(payload = {})
-    UserAuth::AccessToken.new(user_id: id, payload:)
+    UserAuth::AccessToken.new(user_id: id, payload: { ver: token_version }.merge(payload))
   end
 
   # アクセストークンを返す(期限変更 => lifetime: 10.minute)

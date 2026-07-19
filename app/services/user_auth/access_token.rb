@@ -28,8 +28,12 @@ module UserAuth
     # rubocop:enable Metrics/AbcSize,Metrics/MethodLength
 
     # 暗号化された@user_idからユーザーを取得する
+    # verクレームがユーザーの現行token_versionと不一致の場合は失効済みとして扱う
     def entity_for_user
-      User.find(decrypt_for(@user_id))
+      user = User.find(decrypt_for(@user_id))
+      raise UserAuth::RevokedTokenError unless token_version_valid?(user)
+
+      user
     end
 
     # @lifetimeの日本語テキストを返す
@@ -95,6 +99,11 @@ module UserAuth
     # @optionsのsubの値を返す
     def token_subject
       verify_subject? && @options[:sub]
+    end
+
+    # verクレーム(未指定のレガシートークンは0とみなす)がユーザーの現行token_versionと一致するか
+    def token_version_valid?(user)
+      @payload.with_indifferent_access.fetch(:ver, 0).to_i == user.token_version
     end
 
     # デコード時のデフォルトオプション

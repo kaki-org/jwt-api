@@ -62,9 +62,9 @@ class User < ApplicationRecord
     update!(refresh_jti: jti)
   end
 
-  # リフレッシュトークンのJWT IDを削除する
+  # リフレッシュトークンのJWT IDを削除し、発行済みアクセストークンを失効させる
   def forget
-    update!(refresh_jti: nil)
+    update!(refresh_jti: nil, token_version: token_version + 1)
   end
 
   # 共通のJSONレスポンス

@@ -16,6 +16,17 @@
   gitleaks dir . --config .gitleaks.toml --redact --verbose
   ```
 
+## トークン失効ポリシー
+
+- 認証は短命のアクセストークン（JWT・30分）と HttpOnly Cookie のリフレッシュ
+  トークン（1日）の2段構成。
+- ログアウト（`DELETE /api/v1/auth_token/destroy`）時は以下を実施する。
+  1. `users.refresh_jti` を削除し、リフレッシュトークンを即時失効させる。
+  2. `users.token_version` をインクリメントし、発行済みアクセストークンを
+     即時失効させる（アクセストークンの `ver` クレームと照合し、不一致は 401）。
+- `ver` クレームを持たない旧形式のアクセストークンは、そのユーザーの
+  `token_version` が初期値 0 の間のみ有効（初回ログアウトで失効する移行措置）。
+
 ## インシデント記録: README への秘密情報混入（2022年）
 
 ### 概要
