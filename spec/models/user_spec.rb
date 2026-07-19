@@ -217,4 +217,21 @@ RSpec.describe User do
       end
     end
   end
+
+  describe 'トークン失効' do
+    context 'forgetを実行する場合' do
+      let(:user) { described_class.create(name: 'test', email: 'forget@example.com', password: 'password') }
+
+      before { user.remember('dummy_jti') }
+
+      it 'refresh_jtiが削除されているか' do
+        user.forget
+        expect(user.reload.refresh_jti).to be_nil
+      end
+
+      it 'token_versionがインクリメントされているか' do
+        expect { user.forget }.to change { user.reload.token_version }.by(1)
+      end
+    end
+  end
 end
