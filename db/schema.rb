@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 20_260_719_020_000) do
+ActiveRecord::Schema[8.1].define(version: 20_260_720_000_000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'pg_catalog.plpgsql'
 
@@ -26,5 +26,7 @@ ActiveRecord::Schema[8.1].define(version: 20_260_719_020_000) do
     t.string 'refresh_jti'
     t.integer 'token_version', default: 0, null: false
     t.datetime 'updated_at', null: false
+    t.index ['email'], name: 'index_users_on_email_activated', unique: true, where: 'activated'
+    t.index ['refresh_jti'], name: 'index_users_on_refresh_jti', unique: true
   end
 end
