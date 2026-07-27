@@ -272,6 +272,29 @@ RSpec.describe 'Api::V1::AuthTokens' do
           end
         end
 
+        context 'アクセストークン失効の場合' do
+          before do
+            @old_access_token = res_body[access_token_key]
+            logout
+          end
+
+          it 'token_versionはインクリメントされているか' do
+            user.reload
+            expect(user.token_version).to eq(1)
+          end
+
+          it 'ログアウト後は旧アクセストークンで保護リソースにアクセスできないか' do
+            projects_api(@old_access_token)
+            expect(response).to have_http_status(:unauthorized)
+          end
+
+          it '再ログイン後の新アクセストークンでは保護リソースにアクセスできるか' do
+            login params
+            projects_api(res_body[access_token_key])
+            expect(response).to have_http_status(:ok)
+          end
+        end
+
         context 'sessionがない状態でログアウトする場合' do
           before do
             cookies[session_key] = nil

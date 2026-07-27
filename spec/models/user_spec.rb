@@ -217,4 +217,59 @@ RSpec.describe User do
       end
     end
   end
+
+  describe 'トークン失効' do
+    context 'forgetを実行する場合' do
+      let(:user) { described_class.create(name: 'test', email: 'forget@example.com', password: 'password') }
+
+      before { user.remember('dummy_jti') }
+
+      it 'refresh_jtiが削除されているか' do
+        user.forget
+        expect(user.reload.refresh_jti).to be_nil
+      end
+
+      it 'token_versionがインクリメントされているか' do
+        expect { user.forget }.to change { user.reload.token_version }.by(1)
+      end
+    end
+  end
+
+  describe 'DBのインデックス制約' do
+    let(:activated_user) { active_user }
+
+    context 'emailの部分ユニークインデックスを検証する場合' do
+      it '未アクティベートユーザーはアクティブユーザーと同じemailで保存できる' do
+        user = described_class.new(name: 'inactive', email: activated_user.email, password: 'password')
+        # アプリ層のバリデーションはtakenを返すが、DB層は未アクティベートの重複を許可する
+        expect { user.save(validate: false) }.to change(described_class, :count).by(1)
+      end
+
+      it 'アクティブユーザー同士のemail重複はDB層で拒否される' do
+        # アプリ層のバリデーションを迂回してDB制約のみを検証する
+        user = described_class.create!(name: 'inactive', email: 'dup-check@example.com', password: 'password')
+        described_class.where(id: user.id).update_all(activated: true)
+
+        duplicate = described_class.new(name: 'dup', email: 'dup-check@example.com', password: 'password',
+                                        activated: true)
+        expect { duplicate.save(validate: false) }.to raise_error(ActiveRecord::RecordNotUnique)
+      end
+    end
+
+    context 'refresh_jtiのユニークインデックスを検証する場合' do
+      it '同一のrefresh_jtiは登録できない' do
+        activated_user.remember('duplicated_jti')
+        other = described_class.create!(name: 'other', email: 'other-jti@example.com', password: 'password')
+
+        expect { other.remember('duplicated_jti') }.to raise_error(ActiveRecord::RecordNotUnique)
+      end
+
+      it 'refresh_jtiがnilのユーザーは複数存在できる' do
+        described_class.create!(name: 'nil-jti-1', email: 'nil-jti-1@example.com', password: 'password')
+        expect do
+          described_class.create!(name: 'nil-jti-2', email: 'nil-jti-2@example.com', password: 'password')
+        end.to change(described_class, :count).by(1)
+      end
+    end
+  end
 end

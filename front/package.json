@@ -6,7 +6,7 @@
   "engines": {
     "node": ">=20.12.2"
   },
-  "packageManager": "pnpm@11.9.0",
+  "packageManager": "pnpm@11.17.0",
   "scripts": {
     "dev": "nuxi dev",
     "dev:mock": "MOCK_SERVER=1 pnpm dev",
@@ -26,13 +26,13 @@
     "@intlify/shared": "^11.0.0",
     "@mdi/font": "^7.4.47",
     "@nuxtjs/i18n": "^10.2.4",
-    "@pinia/nuxt": "^0.11.2",
+    "@pinia/nuxt": "^1.0.0",
     "core-js": "^3.33.3",
     "jwt-decode": "^4.0.0",
     "nuxt": "^4.0.0",
-    "pinia": "^3.0.3",
+    "pinia": "^4.0.0",
     "pkg-types": "^2.2.0",
-    "vue": "3.5.39",
+    "vue": "3.5.40",
     "vue-i18n": "^11.0.0",
     "vuetify": "^4.0.0",
     "webpack": "^5.101.2"

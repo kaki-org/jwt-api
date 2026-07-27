@@ -145,4 +145,28 @@ RSpec.describe 'AccessTokens' do
       end
     end
   end
+
+  describe '失効検証' do
+    context 'ログアウトを実行する場合' do
+      let!(:token) { user.encode_access_token.token }
+
+      it '発行時のpayloadにverが含まれているか' do
+        expect(user.encode_access_token.payload[:ver]).to eq(user.token_version)
+      end
+
+      it 'ログアウト前のトークンは有効か' do
+        expect(UserAuth::AccessToken.new(token:).entity_for_user).to eq(user)
+      end
+
+      it 'ログアウト後の旧トークンはエラーを吐いているか' do
+        user.forget
+        expect { UserAuth::AccessToken.new(token:).entity_for_user }.to raise_error(UserAuth::RevokedTokenError)
+      end
+
+      it 'verクレームの無いレガシートークンはtoken_versionが初期値の間は有効か' do
+        legacy_token = UserAuth::AccessToken.new(user_id: user.id).token
+        expect(UserAuth::AccessToken.new(token: legacy_token).entity_for_user).to eq(user)
+      end
+    end
+  end
 end
