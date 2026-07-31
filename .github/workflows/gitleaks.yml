@@ -11,8 +11,10 @@ on:
       - develop
       - main
 
+# release PR は head が develop のため、push(develop) と pull_request の run が
+# 同じグループに落ちて相互キャンセルしていた。イベント種別で名前空間を分ける。
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 permissions:
