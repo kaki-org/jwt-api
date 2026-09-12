@@ -6,7 +6,7 @@
   "engines": {
     "node": ">=20.12.2"
   },
-  "packageManager": "pnpm@11.18.0",
+  "packageManager": "pnpm@11.25.0",
   "scripts": {
     "dev": "nuxi dev",
     "dev:mock": "MOCK_SERVER=1 pnpm dev",
@@ -32,7 +32,7 @@
     "nuxt": "^4.0.0",
     "pinia": "^4.0.0",
     "pkg-types": "^2.2.0",
-    "vue": "3.5.40",
+    "vue": "3.5.42",
     "vue-i18n": "^11.0.0",
     "vuetify": "^4.0.0",
     "webpack": "^5.101.2"
