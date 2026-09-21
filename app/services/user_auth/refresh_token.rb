@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jwt'
+require "jwt"
 
 module UserAuth
   # リフレッシュトークンを扱う共通クラス
@@ -54,8 +54,8 @@ module UserAuth
     def claims
       {
         user_claim => @user_id,
-        jti: jwt_id,
-        exp: token_expiration
+        :jti => jwt_id,
+        :exp => token_expiration
       }
     end
 

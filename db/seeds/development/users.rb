@@ -11,7 +11,7 @@
   next unless user.new_record?
 
   user.name = name
-  user.password = 'password'
+  user.password = "password"
   user.save!
 end
 

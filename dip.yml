@@ -34,10 +34,10 @@ interaction:
     service: api
     command: pnpm
 
-  rubocop:
-    description: Run rubocop
+  standardrb:
+    description: Run standardrb
     service: api
-    command: bundle exec rubocop
+    command: bundle exec standardrb
 
   brakeman:
     description: Run brakeman

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-ENV['RAILS_ENV'] ||= 'test'
-require_relative '../config/environment'
-require 'rails/test_help'
+ENV["RAILS_ENV"] ||= "test"
+require_relative "../config/environment"
+require "rails/test_help"
 
 # gem 'minitest-reporters' setup
-require 'minitest/reporters'
+require "minitest/reporters"
 Minitest::Reporters.use!
 module ActiveSupport
   class TestCase
@@ -14,7 +14,7 @@ module ActiveSupport
     # プロセスが分岐した直後に呼び出し
     parallelize_setup do |_worker|
       # seedデータの読み込み
-      load "#{Rails.root}/db/seeds.rb"
+      load Rails.root.join("db/seeds.rb").to_s
     end
 
     # Run tests in parallel with specified workers

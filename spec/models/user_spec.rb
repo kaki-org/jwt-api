@@ -1,30 +1,30 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe User do
-  describe 'バリデーション' do
+  describe "バリデーション" do
     let(:user) { active_user }
 
-    it '名前入力必須である事を検証する' do
-      user = described_class.new(email: 'test@example.com', password: 'password')
+    it "名前入力必須である事を検証する" do
+      user = described_class.new(email: "test@example.com", password: "password")
       user.save
-      required_msg = ['名前を入力してください']
+      required_msg = ["名前を入力してください"]
       expect(user.errors.full_messages).to eq(required_msg)
     end
 
-    it '文字数制限は30文字まで' do
+    it "文字数制限は30文字まで" do
       max = 30
-      name = 'a' * (max + 1)
+      name = "a" * (max + 1)
       user.name = name
       user.save
-      maxlength_msg = ['名前は30文字以内で入力してください']
+      maxlength_msg = ["名前は30文字以内で入力してください"]
       expect(user.errors.full_messages).to eq(maxlength_msg)
     end
 
-    it '30文字以内のユーザは保存できている' do
+    it "30文字以内のユーザは保存できている" do
       max = 30
-      user.name = 'あ' * max
+      user.name = "あ" * max
       # expect {
       #   user.save
       # }.to change(User, :count).by(1)
@@ -34,20 +34,20 @@ RSpec.describe User do
     end
   end
 
-  describe 'emailのバリデーション' do
+  describe "emailのバリデーション" do
     let(:user) { active_user }
 
-    it '入力必須' do
-      user = described_class.new(name: 'test', password: 'password')
+    it "入力必須" do
+      user = described_class.new(name: "test", password: "password")
       user.save
-      required_msg = ['メールアドレスを入力してください']
+      required_msg = ["メールアドレスを入力してください"]
       expect(user.errors.full_messages).to eq(required_msg)
     end
 
-    it '文字数制限は255文字まで' do
+    it "文字数制限は255文字まで" do
       max = 255
-      domain = '@example.com'
-      email = ('a' * (max + 1 - domain.length)) + domain
+      domain = "@example.com"
+      email = ("a" * (max + 1 - domain.length)) + domain
       assert max < email.length
       user.email = email
       user.save
@@ -55,7 +55,7 @@ RSpec.describe User do
       expect(user.errors.full_messages).to eq(maxlength_msg)
     end
 
-    it '正しい書式は保存できているか' do
+    it "正しい書式は保存できているか" do
       ok_emails = %w[
         A@EX.COM
         a-_@e-x.c-o_m.j_p
@@ -71,7 +71,7 @@ RSpec.describe User do
       end
     end
 
-    it '間違った書式はエラーを吐いているか' do
+    it "間違った書式はエラーを吐いているか" do
       ng_emails = %w[
         aaa
         a.ex.com
@@ -90,68 +90,68 @@ RSpec.describe User do
       ng_emails.each do |email|
         user.email = email
         user.save
-        format_msg = ['メールアドレスは不正な値です']
+        format_msg = ["メールアドレスは不正な値です"]
         expect(user.errors.full_messages).to eq(format_msg)
       end
     end
 
-    it 'email小文字化テスト' do
-      email = 'USER@EXAMPLE.COM'
+    it "email小文字化テスト" do
+      email = "USER@EXAMPLE.COM"
       user = described_class.new(email:)
       user.save
-      expect(user.email).to eq('user@example.com')
+      expect(user.email).to eq("user@example.com")
     end
 
-    describe 'アクティブユーザの一意性テスト' do
-      let(:email) { 'test@example.com' }
+    describe "アクティブユーザの一意性テスト" do
+      let(:email) { "test@example.com" }
       let(:user_count) { 3 }
 
-      context 'アクティブユーザがいない場合（複数登録テスト）' do
-        it '何度でも同じemailで登録が可能' do
+      context "アクティブユーザがいない場合（複数登録テスト）" do
+        it "何度でも同じemailで登録が可能" do
           expect do
             user_count.times do |_n|
-              described_class.create(name: 'test', email:, password: 'password')
+              described_class.create(name: "test", email:, password: "password")
             end
           end.to change(described_class, :count).by(3)
         end
       end
 
-      context 'アクティブユーザがいる場合' do
-        let(:active_user) { described_class.create(name: 'test', email:, password: 'password') }
+      context "アクティブユーザがいる場合" do
+        let(:active_user) { described_class.create(name: "test", email:, password: "password") }
 
         before do
           active_user.update!(activated: true)
           assert active_user.activated
         end
 
-        it '同じemailでバリデーションエラーを吐いているか。ユーザ数に変化がないか' do
+        it "同じemailでバリデーションエラーを吐いているか。ユーザ数に変化がないか" do
           expect do
-            user = described_class.new(name: 'test', email:, password: 'password')
+            user = described_class.new(name: "test", email:, password: "password")
             user.save
-            uniqueness_msg = ['メールアドレスはすでに存在します']
+            uniqueness_msg = ["メールアドレスはすでに存在します"]
             expect(user.errors.full_messages).to eq(uniqueness_msg)
           end.not_to change(described_class, :count)
         end
       end
 
-      context 'アクティブユーザがいない場合（一意性テスト）' do
-        let(:active_user) { described_class.create(name: 'test', email:, password: 'password') }
-        let(:inactive_user_first) { described_class.create(name: 'test', email:, password: 'password') }
-        let(:inactive_user_second) { described_class.create(name: 'test', email:, password: 'password') }
-        let(:inactive_user_third) { described_class.create(name: 'test', email:, password: 'password') }
+      context "アクティブユーザがいない場合（一意性テスト）" do
+        let(:active_user) { described_class.create(name: "test", email:, password: "password") }
+        let(:inactive_user_first) { described_class.create(name: "test", email:, password: "password") }
+        let(:inactive_user_second) { described_class.create(name: "test", email:, password: "password") }
+        let(:inactive_user_third) { described_class.create(name: "test", email:, password: "password") }
 
         before do
           active_user.destroy
         end
 
-        it '同じemailアドレスが保存できるようになっている' do
+        it "同じemailアドレスが保存できるようになっている" do
           expect do
-            user = described_class.new(name: 'test', email:, password: 'password')
+            user = described_class.new(name: "test", email:, password: "password")
             user.save
           end.to change(described_class, :count).by(1)
         end
 
-        it 'アクティブユーザの一意性は保たれている' do
+        it "アクティブユーザの一意性は保たれている" do
           expect(inactive_user_first.email).to eq(inactive_user_second.email)
           expect(inactive_user_second.email).to eq(inactive_user_third.email)
           inactive_user_third.activated = true
@@ -160,28 +160,28 @@ RSpec.describe User do
         end
       end
 
-      context 'パスワードのバリデーションを行う場合' do
-        it '入力必須' do
-          user = described_class.new(name: 'test', email: 'test@example.com')
+      context "パスワードのバリデーションを行う場合" do
+        it "入力必須" do
+          user = described_class.new(name: "test", email: "test@example.com")
           user.save
-          required_msg = ['パスワードを入力してください']
+          required_msg = ["パスワードを入力してください"]
           expect(user.errors.full_messages).to eq(required_msg)
         end
 
-        it 'min文字以上' do
+        it "min文字以上" do
           min = 8
-          user.password = 'a' * (min - 1)
+          user.password = "a" * (min - 1)
           user.save
-          minlength_msg = ['パスワードは8文字以上で入力してください']
+          minlength_msg = ["パスワードは8文字以上で入力してください"]
           expect(user.errors.full_messages).to eq(minlength_msg)
           expect(user).not_to be_valid
         end
 
-        it 'max文字以下' do
+        it "max文字以下" do
           max = 72
-          user.password = 'a' * (max + 1)
+          user.password = "a" * (max + 1)
           user.save
-          maxlength_msg = ['パスワードは72文字以内で入力してください']
+          maxlength_msg = ["パスワードは72文字以内で入力してください"]
           expect(user.errors.full_messages).to eq(maxlength_msg)
         end
 
@@ -207,7 +207,7 @@ RSpec.describe User do
             ＡＢＣＤＥＦＧＨ
             password@
           ]
-          format_msg = ['パスワードは半角英数字•ﾊｲﾌﾝ•ｱﾝﾀﾞｰﾊﾞｰが使えます']
+          format_msg = ["パスワードは半角英数字•ﾊｲﾌﾝ•ｱﾝﾀﾞｰﾊﾞｰが使えます"]
           ng_passwords.each do |pass|
             user.password = pass
             user.save
@@ -218,56 +218,56 @@ RSpec.describe User do
     end
   end
 
-  describe 'トークン失効' do
-    context 'forgetを実行する場合' do
-      let(:user) { described_class.create(name: 'test', email: 'forget@example.com', password: 'password') }
+  describe "トークン失効" do
+    context "forgetを実行する場合" do
+      let(:user) { described_class.create(name: "test", email: "forget@example.com", password: "password") }
 
-      before { user.remember('dummy_jti') }
+      before { user.remember("dummy_jti") }
 
-      it 'refresh_jtiが削除されているか' do
+      it "refresh_jtiが削除されているか" do
         user.forget
         expect(user.reload.refresh_jti).to be_nil
       end
 
-      it 'token_versionがインクリメントされているか' do
+      it "token_versionがインクリメントされているか" do
         expect { user.forget }.to change { user.reload.token_version }.by(1)
       end
     end
   end
 
-  describe 'DBのインデックス制約' do
+  describe "DBのインデックス制約" do
     let(:activated_user) { active_user }
 
-    context 'emailの部分ユニークインデックスを検証する場合' do
-      it '未アクティベートユーザーはアクティブユーザーと同じemailで保存できる' do
-        user = described_class.new(name: 'inactive', email: activated_user.email, password: 'password')
+    context "emailの部分ユニークインデックスを検証する場合" do
+      it "未アクティベートユーザーはアクティブユーザーと同じemailで保存できる" do
+        user = described_class.new(name: "inactive", email: activated_user.email, password: "password")
         # アプリ層のバリデーションはtakenを返すが、DB層は未アクティベートの重複を許可する
         expect { user.save(validate: false) }.to change(described_class, :count).by(1)
       end
 
-      it 'アクティブユーザー同士のemail重複はDB層で拒否される' do
+      it "アクティブユーザー同士のemail重複はDB層で拒否される" do
         # アプリ層のバリデーションを迂回してDB制約のみを検証する
-        user = described_class.create!(name: 'inactive', email: 'dup-check@example.com', password: 'password')
+        user = described_class.create!(name: "inactive", email: "dup-check@example.com", password: "password")
         described_class.where(id: user.id).update_all(activated: true)
 
-        duplicate = described_class.new(name: 'dup', email: 'dup-check@example.com', password: 'password',
-                                        activated: true)
+        duplicate = described_class.new(name: "dup", email: "dup-check@example.com", password: "password",
+          activated: true)
         expect { duplicate.save(validate: false) }.to raise_error(ActiveRecord::RecordNotUnique)
       end
     end
 
-    context 'refresh_jtiのユニークインデックスを検証する場合' do
-      it '同一のrefresh_jtiは登録できない' do
-        activated_user.remember('duplicated_jti')
-        other = described_class.create!(name: 'other', email: 'other-jti@example.com', password: 'password')
+    context "refresh_jtiのユニークインデックスを検証する場合" do
+      it "同一のrefresh_jtiは登録できない" do
+        activated_user.remember("duplicated_jti")
+        other = described_class.create!(name: "other", email: "other-jti@example.com", password: "password")
 
-        expect { other.remember('duplicated_jti') }.to raise_error(ActiveRecord::RecordNotUnique)
+        expect { other.remember("duplicated_jti") }.to raise_error(ActiveRecord::RecordNotUnique)
       end
 
-      it 'refresh_jtiがnilのユーザーは複数存在できる' do
-        described_class.create!(name: 'nil-jti-1', email: 'nil-jti-1@example.com', password: 'password')
+      it "refresh_jtiがnilのユーザーは複数存在できる" do
+        described_class.create!(name: "nil-jti-1", email: "nil-jti-1@example.com", password: "password")
         expect do
-          described_class.create!(name: 'nil-jti-2', email: 'nil-jti-2@example.com', password: 'password')
+          described_class.create!(name: "nil-jti-2", email: "nil-jti-2@example.com", password: "password")
         end.to change(described_class, :count).by(1)
       end
     end

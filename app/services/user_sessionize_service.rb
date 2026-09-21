@@ -31,7 +31,7 @@ module UserSessionizeService
     # jtiエラーの場合はcontrollerに処理を委任
     catch_invalid_jti
   rescue UserAuth.not_found_exception_class,
-         JWT::DecodeError, JWT::EncodeError
+    JWT::DecodeError, JWT::EncodeError
     nil
   end
 
@@ -39,7 +39,7 @@ module UserSessionizeService
   def session_user
     return nil unless token_from_cookies
 
-    @_session_user ||= fetch_user_from_refresh_token # rubocop:disable Naming/MemoizedInstanceVariableName
+    @_session_user ||= fetch_user_from_refresh_token
   end
 
   # jtiエラーの処理

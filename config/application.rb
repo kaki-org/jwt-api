@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -29,7 +29,7 @@ module App
 
     # Railsアプリのタイムゾーン(default 'UTC')
     # TimeZoneList: http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html
-    config.time_zone = ENV.fetch('TZ', nil)
+    config.time_zone = ENV.fetch("TZ", nil)
     # データベースの読み書きに使用するタイムゾーン(:local | :utc(default))
     config.active_record.default_timezone = :utc
     # i18nで使われるデフォルトのロケールファイルの指定(default :en)
@@ -47,6 +47,6 @@ module App
     config.middleware.use ActionDispatch::Cookies
 
     # Cookieのsamesite属性を変更する(Rails v6.1〜, :strict, :lax, :none)
-    config.action_dispatch.cookies_same_site_protection = ENV['COOKIES_SAME_SITE'].to_sym if Rails.env.production?
+    config.action_dispatch.cookies_same_site_protection = ENV["COOKIES_SAME_SITE"].to_sym if Rails.env.production?
   end
 end
