@@ -28,7 +28,7 @@
 - **コンテナ化**: Docker & Docker Compose
 - **プロセス管理**: dip（Docker Interaction Process）
 - **テスト**: RSpec（Rails）、ESLint（フロントエンド）
-- **コード品質**: RuboCop、Brakeman
+- **コード品質**: Standard Ruby (standardrb)、Brakeman
 
 ## よく使用するコマンド
 
@@ -45,7 +45,7 @@ cd front && pnpm dev
 
 # テスト実行
 dip rspec
-dip bundle exec rubocop
+dip standardrb
 ```
 
 ### Docker操作
