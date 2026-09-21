@@ -7,23 +7,23 @@ module SpecHelpers
   end
 
   # api path
-  def api(path = '/')
+  def api(path = "/")
     "/api/v1#{path}"
   end
 
   # 認可ヘッダ
   def auth(token)
-    { Authorization: "Bearer #{token}" }
+    {Authorization: "Bearer #{token}"}
   end
 
   # 引数のparamsでログインを行う
   def login(params)
-    post api('/auth_token'), xhr: true, params:
+    post api("/auth_token"), xhr: true, params:
   end
 
   # ログアウトapi
   def logout
-    delete api('/auth_token'), xhr: true
+    delete api("/auth_token"), xhr: true
   end
 
   # レスポンスJSONをハッシュで返す
@@ -33,11 +33,11 @@ module SpecHelpers
 
   # tokenのリフレッシュを行うapi
   def refresh_api
-    post api('/auth_token/refresh'), xhr: true
+    post api("/auth_token/refresh"), xhr: true
   end
 
   # プロジェクトapi
   def projects_api(token)
-    get api('/projects'), xhr: true, headers: auth(token)
+    get api("/projects"), xhr: true, headers: auth(token)
   end
 end

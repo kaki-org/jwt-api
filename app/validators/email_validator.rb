@@ -8,7 +8,7 @@ class EmailValidator < ActiveModel::EachValidator
     record.errors.add(attribute, :too_long, count: max) if value.length > max
     # format
     format = /\A\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*\z/
-    record.errors.add(attribute, :invalid) unless format =~ value
+    record.errors.add(attribute, :invalid) unless format&.match?(value)
     # uniqueness
     record.errors.add(attribute, :taken) if record.email_activated?
   end

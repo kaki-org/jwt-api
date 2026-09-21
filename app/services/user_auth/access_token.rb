@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jwt'
+require "jwt"
 
 module UserAuth
   # アクセストークンを扱う共通クラス
@@ -38,8 +38,8 @@ module UserAuth
 
     # @lifetimeの日本語テキストを返す
     def lifetime_text
-      time, period = @lifetime.inspect.sub(/s\z/, '').split
-      time + I18n.t("datetime.periods.#{period}", default: '')
+      time, period = @lifetime.inspect.sub(/s\z/, "").split
+      time + I18n.t("datetime.periods.#{period}", default: "")
     end
 
     private

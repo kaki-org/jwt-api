@@ -30,6 +30,6 @@ class AuthResponseBuilder
 
   # JTIエラー時の特定レスポンス
   def build_invalid_jti_response
-    build_error_response(401, 'Invalid jti for refresh token')
+    build_error_response(401, "Invalid jti for refresh token")
   end
 end
