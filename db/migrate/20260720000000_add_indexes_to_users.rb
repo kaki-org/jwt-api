@@ -7,8 +7,8 @@
 # 単純なユニークインデックスでは未アクティベートユーザーの登録が壊れるため。
 class AddIndexesToUsers < ActiveRecord::Migration[8.1]
   def change
-    add_index :users, :email, unique: true, where: 'activated',
-                              name: 'index_users_on_email_activated'
+    add_index :users, :email, unique: true, where: "activated",
+      name: "index_users_on_email_activated"
     add_index :users, :refresh_jti, unique: true
   end
 end

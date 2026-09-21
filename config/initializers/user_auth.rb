@@ -21,15 +21,15 @@ module UserAuth
 
   # JWTの発行者を識別する文字列(認可サーバーURL)
   mattr_accessor :token_issuer
-  self.token_issuer = ENV.fetch('BASE_URL', nil)
+  self.token_issuer = ENV.fetch("BASE_URL", nil)
 
   # JWTの受信者を識別する文字列(保護リソースURL)
   mattr_accessor :token_audience
-  self.token_audience = ENV.fetch('BASE_URL', nil)
+  self.token_audience = ENV.fetch("BASE_URL", nil)
 
   # JWTの署名アルゴリズム
   mattr_accessor :token_signature_algorithm
-  self.token_signature_algorithm = 'HS256'
+  self.token_signature_algorithm = "HS256"
 
   # 署名・検証に使用する秘密鍵
   # ENV["SECRET_KEY_BASE"] → credentials → 自動生成 の順で解決される。

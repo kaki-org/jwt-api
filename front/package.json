@@ -6,7 +6,7 @@
   "engines": {
     "node": ">=20.12.2"
   },
-  "packageManager": "pnpm@11.18.0",
+  "packageManager": "pnpm@12.4.2",
   "scripts": {
     "dev": "nuxi dev",
     "dev:mock": "MOCK_SERVER=1 pnpm dev",
@@ -32,7 +32,7 @@
     "nuxt": "^4.0.0",
     "pinia": "^4.0.0",
     "pkg-types": "^2.2.0",
-    "vue": "3.5.40",
+    "vue": "3.5.43",
     "vue-i18n": "^11.0.0",
     "vuetify": "^4.0.0",
     "webpack": "^5.101.2"
@@ -41,7 +41,7 @@
     "@biomejs/biome": "^2.3.8",
     "node-gyp": "^13.0.0",
     "sass": "^1.70.0",
-    "vitest": "^4.0.0",
+    "vitest": "^5.0.0",
     "vue-tsc": "^3.0.5"
   }
 }

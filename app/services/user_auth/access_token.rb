@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jwt'
+require "jwt"
 
 module UserAuth
   # アクセストークンを扱う共通クラス
@@ -9,7 +9,6 @@ module UserAuth
 
     attr_reader :user_id, :payload, :lifetime, :token, :options
 
-    # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     def initialize(user_id: nil, payload: {}, token: nil, options: {})
       if token.present?
         # decode
@@ -25,7 +24,6 @@ module UserAuth
         @token = JWT.encode(@payload, secret_key, algorithm, header_fields)
       end
     end
-    # rubocop:enable Metrics/AbcSize,Metrics/MethodLength
 
     # 暗号化された@user_idからユーザーを取得する
     # verクレームがユーザーの現行token_versionと不一致の場合は失効済みとして扱う
@@ -38,8 +36,8 @@ module UserAuth
 
     # @lifetimeの日本語テキストを返す
     def lifetime_text
-      time, period = @lifetime.inspect.sub(/s\z/, '').split
-      time + I18n.t("datetime.periods.#{period}", default: '')
+      time, period = @lifetime.inspect.sub(/s\z/, "").split
+      time + I18n.t("datetime.periods.#{period}", default: "")
     end
 
     private

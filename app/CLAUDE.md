@@ -25,8 +25,8 @@ JWT認証は gem に任せず app/services/user_auth/ で自前実装してい�
 
 ## Lint
 
-- rubocop-rails は Gemfile にあるが .rubocop.yml で plugin 無効。Rails/xxx cop の違反は実際には検出されないので、レビューで根拠にしない。
+- Linter/Formatter は standardrb (standard-rails 込み)。Rails/xxx cop も有効。ルールは Standard 固定で .standard.yml では cop 設定を変更できない。
 
 ## 検証
 
-変更後は dip rubocop → dip rspec <関連spec> を実行する。認証・認可に触れたら dip brakeman も実行する。
+変更後は dip standardrb (整形は --fix) → dip rspec <関連spec> を実行する。認証・認可に触れたら dip brakeman も実行する。

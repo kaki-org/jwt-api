@@ -33,7 +33,7 @@ module UserAuth
     # key_generatorメソッドのsecretはsecret_key_baseが使われる
     # 参考: https://techracho.bpsinc.jp/hachi8833/2017_10_24/46809
     def crypt
-      salt = 'signed user id'
+      salt = "signed user id"
       key_length = ActiveSupport::MessageEncryptor.key_len
       secret = Rails.application.key_generator.generate_key(salt, key_length)
       ActiveSupport::MessageEncryptor.new(secret)
@@ -51,7 +51,7 @@ module UserAuth
       return unless user_id
 
       crypt.decrypt_and_verify(user_id.to_s, purpose: :authorization)
-    rescue StandardError
+    rescue
       nil
     end
 
@@ -59,7 +59,7 @@ module UserAuth
     # Doc: https://openid-foundation-japan.github.io/draft-ietf-oauth-json-web-token-11.ja.html#typHdrDef
     def header_fields
       {
-        typ: 'JWT',
+        typ: "JWT",
         alg: algorithm
       }
     end

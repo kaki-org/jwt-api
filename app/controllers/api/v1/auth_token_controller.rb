@@ -44,7 +44,7 @@ module Api
         if cookies[session_key].nil?
           head(:ok)
         else
-          response_500('Could not delete session')
+          response_500("Could not delete session")
         end
       end
 
@@ -52,13 +52,13 @@ module Api
 
       # params[:email]からアクティブなユーザーを返す
       def login_user
-        @_login_user ||= User.find_by_activated(auth_params[:email]) # rubocop:disable Naming/MemoizedInstanceVariableName
+        @_login_user ||= User.find_by_activated(auth_params[:email])
       end
 
       # ログインユーザーが居ない、もしくはpasswordが一致しない場合404を返す
       def authenticate
         unless login_user.present? &&
-               login_user.authenticate(auth_params[:password])
+            login_user.authenticate(auth_params[:password])
           raise UserAuth.not_found_exception_class
         end
       end

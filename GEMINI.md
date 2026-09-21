@@ -14,7 +14,7 @@
 - **フロントエンド**: Nuxt 4 / Vue 3.5 / TypeScript 5 / Vuetify ^4.0.0 / Pinia ^3.0
 - **認証**: カスタムJWT認証（Access Token / Refresh Token）
 - **インフラ**: Docker / Docker Compose / `dip`
-- **テスト/品質**: RSpec / RuboCop / Biome
+- **テスト/品質**: RSpec / Standard Ruby (standardrb) / Biome
 
 ## 3. 安全ルール (Safety Mandates)
 **以下の操作は、実行前に必ず日本語で理由を説明し、ユーザーの明示的な承認を得ること。**
@@ -32,7 +32,7 @@
 - **RSpec**: 
     - `context` や `it` の説明文は日本語で記載します。
     - `spec/support/spec_helper.rb` にある `SpecHelpers` を活用してテストを記述します。
-- **静的解析**: `dip rubocop` でコード品質を維持します。
+- **静的解析**: `dip standardrb` でコード品質を維持します (自動整形は `--fix`)。
 
 ### フロントエンド (Nuxt/Vue)
 - **美しさ (Aesthetics)**: 洗練されたUI/UXを追求します。Vuetifyをベースにしつつ、必要に応じてVanilla CSSでプレミアムなデザイン（余白、タイポグラフィ、アニメーション）を実現します。

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../validators/email_validator'
+require_relative "../validators/email_validator"
 
 # Userモデル
 class User < ApplicationRecord
@@ -20,12 +20,12 @@ class User < ApplicationRecord
 
   # validates
   validates :name, presence: true, # 入力必須
-                   length: {
-                     maximum: 30, # 最大文字数
-                     allow_blank: true # nil, 空白文字の場合スキップ
-                   }
+    length: {
+      maximum: 30, # 最大文字数
+      allow_blank: true # nil, 空白文字の場合スキップ
+    }
 
-  validates :email, presence: true, email: { allow_blank: true }
+  validates :email, presence: true, email: {allow_blank: true}
 
   # \A          => 文字列の先頭にマッチ
   # [\w\-]      => a-zA-Z0-9_-
@@ -33,13 +33,13 @@ class User < ApplicationRecord
   # \z          => 文字列の末尾にマッチ
   VALID_PASSWORD_REGEX = /\A[\w-]+\z/
   validates :password, presence: true,
-                       length: { minimum: 8, allow_blank: true },
-                       format: {
-                         with: VALID_PASSWORD_REGEX,
-                         message: :invalid_password,
-                         allow_blank: true
-                       },
-                       allow_nil: true # nilの場合スキップ
+    length: {minimum: 8, allow_blank: true},
+    format: {
+      with: VALID_PASSWORD_REGEX,
+      message: :invalid_password,
+      allow_blank: true
+    },
+    allow_nil: true # nilの場合スキップ
 
   ## methods
   # class method  ###########################

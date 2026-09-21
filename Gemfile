@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '4.0.6'
+ruby "4.0.7"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 8.1.2', '>= 8.1.2.1'
+gem "rails", "~> 8.1.2", ">= 8.1.2.1"
 
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 1.5'
+gem "pg", "~> 1.5"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '~> 8.0', '>= 8.0.2'
+gem "puma", "~> 8.0", ">= 8.0.2"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -26,36 +26,33 @@ gem 'puma', '~> 8.0', '>= 8.0.2'
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 # パスワードを暗号化する
-gem 'bcrypt', '~> 3.1', '>= 3.1.22'
+gem "bcrypt", "~> 3.1", ">= 3.1.22"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', require: false
+gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors', '>= 2.0.2'
+gem "rack-cors", ">= 2.0.2"
 # コンソールの出力結果を見やすく表示する
-# FIXME: `NameError: uninitialized constant RuboCop::Cop::Rails::RedundantActiveRecordAllMethod::AllowedReceivers`
-# というバグが発生する為、rubocopのバージョンを1.57以上にする必要があるが、hirbが対応していない。
 # gem 'hirb'
 # Hirbの文字列補正を行う(多言語対応版)
 # gem 'hirb-unicode-steakknife'
 # jwt Doc: https://rubygems.org/gems/jwt
-gem 'jwt', '~> 3.0'
+gem "jwt", "~> 3.0"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem 'debug', platforms: %i[mri mingw x64_mingw]
-  gem 'rspec-rails'
-  gem 'rubocop', '~> 1.58'
-  gem 'rubocop-rails'
-  gem 'rubocop-rspec'
-  gem 'spring-commands-rspec'
+  gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "rspec-rails"
+  gem "spring-commands-rspec"
+  gem "standard", ">= 1.35.1", require: false
+  gem "standard-rails", require: false
 end
 
 group :development do
@@ -65,7 +62,7 @@ end
 
 group :test do
   # テスト結果色付け Doc: https://github.com/kern/minitest-reporters
-  gem 'minitest-reporters', '~> 1.6'
-  gem 'simplecov', require: false
-  gem 'simplecov-cobertura'
+  gem "minitest-reporters", "~> 1.6"
+  gem "simplecov", require: false
+  gem "simplecov-cobertura"
 end
