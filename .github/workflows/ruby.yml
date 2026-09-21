@@ -62,8 +62,8 @@ jobs:
         run: |
           bundle config set --local path vendor/bundle
           bundle install --jobs 4 --retry 3
-      - name: rubocop
-        run: bundle exec rubocop
+      - name: standardrb
+        run: bundle exec standardrb
       - name: tmp cache clear
         run: bundle exec rails tmp:cache:clear
 
