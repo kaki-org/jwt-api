@@ -33,6 +33,16 @@
     },
     {
       "matchManagers": [
+        "bundler"
+      ],
+      "matchPackageNames": [
+        "standard",
+        "standard-rails"
+      ],
+      "groupName": "standard"
+    },
+    {
+      "matchManagers": [
         "bun"
       ],
       "assignees": [
