@@ -3,3 +3,7 @@ plugins:
 
 ignore:
   - 'front/**/*'
+  - 'db/seeds.rb':
+      - Rails/Output
+  - 'db/seeds/**/*':
+      - Rails/Output

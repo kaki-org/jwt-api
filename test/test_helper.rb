@@ -14,7 +14,7 @@ module ActiveSupport
     # プロセスが分岐した直後に呼び出し
     parallelize_setup do |_worker|
       # seedデータの読み込み
-      load "#{Rails.root.join("db/seeds.rb")}"
+      load Rails.root.join("db/seeds.rb").to_s
     end
 
     # Run tests in parallel with specified workers

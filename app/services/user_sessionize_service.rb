@@ -39,7 +39,7 @@ module UserSessionizeService
   def session_user
     return nil unless token_from_cookies
 
-    @_session_user ||= fetch_user_from_refresh_token # rubocop:disable Naming/MemoizedInstanceVariableName
+    @_session_user ||= fetch_user_from_refresh_token
   end
 
   # jtiエラーの処理

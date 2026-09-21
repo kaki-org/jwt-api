@@ -31,7 +31,7 @@ class AuthTokenService
     token_instance = encoded_refresh_token
     {
       token: token_instance.token,
-      expires: Time.at(token_instance.payload[:exp])
+      expires: Time.at(token_instance.payload[:exp]).in_time_zone
     }
   end
 

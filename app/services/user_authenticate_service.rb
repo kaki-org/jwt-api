@@ -35,7 +35,7 @@ module UserAuthenticateService
   def current_user
     return nil unless token_from_request_headers
 
-    @_current_user ||= fetch_user_from_access_token # rubocop:disable Naming/MemoizedInstanceVariableName
+    @_current_user ||= fetch_user_from_access_token
   end
 
   # 認証エラー

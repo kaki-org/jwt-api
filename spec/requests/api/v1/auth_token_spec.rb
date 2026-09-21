@@ -14,8 +14,6 @@ RSpec.describe "Api::V1::AuthTokens" do
   let!(:session_key) { UserAuth.session_key.to_s }
   let!(:access_token_key) { "token" }
 
-  # rubocop:disable Metrics/AbcSize
-
   # 無効なリクエストで返ってくるレスポンスチェック
   def response_check_of_invalid_request(status, error_msg = nil)
     expect(response.status).to eq(status)
@@ -24,7 +22,6 @@ RSpec.describe "Api::V1::AuthTokens" do
     expect(response.body).not_to be_present if error_msg.nil?
     expect(error_msg).to eq(res_body["error"]) unless error_msg.nil?
   end
-  # rubocop:enable Metrics/AbcSize
 
   describe "有効なログイン" do
     context "valid_login_from_create_actionの場合" do
@@ -68,7 +65,7 @@ RSpec.describe "Api::V1::AuthTokens" do
       end
 
       it "expiresは想定通りか(1秒許容)" do
-        expect(cookie[:expires]).to be_within(1.seconds).of(Time.at(refresh_lifetime_to_i))
+        expect(cookie[:expires]).to be_within(1.seconds).of(Time.at(refresh_lifetime_to_i).in_time_zone)
       end
 
       it "secureは一致しているか" do
