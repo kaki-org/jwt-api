@@ -36,6 +36,8 @@ tags:
     description: トークンの発行・更新・破棄
   - name: Projects
     description: プロジェクト一覧
+  - name: Dummy
+    description: バージョン自動 bump の検証用（マージしない）
 
 paths:
   /api/v1/auth_token:
@@ -173,6 +175,30 @@ paths:
                   $ref: '#/components/schemas/Project'
         '401':
           description: 未認証、またはアクセストークンが無効／非アクティブユーザー。ボディは空。
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/v1/dummy:
+    get:
+      tags:
+        - Dummy
+      summary: ダミー（バージョン自動 bump の検証用）
+      description: |
+        openapi-version ワークフローの動作確認用のダミーエンドポイント。実装は存在しない。
+      operationId: getDummy
+      parameters:
+        - $ref: '#/components/parameters/XRequestedWith'
+      responses:
+        '200':
+          description: ダミーのレスポンス。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: dummy
         '403':
           $ref: '#/components/responses/Forbidden'
 
