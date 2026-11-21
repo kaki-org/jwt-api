@@ -29,7 +29,10 @@ preview の起動をまとめて行い、ブラウザで開く。ターゲット
 
 ## バージョン運用
 
-`info.version` は手で上げない。`openapi.yaml` を変更した PR で `.github/workflows/openapi-version.yml` が base ブランチの仕様と比べて自動で bump し、bot がコミットする（判定ロジックは `.github/scripts/openapi-version-bump.sh`）。
+`info.version` は手で変えない。PR の段階では version を変えず、develop にマージされた後に bot が上げる。
+
+1. **PR（develop 向け）**: `.github/workflows/openapi-version-label.yml` が merge-base の仕様と比べて bump レベルを判定し、`api-version:major` / `api-version:minor` / `api-version:patch` のいずれかのラベルを付ける。判定結果は PR にコメントされる。PR が `info.version` を変えているとチェックが失敗する。
+2. **develop へのマージ後**: `.github/workflows/openapi-version-bump.yml` がマージ元 PR のラベルに従って `info.version` を上げ、GitHub App が develop に直接 push する。最後の bump 以降のマージを古い順にすべて処理するので、続けてマージしても 1.1.0 → 1.2.0 と積み上がる。bot の push で `apidoc.yml` も動き、Pages に新しい version が公開される。
 
 | 判定 | 条件（[oasdiff](https://github.com/oasdiff/oasdiff) の `changelog`） | 例 |
 |---|---|---|
@@ -37,19 +40,16 @@ preview の起動をまとめて行い、ブラウザで開く。ターゲット
 | minor | 上記以外の INFO の変更がある | エンドポイント追加、任意フィールド追加 |
 | patch | changelog に出ないが差分がある | 説明文・example の変更 |
 
-- 判定結果は PR にコメントされる。判定を変えたいときは `api-version:major` / `api-version:minor` / `api-version:patch` ラベルを付ける（複数あれば大きい方）。
-- `info.version` は常に「base を判定レベルで上げた値」に揃える。手で書いた値も上書きされるので、多めに上げたいときはラベルを使う（ラベルを外せば判定どおりの値に戻る）。
-- base が進んでも PR 側は再判定されない。同時期に複数の PR が仕様を変える場合は、マージ前に base を取り込んで再実行する。
-- fork からの PR は対象外（Secrets を使えないため）。
+- 判定を変えたいときは、`api-version:*` ラベルを手で付け替える。人が付けたラベルは、その後の判定で上書きされない。複数付いていれば大きい方を使う。
+- ラベルのない PR（ラベル付けの失敗など）や直接 push は、マージ後に oasdiff で判定し直す。
+- fork からの PR にはラベルが付かないので、マージ後の判定になる。
 
 ローカルで判定だけ確かめる場合（oasdiff が必要）:
 
 ```bash
-git show origin/develop:apidoc/openapi.yaml > /tmp/base.yaml
-bash .github/scripts/openapi-version-bump.sh /tmp/base.yaml apidoc/openapi.yaml
+git show "$(git merge-base origin/develop HEAD)":apidoc/openapi.yaml > /tmp/base.yaml
+bash .github/scripts/openapi-version-bump.sh judge /tmp/base.yaml apidoc/openapi.yaml
 ```
-
-※ `openapi.yaml` の `info.version` を書き換えるので、確認だけなら実行後に `git checkout apidoc/openapi.yaml` で戻す。
 
 ## デプロイ
 
@@ -66,13 +66,6 @@ GitHub のリポジトリ設定で Pages のソースを **GitHub Actions** に�
 
 - Settings → Pages → Build and deployment → Source: **GitHub Actions**
 
-バージョン自動 bump 用の GitHub App も必要:
-
-1. GitHub App を作成する（Repository permissions: **Contents: Read and write**、Webhook は無効）し、このリポジトリにインストールする
-2. Secrets に `OPENAPI_BOT_CLIENT_ID`（App の Client ID）と `OPENAPI_BOT_PRIVATE_KEY`（秘密鍵）を登録する
-
-`GITHUB_TOKEN` ではなく App のトークンで push するのは、`GITHUB_TOKEN` の push では他のワークフロー（RSpec・Spectral など）が再実行されないため。
-
 または gh CLI:
 
 ```bash
@@ -81,3 +74,11 @@ gh api -X POST repos/kaki-org/jwt-api/pages \
 gh api -X PUT repos/kaki-org/jwt-api/pages \
   -f 'build_type=workflow'
 ```
+
+バージョン自動 bump 用の GitHub App も必要:
+
+1. GitHub App を作成し（Repository permissions: **Contents: Read and write**、Webhook は無効）、このリポジトリにインストールする
+2. Repository secret に `OPENAPI_BOT_CLIENT_ID`（App の Client ID）と `OPENAPI_BOT_PRIVATE_KEY`（秘密鍵）を登録する
+3. develop の保護は Ruleset で行い、bypass に App を加える（classic のブランチ保護では App に必須チェックを迂回させられないため）
+
+`GITHUB_TOKEN` ではなく App のトークンで push するのは、`GITHUB_TOKEN` の push では他のワークフロー（`apidoc.yml` の Pages 公開など）が起動しないため。
