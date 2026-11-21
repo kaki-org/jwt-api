@@ -45,7 +45,7 @@
 
 ## フェーズ4: PR（CP4）
 
-- [ ] design-and-ship skill の手順に沿って PR を作る（base は develop）
+- [x] design-and-ship skill の手順に沿って PR を作る（base は develop。#1513、インラインコメント 4 件と本文からのリンク）
 - [x] 実装後の振り返りを書く
 
 ---
