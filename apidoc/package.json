@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Scalar API Reference で jwt-api の OpenAPI 仕様書を描画する独立 Vite プロジェクト",
   "engines": {
-    "node": ">=20.12.2"
+    "node": ">=22.19.0"
   },
   "scripts": {
     "dev": "vite",
