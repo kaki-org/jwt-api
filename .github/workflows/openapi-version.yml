@@ -1,0 +1,132 @@
+# apidoc/openapi.yaml の info.version を、base との差分（oasdiff）から自動 bump する。
+# 判定ロジックは .github/scripts/openapi-version-bump.sh、運用は apidoc/README.md を参照。
+name: openapi-version
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+    paths:
+      - apidoc/openapi.yaml
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: openapi-version-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  OASDIFF_VERSION: 1.39.0
+  OASDIFF_SHA256: 71a85930728f367a2086077b7ae1411319421549d18473a3e8258b6451520433
+  SPEC: apidoc/openapi.yaml
+  MARKER: '<!-- openapi-version-bump -->'
+
+jobs:
+  bump:
+    # fork からの PR は Secrets を使えず push もできないため対象外
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510
+        with:
+          client-id: ${{ secrets.OPENAPI_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.OPENAPI_BOT_PRIVATE_KEY }}
+          permission-contents: write
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Fetch base spec
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: |
+          git fetch --depth=1 origin "$BASE_REF"
+          git show "origin/${BASE_REF}:${SPEC}" > "$RUNNER_TEMP/base.yaml"
+
+      - name: Install oasdiff
+        run: |
+          archive="oasdiff_${OASDIFF_VERSION}_linux_amd64.tar.gz"
+          curl -fsSL -o "$RUNNER_TEMP/$archive" \
+            "https://github.com/oasdiff/oasdiff/releases/download/v${OASDIFF_VERSION}/${archive}"
+          echo "${OASDIFF_SHA256}  $RUNNER_TEMP/$archive" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP" oasdiff
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+
+      - name: Decide and bump version
+        id: bump
+        env:
+          LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: |
+          # api-version:<level> ラベルがあれば、最も大きいレベルで判定を上書きする
+          override=""
+          for level in patch minor major; do
+            if jq -e --arg l "api-version:${level}" 'any(.[]; . == $l)' >/dev/null <<<"$LABELS"; then
+              override="$level"
+            fi
+          done
+          bash .github/scripts/openapi-version-bump.sh "$RUNNER_TEMP/base.yaml" "$SPEC" "$override"
+          echo "override=${override}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        if: steps.bump.outputs.changed == 'true'
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TARGET: ${{ steps.bump.outputs.target_version }}
+          LEVEL: ${{ steps.bump.outputs.level }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          user_id="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${user_id}+${APP_SLUG}[bot]@users.noreply.github.com"
+          git add "$SPEC"
+          git commit -m "openapi.yaml の info.version を ${TARGET} に更新" -m "- oasdiff の判定: ${LEVEL}"
+          git push origin "HEAD:refs/heads/${HEAD_REF}"
+
+      - name: Comment on PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          LEVEL: ${{ steps.bump.outputs.level }}
+          OVERRIDE: ${{ steps.bump.outputs.override }}
+          BASE_VERSION: ${{ steps.bump.outputs.base_version }}
+          TARGET: ${{ steps.bump.outputs.target_version }}
+          CURRENT: ${{ steps.bump.outputs.current_version }}
+          CHANGED: ${{ steps.bump.outputs.changed }}
+        run: |
+          body="$RUNNER_TEMP/comment.md"
+          {
+            echo "$MARKER"
+            echo "### OpenAPI バージョン判定"
+            echo
+            echo "| 項目 | 値 |"
+            echo "|---|---|"
+            echo "| 判定 | \`${LEVEL}\`${OVERRIDE:+（ラベル \`api-version:${OVERRIDE}\` で上書き）} |"
+            echo "| base | \`${BASE_VERSION}\` |"
+            if [[ "$CHANGED" == "true" ]]; then
+              echo "| 更新 | \`${CURRENT}\` → \`${TARGET}\`（bot がコミット） |"
+            else
+              echo "| 現在 | \`${CURRENT}\`（必要なバージョン \`${TARGET}\` 以上のため変更なし） |"
+            fi
+            echo
+            echo "<details><summary>oasdiff changelog</summary>"
+            echo
+            oasdiff changelog --format markdown "$RUNNER_TEMP/base.yaml" "$SPEC" || true
+            echo
+            echo "</details>"
+          } > "$body"
+
+          comment_id="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
+            --jq "map(select(.body | startswith(env.MARKER))) | .[0].id // empty" | head -n1)"
+          if [[ -n "$comment_id" ]]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" -F "body=@${body}" >/dev/null
+          else
+            gh pr comment "$PR_NUMBER" --body-file "$body"
+          fi
