@@ -1,19 +1,23 @@
-// Stoplight Elements をセルフホストでバンドルする（CDN 非依存）。
-// web-components バンドルを import すると <elements-api> カスタム要素が登録される。
-import '@stoplight/elements/web-components.min.js';
-import '@stoplight/elements/styles.min.css';
+// Scalar API Reference をセルフホストでバンドルする（CDN 非依存）。
+import { createApiReference } from '@scalar/api-reference';
+import '@scalar/api-reference/style.css';
 
 // openapi.yaml を Vite のアセットとして emit し、base を考慮した URL を得る。
 // 正本は apidoc/openapi.yaml のまま保持できる。
-import apiDescriptionUrl from '../openapi.yaml?url';
+import url from '../openapi.yaml?url';
 
-// <elements-api> は DOM へ追加する前に全属性（特に apiDescriptionUrl）を確定させる。
-// マウント後に setAttribute すると Stoplight Elements が loading のまま固定されて
-// 空白ページになるため、属性をそろえてから appendChild する。
-const api = document.createElement('elements-api');
-api.setAttribute('apiDescriptionUrl', apiDescriptionUrl);
-api.setAttribute('router', 'hash');
-api.setAttribute('layout', 'sidebar');
-api.setAttribute('tryItCredentialsPolicy', 'same-origin');
-
-document.getElementById('app')?.appendChild(api);
+createApiReference('#app', {
+  url,
+  // ルーティングは既定の hash ルーティング（GitHub Pages のサブパスでもリロード可能）。
+  layout: 'modern',
+  showSidebar: true,
+  // Try it は既定の fetch（credentials: same-origin）で送る。トークンは保存しない。
+  authentication: {
+    preferredSecurityScheme: 'bearerAuth',
+  },
+  // 外部通信を止める: fonts.scalar.com のフォント、テレメトリ、AI Agent。
+  // proxyUrl は指定しない（指定しなければ proxy.scalar.com を経由しない）。
+  withDefaultFonts: false,
+  telemetry: false,
+  agent: { disabled: true },
+});
