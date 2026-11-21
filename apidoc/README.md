@@ -15,7 +15,7 @@ npm run preview  # ビルド結果を http://localhost:4173/jwt-api/ でプレ�
 npm run lint     # Spectral で openapi.yaml を oas lint
 ```
 
-リポジトリのルートからは `make apidoc-preview` で、依存のインストール（lockfile 更新時のみ）・ビルド・
+リポジトリのルートからは `make apidoc-preview` で、依存のインストール（package.json / lockfile 更新時のみ）・ビルド・
 preview の起動をまとめて行い、ブラウザで開く。ターゲット一覧は `make help`。
 
 ## 仕様書の編集
