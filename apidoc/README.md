@@ -27,6 +27,30 @@ preview の起動をまとめて行い、ブラウザで開く。ターゲット
   `agent: { disabled: true }`、`proxyUrl` は未指定）。Try it は同一オリジン以外の API へは
   CORS の許可がない限り送れない。
 
+## バージョン運用
+
+`info.version` は手で上げない。`openapi.yaml` を変更した PR で `.github/workflows/openapi-version.yml` が base ブランチの仕様と比べて自動で bump し、bot がコミットする（判定ロジックは `.github/scripts/openapi-version-bump.sh`）。
+
+| 判定 | 条件（[oasdiff](https://github.com/oasdiff/oasdiff) の `changelog`） | 例 |
+|---|---|---|
+| major | WARN / ERR の変更がある | エンドポイント削除、必須パラメータ追加、レスポンス型変更 |
+| minor | 上記以外の INFO の変更がある | エンドポイント追加、任意フィールド追加 |
+| patch | changelog に出ないが差分がある | 説明文・example の変更 |
+
+- 判定結果は PR にコメントされる。判定を変えたいときは `api-version:major` / `api-version:minor` / `api-version:patch` ラベルを付ける（複数あれば大きい方）。
+- `info.version` は常に「base を判定レベルで上げた値」に揃える。手で書いた値も上書きされるので、多めに上げたいときはラベルを使う（ラベルを外せば判定どおりの値に戻る）。
+- base が進んでも PR 側は再判定されない。同時期に複数の PR が仕様を変える場合は、マージ前に base を取り込んで再実行する。
+- fork からの PR は対象外（Secrets を使えないため）。
+
+ローカルで判定だけ確かめる場合（oasdiff が必要）:
+
+```bash
+git show origin/develop:apidoc/openapi.yaml > /tmp/base.yaml
+bash .github/scripts/openapi-version-bump.sh /tmp/base.yaml apidoc/openapi.yaml
+```
+
+※ `openapi.yaml` の `info.version` を書き換えるので、確認だけなら実行後に `git checkout apidoc/openapi.yaml` で戻す。
+
 ## デプロイ
 
 `.github/workflows/apidoc.yml` が以下を行う:
@@ -41,6 +65,13 @@ preview の起動をまとめて行い、ブラウザで開く。ターゲット
 GitHub のリポジトリ設定で Pages のソースを **GitHub Actions** に設定する必要がある:
 
 - Settings → Pages → Build and deployment → Source: **GitHub Actions**
+
+バージョン自動 bump 用の GitHub App も必要:
+
+1. GitHub App を作成する（Repository permissions: **Contents: Read and write**、Webhook は無効）し、このリポジトリにインストールする
+2. Secrets に `OPENAPI_BOT_CLIENT_ID`（App の Client ID）と `OPENAPI_BOT_PRIVATE_KEY`（秘密鍵）を登録する
+
+`GITHUB_TOKEN` ではなく App のトークンで push するのは、`GITHUB_TOKEN` の push では他のワークフロー（RSpec・Spectral など）が再実行されないため。
 
 または gh CLI:
 
