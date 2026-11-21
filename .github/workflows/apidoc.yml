@@ -1,7 +1,7 @@
 name: API Doc
 
 # apidoc/ の OpenAPI 仕様書を Spectral で lint し、
-# develop への push で Stoplight Elements を GitHub Pages へ公開する。
+# develop への push で Scalar API Reference を GitHub Pages へ公開する。
 on:
   push:
     branches:

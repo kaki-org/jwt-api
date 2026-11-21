@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Stoplight Elements で jwt-api の OpenAPI 仕様書を描画する独立 Vite プロジェクト",
+  "description": "Scalar API Reference で jwt-api の OpenAPI 仕様書を描画する独立 Vite プロジェクト",
   "engines": {
     "node": ">=20.12.2"
   },
