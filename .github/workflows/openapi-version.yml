@@ -5,6 +5,10 @@ name: openapi-version
 on:
   pull_request:
     types: [opened, reopened, synchronize, labeled, unlabeled]
+    # develop 向けの PR だけを対象にする。リリース PR（develop → main）で動くと、
+    # main を基準に判定し直した値で develop の version を書き換えてしまうため
+    branches:
+      - develop
     paths:
       - apidoc/openapi.yaml
 

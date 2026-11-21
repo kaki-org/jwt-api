@@ -29,7 +29,7 @@ preview の起動をまとめて行い、ブラウザで開く。ターゲット
 
 ## バージョン運用
 
-`info.version` は手で上げない。`openapi.yaml` を変更した PR で `.github/workflows/openapi-version.yml` が base ブランチの仕様と比べて自動で bump し、bot がコミットする（判定ロジックは `.github/scripts/openapi-version-bump.sh`）。
+`info.version` は手で上げない。`openapi.yaml` を変更した develop 向けの PR で `.github/workflows/openapi-version.yml` が base ブランチの仕様と比べて自動で bump し、bot がコミットする（判定ロジックは `.github/scripts/openapi-version-bump.sh`）。
 
 | 判定 | 条件（[oasdiff](https://github.com/oasdiff/oasdiff) の `changelog`） | 例 |
 |---|---|---|
