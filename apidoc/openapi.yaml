@@ -3,7 +3,7 @@ info:
   title: jwt-api API
   version: 1.0.0
   description: |
-    JWT 認証システムを備えた Rails API の仕様書。
+    JWT 認証システムを備えた Rails API の仕様書です。
 
     ## 認証方式（Dual-Token パターン）
 
