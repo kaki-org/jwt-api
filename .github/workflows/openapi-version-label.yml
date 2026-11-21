@@ -1,0 +1,169 @@
+# develop 向けの PR で apidoc/openapi.yaml の差分を oasdiff で判定し、api-version:* ラベルを付ける。
+# info.version はここでは変えない。develop にマージされた後、openapi-version-bump.yml がラベルを見て上げる。
+# 判定ロジックは .github/scripts/openapi-version-bump.sh、運用は apidoc/README.md を参照。
+name: openapi-version-label
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - develop
+    paths:
+      - apidoc/openapi.yaml
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: openapi-version-label-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  OASDIFF_VERSION: 1.39.0
+  OASDIFF_SHA256: 71a85930728f367a2086077b7ae1411319421549d18473a3e8258b6451520433
+  SPEC: apidoc/openapi.yaml
+  MARKER: '<!-- openapi-version-label -->'
+  LABEL_BOT: github-actions[bot]
+
+jobs:
+  label:
+    # fork からの PR はラベルを付けられないため対象外
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      # develop の最新ではなく merge-base と比べる。develop が先に進んでいると、
+      # 他の PR の変更まで「この PR で消えた」と見えて誤判定するため
+      - name: Fetch base spec
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: |
+          git fetch origin "$BASE_REF"
+          merge_base="$(git merge-base "origin/${BASE_REF}" HEAD)"
+          git show "${merge_base}:${SPEC}" > "$RUNNER_TEMP/base.yaml"
+
+      - name: Install oasdiff
+        run: |
+          archive="oasdiff_${OASDIFF_VERSION}_linux_amd64.tar.gz"
+          curl -fsSL -o "$RUNNER_TEMP/$archive" \
+            "https://github.com/oasdiff/oasdiff/releases/download/v${OASDIFF_VERSION}/${archive}"
+          echo "${OASDIFF_SHA256}  $RUNNER_TEMP/$archive" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP" oasdiff
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+
+      - name: Judge
+        id: judge
+        run: |
+          script=.github/scripts/openapi-version-bump.sh
+          level="$(bash "$script" judge "$RUNNER_TEMP/base.yaml" "$SPEC")"
+          base_version="$(bash "$script" version "$RUNNER_TEMP/base.yaml")"
+          head_version="$(bash "$script" version "$SPEC")"
+          {
+            echo "level=${level}"
+            echo "base_version=${base_version}"
+            echo "head_version=${head_version}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Update labels
+        id: labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          LEVEL: ${{ steps.judge.outputs.level }}
+        run: |
+          issue="repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}"
+          current="$(gh api "${issue}/labels" --jq '[.[].name | select(startswith("api-version:"))] | join(" ")')"
+
+          # 人が付けた api-version:* ラベルが 1 つでもあれば、ラベルには触らない
+          manual=""
+          for label in $current; do
+            actor="$(gh api --paginate "${issue}/events" \
+              --jq "[.[] | select(.event == \"labeled\" and .label.name == \"${label}\")] | last | .actor.login // empty" | tail -n1)"
+            if [[ -n "$actor" && "$actor" != "$LABEL_BOT" ]]; then
+              manual="$label"
+            fi
+          done
+
+          if [[ -n "$manual" ]]; then
+            adopted="$current"
+            source="manual"
+          else
+            desired=""
+            [[ "$LEVEL" != "none" ]] && desired="api-version:${LEVEL}"
+            for label in $current; do
+              if [[ "$label" != "$desired" ]]; then
+                gh api --method DELETE "${issue}/labels/$(jq -rn --arg l "$label" '$l|@uri')" >/dev/null
+              fi
+            done
+            if [[ -n "$desired" && " $current " != *" $desired "* ]]; then
+              gh api --method POST "${issue}/labels" -f "labels[]=${desired}" >/dev/null
+            fi
+            adopted="$desired"
+            source="auto"
+          fi
+          {
+            echo "adopted=${adopted}"
+            echo "source=${source}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          LEVEL: ${{ steps.judge.outputs.level }}
+          BASE_VERSION: ${{ steps.judge.outputs.base_version }}
+          HEAD_VERSION: ${{ steps.judge.outputs.head_version }}
+          ADOPTED: ${{ steps.labels.outputs.adopted }}
+          SOURCE: ${{ steps.labels.outputs.source }}
+        run: |
+          body="$RUNNER_TEMP/comment.md"
+          {
+            echo "$MARKER"
+            echo "### OpenAPI バージョン判定"
+            echo
+            echo "| 項目 | 値 |"
+            echo "|---|---|"
+            echo "| oasdiff の判定 | \`${LEVEL}\` |"
+            if [[ "$SOURCE" == "manual" ]]; then
+              echo "| 採用するラベル | \`${ADOPTED}\`（手動で付けたラベルを優先） |"
+            else
+              echo "| 採用するラベル | ${ADOPTED:+\`${ADOPTED}\`}${ADOPTED:-なし（version は上げない）} |"
+            fi
+            echo "| 現在の version | \`${BASE_VERSION}\`（develop にマージされた後、bot がラベルに従って上げる） |"
+            if [[ "$HEAD_VERSION" != "$BASE_VERSION" ]]; then
+              echo
+              echo "> [!WARNING]"
+              echo "> この PR は \`info.version\` を \`${BASE_VERSION}\` から \`${HEAD_VERSION}\` に変えています。version は手で変えず、\`${BASE_VERSION}\` に戻してください。"
+            fi
+            echo
+            echo "<details><summary>oasdiff changelog</summary>"
+            echo
+            oasdiff changelog --format markdown "$RUNNER_TEMP/base.yaml" "$SPEC" || true
+            echo
+            echo "</details>"
+          } > "$body"
+
+          comment_id="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
+            --jq "map(select(.body | startswith(env.MARKER))) | .[0].id // empty" | head -n1)"
+          if [[ -n "$comment_id" ]]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" -F "body=@${body}" >/dev/null
+          else
+            gh pr comment "$PR_NUMBER" --body-file "$body"
+          fi
+
+      - name: Fail if info.version was changed
+        if: steps.judge.outputs.head_version != steps.judge.outputs.base_version
+        env:
+          BASE_VERSION: ${{ steps.judge.outputs.base_version }}
+          HEAD_VERSION: ${{ steps.judge.outputs.head_version }}
+        run: |
+          echo "::error file=${SPEC}::info.version は手で変えないでください（${BASE_VERSION} -> ${HEAD_VERSION}）。マージ後に bot が上げます。"
+          exit 1

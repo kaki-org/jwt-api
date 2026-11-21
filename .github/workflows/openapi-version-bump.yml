@@ -1,0 +1,157 @@
+# develop に apidoc/openapi.yaml の変更がマージされたら、マージ元 PR の api-version:* ラベルに従って
+# info.version を上げ、GitHub App が develop に直接 push する（Ruleset の bypass を使う）。
+# ラベルは openapi-version-label.yml が PR の段階で付ける。運用は apidoc/README.md を参照。
+#
+# 各実行は「最後の bot の bump 以降に develop に入った、openapi.yaml を変えるマージ」をすべて古い順に処理する。
+# concurrency の待機枠は 1 件だけで、立て続けのマージでは待機中の実行がキャンセルされるが、
+# その分は次の実行が拾うので bump は抜け落ちない。
+name: openapi-version-bump
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - apidoc/openapi.yaml
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: openapi-version-bump
+  cancel-in-progress: false
+
+env:
+  OASDIFF_VERSION: 1.39.0
+  OASDIFF_SHA256: 71a85930728f367a2086077b7ae1411319421549d18473a3e8258b6451520433
+  SPEC: apidoc/openapi.yaml
+  BOT_NAME: kaki-org-openapi-bot[bot]
+
+jobs:
+  bump:
+    # bot 自身の bump コミットでは動かない
+    if: github.actor != 'kaki-org-openapi-bot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510
+        with:
+          client-id: ${{ secrets.OPENAPI_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.OPENAPI_BOT_PRIVATE_KEY }}
+          permission-contents: write
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          ref: develop
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Install oasdiff
+        run: |
+          archive="oasdiff_${OASDIFF_VERSION}_linux_amd64.tar.gz"
+          curl -fsSL -o "$RUNNER_TEMP/$archive" \
+            "https://github.com/oasdiff/oasdiff/releases/download/v${OASDIFF_VERSION}/${archive}"
+          echo "${OASDIFF_SHA256}  $RUNNER_TEMP/$archive" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP" oasdiff
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+
+      # push が拒否されたら（実行中に develop が進んだら）develop の最新に戻して最初から計算し直す。
+      # rebase で bump コミットを載せ替えると、取り込んだマージが「処理済み」に見えてしまうため
+      - name: Bump, commit and push
+        id: bump
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          EVENT_BEFORE: ${{ github.event.before }}
+        run: |
+          script=.github/scripts/openapi-version-bump.sh
+          processed="$RUNNER_TEMP/processed.tsv"
+
+          # develop の最新（作業ツリー）を対象に、未処理のマージを古い順に適用する
+          bump_once() {
+            local last_bump start c pr level source labels from to
+            # 処理の起点: 最後の bot の bump コミット。まだ一度もなければ、この push の直前
+            last_bump="$(git log --first-parent --format='%H %an' -- "$SPEC" \
+              | awk -v bot="$BOT_NAME" '{ an = substr($0, index($0, " ") + 1); if (!found && an == bot) { print $1; found = 1 } }')"
+            if [[ -n "$last_bump" ]]; then
+              start="$last_bump"
+            elif [[ "$EVENT_BEFORE" =~ ^0+$ ]]; then
+              start="$(git rev-parse HEAD^1)"
+            else
+              start="$EVENT_BEFORE"
+            fi
+            mapfile -t commits < <(git log --first-parent --reverse --format='%H %an' "${start}..HEAD" -- "$SPEC" \
+              | awk -v bot="$BOT_NAME" '{ an = substr($0, index($0, " ") + 1); if (an != bot) print $1 }')
+            echo "起点: ${start:0:7}、未処理: ${#commits[@]} 件"
+
+            before="$(bash "$script" version "$SPEC")"
+            : > "$processed"
+            for c in "${commits[@]}"; do
+              pr="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${c}/pulls" \
+                --jq '[.[] | select(.merged_at != null and .base.ref == "develop")] | .[0].number // empty')"
+              level=""
+              source="label"
+              if [[ -n "$pr" ]]; then
+                labels="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${pr}/labels" --jq '.[].name')"
+                for l in patch minor major; do
+                  if grep -qx "api-version:${l}" <<<"$labels"; then level="$l"; fi
+                done
+              fi
+              # ラベルがない場合（直接 push やラベル付けの失敗）は、このコミットの差分から判定する
+              if [[ -z "$level" ]]; then
+                git show "${c}^1:${SPEC}" > "$RUNNER_TEMP/before.yaml"
+                git show "${c}:${SPEC}" > "$RUNNER_TEMP/after.yaml"
+                level="$(bash "$script" judge "$RUNNER_TEMP/before.yaml" "$RUNNER_TEMP/after.yaml")"
+                source="oasdiff"
+              fi
+              from="$(bash "$script" version "$SPEC")"
+              to="$(bash "$script" apply "$SPEC" "$level")"
+              printf '%s\t%s\t%s\t%s\t%s\t%s\n' "${c:0:7}" "$pr" "$level" "$source" "$from" "$to" >> "$processed"
+              echo "${c:0:7} #${pr:--} ${level}（${source}）: ${from} -> ${to}"
+            done
+            after="$(bash "$script" version "$SPEC")"
+          }
+
+          user_id="$(GH_TOKEN="$APP_TOKEN" gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${user_id}+${APP_SLUG}[bot]@users.noreply.github.com"
+
+          for attempt in 1 2 3; do
+            git fetch -q origin develop
+            git reset -q --hard origin/develop
+            bump_once
+            if [[ "$before" == "$after" ]]; then
+              echo "上げるものはありません"
+              break
+            fi
+            details="$(awk -F'\t' '$3 != "none" { printf "- %s -> %s（%s、判定元: %s、%s）\n", $5, $6, $3, $4, ($2 == "" ? $1 : "#" $2) }' "$processed")"
+            git add "$SPEC"
+            git commit -q -m "openapi.yaml の info.version を ${after} に更新" -m "$details"
+            if git push origin HEAD:develop; then
+              break
+            fi
+            if [[ "$attempt" == 3 ]]; then
+              echo "::error::develop への push に 3 回失敗しました"
+              exit 1
+            fi
+          done
+          {
+            echo "before=${before}"
+            echo "after=${after}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PRs
+        if: steps.bump.outputs.before != steps.bump.outputs.after
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          while IFS=$'\t' read -r _sha pr level _source from to; do
+            [[ -n "$pr" && "$level" != "none" ]] || continue
+            printf '%s\n' "\`info.version\` を \`${from}\` から \`${to}\` に更新しました（\`${level}\`）。" > "$RUNNER_TEMP/comment.md"
+            gh pr comment "$pr" --body-file "$RUNNER_TEMP/comment.md"
+          done < "$RUNNER_TEMP/processed.tsv"
