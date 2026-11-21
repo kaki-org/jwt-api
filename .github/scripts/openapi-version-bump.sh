@@ -10,6 +10,8 @@
 #   patch … 上記以外で、info.version を除いた差分がある（説明文・example など）
 #   none  … 差分なし
 #
+# info.version は常に「base を判定レベルで上げた値」に揃える（手で書いた値も上書きする）。
+#
 # 出力（GITHUB_OUTPUT があれば追記）: level / base_version / target_version / current_version / changed
 set -euo pipefail
 
@@ -24,7 +26,7 @@ read_version() {
     /^info:[[:space:]]*$/ { in_info = 1; next }
     in_info && /^[^[:space:]#]/ { exit }
     in_info && /^  version:[[:space:]]*/ {
-      sub(/^  version:[[:space:]]*/, ""); gsub(/["'\''[:space:]]/, ""); print; exit
+      sub(/^  version:[[:space:]]*/, ""); sub(/[[:space:]]+#.*$/, ""); gsub(/["'\''[:space:]]/, ""); print; exit
     }
   ' "$1"
 }
@@ -57,11 +59,6 @@ bump() {
   esac
 }
 
-# a >= b なら 0 を返す
-version_ge() {
-  [[ "$(printf '%s\n%s\n' "$1" "$2" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n1)" == "$1" ]]
-}
-
 base_version="$(read_version "$base_spec")"
 current_version="$(read_version "$spec")"
 [[ -n "$base_version" && -n "$current_version" ]] || { echo "info.version を読み取れません" >&2; exit 1; }
@@ -77,11 +74,14 @@ else
   trap 'rm -f "$normalized"' EXIT
   cp "$spec" "$normalized"
   write_version "$normalized" "$base_version"
-  if "$oasdiff" diff --fail-on-diff "$base_spec" "$normalized" >/dev/null; then
-    level="none"
-  else
-    level="patch"
-  fi
+  # --fail-on-diff: 0 = 差分なし、1 = 差分あり、それ以外 = エラー
+  diff_rc=0
+  "$oasdiff" diff --fail-on-diff "$base_spec" "$normalized" >/dev/null || diff_rc=$?
+  case "$diff_rc" in
+    0) level="none" ;;
+    1) level="patch" ;;
+    *) echo "oasdiff diff が失敗しました（exit ${diff_rc}）" >&2; exit 1 ;;
+  esac
 fi
 
 if [[ -n "$override" ]]; then
@@ -93,8 +93,10 @@ fi
 
 target_version="$(bump "$base_version" "$level")"
 
+# 常に判定どおりの値に揃える（上げすぎた値も戻す）。多めに上げたい場合はラベルで上書きする。
+# 現在値が target と同じなら何もしないので、bot の push で再実行されてもループしない。
 changed=false
-if ! version_ge "$current_version" "$target_version"; then
+if [[ "$current_version" != "$target_version" ]]; then
   write_version "$spec" "$target_version"
   changed=true
 fi

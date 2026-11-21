@@ -32,7 +32,7 @@ npm run lint     # Spectral で openapi.yaml を oas lint
 | patch | changelog に出ないが差分がある | 説明文・example の変更 |
 
 - 判定結果は PR にコメントされる。判定を変えたいときは `api-version:major` / `api-version:minor` / `api-version:patch` ラベルを付ける（複数あれば大きい方）。
-- 必要なバージョン以上に手で上げてある場合は変更しない。
+- `info.version` は常に「base を判定レベルで上げた値」に揃える。手で書いた値も上書きされるので、多めに上げたいときはラベルを使う（ラベルを外せば判定どおりの値に戻る）。
 - base が進んでも PR 側は再判定されない。同時期に複数の PR が仕様を変える場合は、マージ前に base を取り込んで再実行する。
 - fork からの PR は対象外（Secrets を使えないため）。
 
