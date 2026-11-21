@@ -1,6 +1,6 @@
 # apidoc — jwt-api API ドキュメント
 
-手書きの OpenAPI 仕様書（`openapi.yaml`）を [Stoplight Elements](https://stoplight.io/open-source/elements) で描画し、GitHub Pages に公開する独立 Vite プロジェクト。
+手書きの OpenAPI 仕様書（`openapi.yaml`）を [Scalar API Reference](https://github.com/scalar/scalar)（`@scalar/api-reference`）で描画し、GitHub Pages に公開する独立 Vite プロジェクト。
 
 公開 URL: https://kaki-org.github.io/jwt-api/
 
@@ -9,9 +9,9 @@
 ```bash
 cd apidoc
 npm install
-npm run dev      # http://localhost:5173/jwt-api/ で開発サーバー起動
-npm run build    # dist/ に静的ファイルを生成
-npm run preview  # ビルド結果をプレビュー
+npm run dev      # http://localhost:5173/ で開発サーバー起動
+npm run build    # dist/ に静的ファイルを生成（base は /jwt-api/）
+npm run preview  # ビルド結果を http://localhost:4173/jwt-api/ でプレビュー
 npm run lint     # Spectral で openapi.yaml を oas lint
 ```
 
@@ -19,7 +19,10 @@ npm run lint     # Spectral で openapi.yaml を oas lint
 
 - 正本は `openapi.yaml`（OpenAPI 3.1）の 1 ファイル。
 - 編集後は `npm run lint` で文法チェックを行う。Spectral の `spectral:oas` ルールに従う。
-- `@stoplight/elements` はセルフホストでバンドルしており CDN には依存しない。
+- `@scalar/api-reference` はセルフホストでバンドルしており CDN には依存しない。
+- 外部通信は `src/main.ts` で止めている（`withDefaultFonts: false` / `telemetry: false` /
+  `agent: { disabled: true }`、`proxyUrl` は未指定）。Try it は同一オリジン以外の API へは
+  CORS の許可がない限り送れない。
 
 ## デプロイ
 
