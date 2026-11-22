@@ -18,10 +18,6 @@ permissions:
   contents: read
   pull-requests: write
 
-concurrency:
-  group: openapi-version-bump
-  cancel-in-progress: false
-
 env:
   OASDIFF_VERSION: 1.39.0
   OASDIFF_SHA256: 71a85930728f367a2086077b7ae1411319421549d18473a3e8258b6451520433
@@ -32,6 +28,11 @@ jobs:
   bump:
     # bot 自身の bump コミットでは動かない
     if: github.actor != 'kaki-org-openapi-bot[bot]'
+    # ジョブ単位にする。ワークフロー単位だと bot の push の実行も待機枠に入り、
+    # 人のマージで待機している実行をキャンセルしてしまう（skip されるジョブは待機枠に入らない）
+    concurrency:
+      group: openapi-version-bump
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -67,7 +68,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           APP_TOKEN: ${{ steps.app-token.outputs.token }}
           APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
-          EVENT_BEFORE: ${{ github.event.before }}
         run: |
           script=.github/scripts/openapi-version-bump.sh
           processed="$RUNNER_TEMP/processed.tsv"
@@ -75,15 +75,19 @@ jobs:
           # develop の最新（作業ツリー）を対象に、未処理のマージを古い順に適用する
           bump_once() {
             local last_bump start c pr level source labels from to
-            # 処理の起点: 最後の bot の bump コミット。まだ一度もなければ、この push の直前
+            # 処理の起点: 最後の bot の bump コミット。まだ一度もなければ、このワークフローを追加したマージ
+            # （push の直前を起点にすると、待機中にキャンセルされた実行の分を取りこぼすため）
             last_bump="$(git log --first-parent --format='%H %an' -- "$SPEC" \
               | awk -v bot="$BOT_NAME" '{ an = substr($0, index($0, " ") + 1); if (!found && an == bot) { print $1; found = 1 } }')"
             if [[ -n "$last_bump" ]]; then
               start="$last_bump"
-            elif [[ "$EVENT_BEFORE" =~ ^0+$ ]]; then
-              start="$(git rev-parse HEAD^1)"
             else
-              start="$EVENT_BEFORE"
+              start="$(git log --first-parent --diff-filter=A --format='%H' -- .github/workflows/openapi-version-bump.yml | tail -n1)"
+            fi
+            # プロセス置換の中の git log が失敗しても止まらないので、起点を先に確かめる
+            if [[ -z "$start" ]] || ! git rev-parse -q --verify "${start}^{commit}" >/dev/null; then
+              echo "::error::処理の起点が見つかりません（${start:-空}）"
+              return 1
             fi
             mapfile -t commits < <(git log --first-parent --reverse --format='%H %an' "${start}..HEAD" -- "$SPEC" \
               | awk -v bot="$BOT_NAME" '{ an = substr($0, index($0, " ") + 1); if (an != bot) print $1 }')
