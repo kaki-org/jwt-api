@@ -5,7 +5,8 @@ name: openapi-version-label
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    # labeled / unlabeled は、人が api-version:* を付け替えたときにラベルとコメントを揃えるため
+    types: [opened, reopened, synchronize, labeled, unlabeled]
     branches:
       - develop
     paths:
@@ -14,10 +15,6 @@ on:
 permissions:
   contents: read
   pull-requests: write
-
-concurrency:
-  group: openapi-version-label-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
 
 env:
   OASDIFF_VERSION: 1.39.0
@@ -28,8 +25,16 @@ env:
 
 jobs:
   label:
-    # fork からの PR はラベルを付けられないため対象外
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    # fork からの PR はラベルを付けられないため対象外。ラベル操作は api-version:* のときだけ動く
+    # （GITHUB_TOKEN によるラベル操作ではワークフローが起動しないので、自分の付け替えでループしない）
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (!contains(fromJSON('["labeled", "unlabeled"]'), github.event.action) ||
+       startsWith(github.event.label.name, 'api-version:'))
+    # ジョブ単位にする。ワークフロー単位だと、関係ないラベル操作の実行が進行中の判定をキャンセルしてしまう
+    concurrency:
+      group: openapi-version-label-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -82,18 +87,25 @@ jobs:
           issue="repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}"
           current="$(gh api "${issue}/labels" --jq '[.[].name | select(startswith("api-version:"))] | join(" ")')"
 
-          # 人が付けた api-version:* ラベルが 1 つでもあれば、ラベルには触らない
+          # 人が付けた api-version:* ラベルがあれば、それだけを残して bot が付けたラベルを外す
+          # （bump 側は大きい方を採るので、bot のラベルが残ると人が判定を下げられない）
           manual=""
+          auto=""
           for label in $current; do
             actor="$(gh api --paginate "${issue}/events" \
               --jq "[.[] | select(.event == \"labeled\" and .label.name == \"${label}\")] | last | .actor.login // empty" | tail -n1)"
             if [[ -n "$actor" && "$actor" != "$LABEL_BOT" ]]; then
-              manual="$label"
+              manual="${manual:+$manual }$label"
+            else
+              auto="${auto:+$auto }$label"
             fi
           done
 
           if [[ -n "$manual" ]]; then
-            adopted="$current"
+            for label in $auto; do
+              gh api --method DELETE "${issue}/labels/$(jq -rn --arg l "$label" '$l|@uri')" >/dev/null
+            done
+            adopted="$manual"
             source="manual"
           else
             desired=""
