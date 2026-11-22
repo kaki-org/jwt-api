@@ -1,24 +1,27 @@
 #!/usr/bin/env bash
-# openapi.yaml の info.version を、base との差分から semver で自動 bump する。
+# openapi.yaml の info.version を semver で扱うためのスクリプト。
 #
-# 使い方: openapi-version-bump.sh <base-spec-file> <spec-file> [override-level]
-#   override-level: major | minor | patch（指定時は差分判定より優先）
+# 使い方:
+#   openapi-version-bump.sh judge <base-spec> <rev-spec>
+#     base と rev の差分から bump レベルを判定し、none / patch / minor / major のいずれかを出力する
+#   openapi-version-bump.sh version <spec>
+#     info.version を出力する
+#   openapi-version-bump.sh apply <spec> <level>
+#     info.version を level で上げて書き込み、新しい version を出力する
 #
-# 判定:
+# judge の判定:
 #   major … oasdiff changelog に WARN/ERR（level >= 2）がある
 #   minor … api-version-changed 以外の INFO（level 1）がある
 #   patch … 上記以外で、info.version を除いた差分がある（説明文・example など）
 #   none  … 差分なし
-#
-# info.version は常に「base を判定レベルで上げた値」に揃える（手で書いた値も上書きする）。
-#
-# 出力（GITHUB_OUTPUT があれば追記）: level / base_version / target_version / current_version / changed
 set -euo pipefail
 
-base_spec="$1"
-spec="$2"
-override="${3:-}"
 oasdiff="${OASDIFF:-oasdiff}"
+
+usage() {
+  echo "usage: $0 judge <base-spec> <rev-spec> | version <spec> | apply <spec> <level>" >&2
+  exit 2
+}
 
 # info ブロック直下の version 値を取り出す
 read_version() {
@@ -56,57 +59,60 @@ bump() {
     minor) echo "${ma}.$((mi + 1)).0" ;;
     patch) echo "${ma}.${mi}.$((pa + 1))" ;;
     none) echo "$version" ;;
+    *) echo "不正な level です: $level" >&2; exit 1 ;;
   esac
 }
 
-base_version="$(read_version "$base_spec")"
-current_version="$(read_version "$spec")"
-[[ -n "$base_version" && -n "$current_version" ]] || { echo "info.version を読み取れません" >&2; exit 1; }
+require_version() {
+  local version
+  version="$(read_version "$1")"
+  [[ -n "$version" ]] || { echo "info.version を読み取れません: $1" >&2; exit 1; }
+  echo "$version"
+}
 
-# 差分判定
-changes="$("$oasdiff" changelog --format json "$base_spec" "$spec")"
-if jq -e 'any(.[]; .level >= 2)' >/dev/null <<<"$changes"; then
-  level="major"
-elif jq -e 'any(.[]; .level == 1 and .id != "api-version-changed")' >/dev/null <<<"$changes"; then
-  level="minor"
-else
+judge() {
+  local base_spec="$1" spec="$2" changes base_version normalized diff_rc
+  base_version="$(require_version "$base_spec")"
+  require_version "$spec" >/dev/null
+
+  changes="$("$oasdiff" changelog --format json "$base_spec" "$spec")"
+  if jq -e 'any(.[]; .level >= 2)' >/dev/null <<<"$changes"; then
+    echo "major"
+    return
+  fi
+  if jq -e 'any(.[]; .level == 1 and .id != "api-version-changed")' >/dev/null <<<"$changes"; then
+    echo "minor"
+    return
+  fi
+
+  # info.version だけの変更は差分に数えないよう、version を base に揃えたコピーと比べる
   normalized="$(mktemp "${TMPDIR:-/tmp}/openapi-version.XXXXXX")"
-  trap 'rm -f "$normalized"' EXIT
   cp "$spec" "$normalized"
   write_version "$normalized" "$base_version"
   # --fail-on-diff: 0 = 差分なし、1 = 差分あり、それ以外 = エラー
   diff_rc=0
   "$oasdiff" diff --fail-on-diff "$base_spec" "$normalized" >/dev/null || diff_rc=$?
+  rm -f "$normalized"
   case "$diff_rc" in
-    0) level="none" ;;
-    1) level="patch" ;;
+    0) echo "none" ;;
+    1) echo "patch" ;;
     *) echo "oasdiff diff が失敗しました（exit ${diff_rc}）" >&2; exit 1 ;;
   esac
-fi
+}
 
-if [[ -n "$override" ]]; then
-  case "$override" in
-    major | minor | patch) level="$override" ;;
-    *) echo "不正な override-level です: $override" >&2; exit 1 ;;
-  esac
-fi
+apply() {
+  local spec="$1" level="$2" current next
+  current="$(require_version "$spec")"
+  next="$(bump "$current" "$level")"
+  if [[ "$next" != "$current" ]]; then
+    write_version "$spec" "$next"
+  fi
+  echo "$next"
+}
 
-target_version="$(bump "$base_version" "$level")"
-
-# 常に判定どおりの値に揃える（上げすぎた値も戻す）。多めに上げたい場合はラベルで上書きする。
-# 現在値が target と同じなら何もしないので、bot の push で再実行されてもループしない。
-changed=false
-if [[ "$current_version" != "$target_version" ]]; then
-  write_version "$spec" "$target_version"
-  changed=true
-fi
-
-result="level=${level}
-base_version=${base_version}
-target_version=${target_version}
-current_version=${current_version}
-changed=${changed}"
-echo "$result"
-if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
-  echo "$result" >> "$GITHUB_OUTPUT"
-fi
+case "${1:-}" in
+  judge) [[ $# -eq 3 ]] || usage; judge "$2" "$3" ;;
+  version) [[ $# -eq 2 ]] || usage; require_version "$2" ;;
+  apply) [[ $# -eq 3 ]] || usage; apply "$2" "$3" ;;
+  *) usage ;;
+esac
