@@ -155,7 +155,7 @@ paths:
         - Projects
       summary: プロジェクト一覧
       description: |
-        認証済み（かつメール認証済み）ユーザーのプロジェクト一覧を返す。
+        認証済み（かつメール認証済み）ユーザーのプロジェクト一覧を返します。
         `Authorization: Bearer <access_token>` が必要。
       operationId: listProjects
       security:
