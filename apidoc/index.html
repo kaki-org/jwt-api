@@ -21,6 +21,20 @@
         border: 1px solid var(--scalar-border-color, #ddd);
         border-radius: 8px;
       }
+      .theme-switcher[hidden] {
+        display: none;
+      }
+      /* 狭い画面では本文を覆う面積を減らす（ラベルを消してセレクトだけにする）。 */
+      @media (max-width: 600px) {
+        .theme-switcher {
+          right: 8px;
+          bottom: 8px;
+          padding: 4px;
+        }
+        .theme-switcher .theme-switcher-label {
+          display: none;
+        }
+      }
       .theme-switcher select {
         font: inherit;
         color: var(--scalar-color-1, #222);
@@ -33,10 +47,10 @@
   <body style="margin: 0">
     <!-- src/main.ts が Scalar API Reference をここにマウントする。 -->
     <div id="app"></div>
-    <!-- 選択肢は src/main.ts が入れる。 -->
-    <label class="theme-switcher">
-      Theme
-      <select id="theme-select"></select>
+    <!-- 選択肢は src/main.ts が入れ、入れ終えてから hidden を外す。 -->
+    <label class="theme-switcher" hidden>
+      <span class="theme-switcher-label">Theme</span>
+      <select id="theme-select" aria-label="Theme"></select>
     </label>
     <script type="module" src="/src/main.ts"></script>
   </body>

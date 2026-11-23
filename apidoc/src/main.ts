@@ -64,10 +64,14 @@ const reference = createApiReference('#app', {
   withDefaultFonts: false,
   telemetry: false,
   agent: { disabled: true },
+  // localhost でも Developer Tools ツールバーを出さない。ツールバーで選んだテーマは
+  // config の theme より優先されるため、出したままだと下のセレクトが効かなくなる。
+  showDeveloperTools: 'never',
 });
 
+const switcher = document.querySelector<HTMLElement>('.theme-switcher');
 const select = document.querySelector<HTMLSelectElement>('#theme-select');
-if (select) {
+if (switcher && select) {
   for (const [id, label] of Object.entries(THEMES)) {
     select.add(new Option(label, id));
   }
@@ -78,4 +82,6 @@ if (select) {
     // updateConfiguration は設定を丸ごと置き換えるので、現在の設定に theme だけ重ねる。
     reference.updateConfiguration({ ...reference.getConfiguration(), theme: select.value });
   });
+  // 選択肢を入れ終えてから表示する（JS が動かないときに空のセレクトを残さない）。
+  switcher.hidden = false;
 }
