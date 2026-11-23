@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
   title: jwt-api API
-  version: 1.0.0
+  version: 1.0.2
   description: |
-    JWT 認証システムを備えた Rails API の仕様書。
+    JWT 認証システムを備えた Rails API の仕様書です。
 
     ## 認証方式（Dual-Token パターン）
 
@@ -155,7 +155,7 @@ paths:
         - Projects
       summary: プロジェクト一覧
       description: |
-        認証済み（かつメール認証済み）ユーザーのプロジェクト一覧を返す。
+        認証済み（かつメール認証済み）ユーザーのプロジェクト一覧を返します。
         `Authorization: Bearer <access_token>` が必要。
       operationId: listProjects
       security:
