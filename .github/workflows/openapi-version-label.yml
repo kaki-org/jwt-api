@@ -151,7 +151,11 @@ jobs:
             else
               echo "| 採用するラベル | なし（version は上げない） |"
             fi
-            echo "| 現在の version | \`${BASE_VERSION}\`（develop にマージされた後、bot がラベルに従って上げる） |"
+            if [[ -n "$ADOPTED" ]]; then
+              echo "| 現在の version | \`${BASE_VERSION}\`（develop にマージされた後、bot がラベルに従って上げる） |"
+            else
+              echo "| 現在の version | \`${BASE_VERSION}\` |"
+            fi
             if [[ "$HEAD_VERSION" != "$BASE_VERSION" ]]; then
               echo
               echo "> [!WARNING]"
