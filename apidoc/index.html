@@ -4,10 +4,54 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>jwt-api API ドキュメント</title>
+    <style>
+      /* テーマ切替。色は Scalar のテーマ変数に追従させる。 */
+      .theme-switcher {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        font: 12px/1.4 system-ui, sans-serif;
+        color: var(--scalar-color-2, #555);
+        background: var(--scalar-background-2, #f6f6f6);
+        border: 1px solid var(--scalar-border-color, #ddd);
+        border-radius: 8px;
+      }
+      .theme-switcher[hidden] {
+        display: none;
+      }
+      /* 狭い画面では本文を覆う面積を減らす（ラベルを消してセレクトだけにする）。 */
+      @media (max-width: 600px) {
+        .theme-switcher {
+          right: 8px;
+          bottom: 8px;
+          padding: 4px;
+        }
+        .theme-switcher .theme-switcher-label {
+          display: none;
+        }
+      }
+      .theme-switcher select {
+        font: inherit;
+        color: var(--scalar-color-1, #222);
+        background: var(--scalar-background-1, #fff);
+        border: 1px solid var(--scalar-border-color, #ddd);
+        border-radius: 4px;
+      }
+    </style>
   </head>
   <body style="margin: 0">
     <!-- src/main.ts が Scalar API Reference をここにマウントする。 -->
     <div id="app"></div>
+    <!-- 選択肢は src/main.ts が入れ、入れ終えてから hidden を外す。 -->
+    <label class="theme-switcher" hidden>
+      <span class="theme-switcher-label">Theme</span>
+      <select id="theme-select" aria-label="Theme"></select>
+    </label>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
