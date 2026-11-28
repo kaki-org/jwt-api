@@ -190,7 +190,7 @@ importers:
     dependencies:
       '@intlify/core-base':
         specifier: ^11.4.20
-        version: 11.4.23
+        version: 11.4.24
       '@intlify/shared':
         specifier: ^11.4.20
         version: 11.4.24
@@ -906,6 +906,10 @@ packages:
     resolution: {integrity: sha512-V8a3BQ7iTVPDetJ/LJfGn3lDx4Ir35OjjO4BLgVrFuL+0egWzwUyfdLIPAEYWlMGdo14eC5p6uk3tSlTYY0YmQ==}
     engines: {node: '>= 22'}
 
+  '@intlify/core-base@11.4.24':
+    resolution: {integrity: sha512-lFEs4lR28ek9FP4AUoPQch5H2m4Jbf9jOUnIpHmapDda9ZNQueRGqac9hiIrQC2AxUXMMxSNceUhn9mNe/FuCQ==}
+    engines: {node: '>= 22'}
+
   '@intlify/core@11.4.23':
     resolution: {integrity: sha512-5S//Yq2koh5gX+yLfcHmpM+q6YKTJH7LHTnMIRRe1guSwDtjg98p/f6vDDZM5dM4+SA4J9aPwSpqOuJu5fegPA==}
     engines: {node: '>= 22'}
@@ -914,12 +918,20 @@ packages:
     resolution: {integrity: sha512-zuWkolaeK8ej5z7L9Ss7FLIBHgE8ZF+XcwV1o/vQ7IKagiDg/IosA7fOa2HUFVMW5yT2ugph9rshevHGzcowBQ==}
     engines: {node: '>= 22'}
 
+  '@intlify/devtools-types@11.4.24':
+    resolution: {integrity: sha512-ffL2YMfN3+yKxPs4f2jp9H7crgTHi0okIDhYD/ygoE86WC+jcL6VTpGdL4Wx7qktSRo6M43jZnoUqXGRlVK4HQ==}
+    engines: {node: '>= 22'}
+
   '@intlify/h3@0.7.4':
     resolution: {integrity: sha512-BtL5+U3Dd9Qz6so+ArOMQWZ+nV21rOqqYUXnqwvW6J3VUXr66A9+9+vUFb/NAQvOU4kdfkO3c/9LMRGU9WZ8vw==}
     engines: {node: '>= 20'}
 
   '@intlify/message-compiler@11.4.23':
     resolution: {integrity: sha512-HgmnQV/lBBX8KgxoNwngzzq8DLw/jECJgz9eBfQGdkEYte7Bw1RSqhIskcWp0DEWrSg2wijUi6dJjpq1WUD+zg==}
+    engines: {node: '>= 22'}
+
+  '@intlify/message-compiler@11.4.24':
+    resolution: {integrity: sha512-RrA+avo7TIUI4RXh410RbZ8L5W9J/clVOesrjvBQXb/zzHadwW1ZoKRJAYZb6F8mHkt3CpmZwD73FVykT8QDiA==}
     engines: {node: '>= 22'}
 
   '@intlify/shared@11.4.23':
@@ -5631,6 +5643,12 @@ snapshots:
       '@intlify/message-compiler': 11.4.23
       '@intlify/shared': 11.4.23
 
+  '@intlify/core-base@11.4.24':
+    dependencies:
+      '@intlify/devtools-types': 11.4.24
+      '@intlify/message-compiler': 11.4.24
+      '@intlify/shared': 11.4.24
+
   '@intlify/core@11.4.23':
     dependencies:
       '@intlify/core-base': 11.4.23
@@ -5641,6 +5659,11 @@ snapshots:
       '@intlify/core-base': 11.4.23
       '@intlify/shared': 11.4.23
 
+  '@intlify/devtools-types@11.4.24':
+    dependencies:
+      '@intlify/core-base': 11.4.24
+      '@intlify/shared': 11.4.24
+
   '@intlify/h3@0.7.4':
     dependencies:
       '@intlify/core': 11.4.23
@@ -5650,6 +5673,11 @@ snapshots:
     dependencies:
       '@intlify/shared': 11.4.23
       source-map-js: 1.2.2
+
+  '@intlify/message-compiler@11.4.24':
+    dependencies:
+      '@intlify/shared': 11.4.24
+      source-map-js: 1.2.4
 
   '@intlify/shared@11.4.23': {}
 
